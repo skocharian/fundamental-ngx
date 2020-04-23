@@ -628,4 +628,3 @@ export class ListGroupHeader extends BaseListItem implements OnInit {
         this.id = `fdp-list-${nextListGrpHeaderId++}`;
     }
 }
-
