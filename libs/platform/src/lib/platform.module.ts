@@ -20,6 +20,7 @@ import { PlatformPanelModule } from './components/panel/panel.module';
 import { PlatformSwitchModule } from './components/form/switch/switch.module';
 import { PlatformObjectStatusModule } from './components/object-status/object-status.module';
 import { PlatformInputModule, PlatformStepInputModule } from './components/form/public_api';
+import { PlatformListModule } from './components/list/list.module';
 
 @NgModule({
     imports: [CommonModule, FundamentalNgxCoreModule],
@@ -39,13 +40,13 @@ import { PlatformInputModule, PlatformStepInputModule } from './components/form/
         PlatformSplitMenuButtonModule,
         PlatformInfoLabelModule,
         PlatformTextAreaModule,
-        PlatformInfoLabelModule,
         PlatformPanelModule,
         PlatformSwitchModule,
         PlatformTextAreaModule,
         PlatformObjectStatusModule,
         PlatformInputModule,
-        PlatformStepInputModule
+        PlatformStepInputModule,
+        PlatformListModule
     ]
 })
-export class FundamentalNgxPlatformModule {}
+export class FundamentalNgxPlatformModule { }
