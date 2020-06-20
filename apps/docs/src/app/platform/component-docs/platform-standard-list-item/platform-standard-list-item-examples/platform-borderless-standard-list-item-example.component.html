@@ -7,3 +7,8 @@
 <fdp-list contentDensity="compact" noBorder="true" [hasByLine]="true">
     <fdp-standard-list-item *ngFor="let item of items" [item]="item"></fdp-standard-list-item>
 </fdp-list>
+
+<h3>Compact Mode</h3>
+<fdp-list [contentDensity]="'compact'" [noBorder]="true" [hasByLine]="true">
+    <fdp-standard-list-item *ngFor="let item of items" [item]="item"></fdp-standard-list-item>
+</fdp-list>
