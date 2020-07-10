@@ -143,6 +143,18 @@ export const ROUTES: Routes = [
                 loadChildren: () =>
                     import('./component-docs/platform-standard-list-item/platform-standard-list-item-docs.module').then((m) =>
                         m.PlatformStandardListItemDocsModule)
+            },
+            {
+                path: 'action-list-item',
+                loadChildren: () =>
+                    import('./component-docs/platform-action-list-item/platform-action-list-item-docs.module').then((m) =>
+                        m.PlatformActionListItemDocsModule)
+            },
+            {
+                path: 'display-list-item',
+                loadChildren: () =>
+                    import('./component-docs/platform-display-list-item/platform-display-list-item-docs.module').then((m) =>
+                        m.PlatformDisplayListItemDocsModule)
             }
         ]
     }

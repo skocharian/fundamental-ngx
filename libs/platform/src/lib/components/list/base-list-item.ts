@@ -302,6 +302,7 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
      * On item click event will be emitted */
     @HostListener('click')
     onItemClick(): void {
+        console.log('inisde click');
         this.itemSelected.emit(event);
         this._changeDetectorRef.markForCheck();
     }

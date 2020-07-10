@@ -30,4 +30,6 @@ export const API_FILES = {
     stepInput: ['NumberStepInputComponent', 'StepInputComponent', 'StepInputConfig'],
     list: ['ListComponent', 'StandardListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
     standardlistitem: ['ListComponent', 'StandardListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
+    actionlistitem: ['ListComponent', 'ActionListItemComponent'],
+    displaylistitem: ['ListComponent', 'DisplayListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
 };

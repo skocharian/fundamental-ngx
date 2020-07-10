@@ -1,0 +1,27 @@
+<!--  list item navigation with Arrow-->
+<ng-container *ngIf="showNavigationArrow || hasNavigation || partialNavigation">
+    <li #listItem fd-list-item [attr.id]="id" tabindex="-1" [selected]="selected" class="fd-list__item--link"
+        (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)">
+        <a #link class="fd-list__link fd-link fdp-link-truncate__txt"
+            [class.fd-list__link--navigation-indicator]="showNavigationArrow" [attr.href]="href" [attr.target]="target">
+            <ng-container *ngTemplateOutlet="commonTemplate"></ng-container>
+        </a>
+    </li>
+</ng-container>
+
+<!--  list item without navigation and used for simple list display-->
+<ng-container *ngIf="!showNavigationArrow && !hasNavigation && !partialNavigation">
+    <li #listItem fd-list-item [attr.id]="id" tabindex="-1" [selected]="selected" (keydown)="onKeyDown($event)"
+        (keyup)="onKeyUp($event)">
+        <ng-container *ngTemplateOutlet="commonTemplate"></ng-container>
+    </li>
+</ng-container>
+
+
+<ng-template #commonTemplate>
+    <span *ngIf="title" fd-list-title [attr.aria-label]="title" [attr.nowrap]="titleWrap"
+        [attr.title]="title">{{title}}</span>
+    <span fd-list-secondary [attr.aria-label]="secondary" [attr.title]="secondary" [attr.nowrap]="secondaryWrap">
+        {{secondary}}
+    </span>
+</ng-template>
