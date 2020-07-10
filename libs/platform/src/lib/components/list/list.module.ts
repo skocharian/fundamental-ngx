@@ -9,7 +9,6 @@ import { ListComponent, ListFooter, ListGroupHeader } from './list.component';
     imports: [
         CommonModule,
         FormsModule,
-        CheckboxModule,
         FormModule,
         ToolbarModule,
         ListModule,
