@@ -1,5 +1,5 @@
 <!--  list item navigation with Arrow-->
-<ng-container *ngIf="showNavigationArrow || hasNavigation || partialNavigation">
+<ng-container *ngIf="showNavigationArrow || hasNavigation">
     <li #listItem fd-list-item [attr.id]="id" tabindex="-1" [selected]="selected" class="fd-list__item--link"
         (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)">
         <a #link class="fd-list__link fd-link fdp-link-truncate__txt"
@@ -10,7 +10,7 @@
 </ng-container>
 
 <!--  list item without navigation and used for simple list display-->
-<ng-container *ngIf="!showNavigationArrow && !hasNavigation && !partialNavigation">
+<ng-container *ngIf="!showNavigationArrow && !hasNavigation">
     <li #listItem fd-list-item [attr.id]="id" tabindex="-1" [selected]="selected" (keydown)="onKeyDown($event)"
         (keyup)="onKeyUp($event)">
         <ng-container *ngTemplateOutlet="commonTemplate"></ng-container>

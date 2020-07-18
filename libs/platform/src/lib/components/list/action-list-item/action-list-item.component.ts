@@ -1,7 +1,6 @@
-import { Component, ChangeDetectorRef, ElementRef, ChangeDetectionStrategy, forwardRef, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectorRef, ElementRef, ChangeDetectionStrategy, forwardRef } from '@angular/core';
 import { BaseListItem } from '../base-list-item';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
-import { FocusMonitor } from '@angular/cdk/a11y';
 
 
 @Component({
@@ -40,7 +39,7 @@ export class ActionListItemComponent extends BaseListItem {
     }
 
     /** @hidden */
-    constructor(_changeDetectorRef: ChangeDetectorRef, public itemEl: ElementRef, private _focusMonitor: FocusMonitor) {
+    constructor(_changeDetectorRef: ChangeDetectorRef, public itemEl: ElementRef) {
         super(_changeDetectorRef, itemEl);
     }
 
