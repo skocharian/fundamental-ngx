@@ -1,0 +1,8 @@
+<li #listItem fd-list-item [attr.id]="id" tabindex="-1" [selected]="selected" (keydown)="onKeyDown($event)"
+    (keyup)="onKeyUp($event)">
+    <span *ngIf="title" fd-list-title [attr.aria-label]="title" [attr.nowrap]="titleWrap"
+        [attr.title]="title">{{title}}</span>
+    <span fd-list-secondary>
+        <ng-content></ng-content>
+    </span>
+</li>

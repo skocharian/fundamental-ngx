@@ -32,4 +32,5 @@ export const API_FILES = {
     standardlistitem: ['ListComponent', 'StandardListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
     actionlistitem: ['ListComponent', 'ActionListItemComponent'],
     displaylistitem: ['ListComponent', 'DisplayListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
+    inputlistitem: ['ListComponent', 'InputListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
 };

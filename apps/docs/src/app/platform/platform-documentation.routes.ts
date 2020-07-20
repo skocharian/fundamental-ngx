@@ -155,6 +155,12 @@ export const ROUTES: Routes = [
                 loadChildren: () =>
                     import('./component-docs/platform-display-list-item/platform-display-list-item-docs.module').then((m) =>
                         m.PlatformDisplayListItemDocsModule)
+            },
+            {
+                path: 'input-list-item',
+                loadChildren: () =>
+                    import('./component-docs/platform-input-list-item/platform-input-list-item-docs.module').then((m) =>
+                        m.PlatformInputListItemDocsModule)
             }
         ]
     }

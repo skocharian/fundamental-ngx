@@ -36,8 +36,10 @@ export class PlatformDocumentationComponent extends DocumentationBaseComponent {
             {
                 name: 'List And Items',
                 subItems: [{ url: 'platform/list', name: 'List' },
-                { url: 'platform/standard-list-item', name: 'Standard List Item' }]
-
+                { url: 'platform/standard-list-item', name: 'Standard List Item' },
+                { url: 'platform/action-list-item', name: 'Action List Item' },
+                { url: 'platform/display-list-item', name: 'Display List Item' },
+                { url: 'platform/input-list-item', name: 'Input List Item' }]
             }
         ];
 
