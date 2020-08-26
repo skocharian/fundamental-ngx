@@ -9,8 +9,7 @@ import { ListConfig } from '../list.config';
 @Component({
     selector: 'fdp-standard-list-item',
     templateUrl: './standard-list-item.component.html',
-    styleUrls: ['./standard-list-item.component.scss',
-        '../drag-and-drop.scss'],
+    styleUrls: ['./standard-list-item.component.scss'],
     providers: [
         { provide: BaseListItem, useExisting: forwardRef(() => StandardListItemComponent) }
     ],
@@ -29,6 +28,12 @@ export class StandardListItemComponent extends BaseListItem implements AfterView
     isCompact = this._contentDensity === 'compact';
 
     /** @hidden */
+    constructor(_changeDetectorRef: ChangeDetectorRef, public itemEl: ElementRef,
+        protected _listConfig: ListConfig) {
+        super(_changeDetectorRef, itemEl, _listConfig);
+    }
+
+    /** @hidden */
     /** message type styles to secondary text in Byline*/
     ngAfterViewInit(): void {
         this._setProperties();
@@ -36,23 +41,16 @@ export class StandardListItemComponent extends BaseListItem implements AfterView
 
     /** @hidden */
     _setProperties(): void {
-        if (this.textType !== null && this.textType !== undefined) {
-            this._addClassToElement('fd-list__byline-right--' + this.textType);
+        if (this.statusType !== null && this.statusType !== undefined) {
+            this._addClassToElement('fd-list__byline-right--' + this.statusType);
         }
     }
-
     /** @hidden */
     _addClassToElement(className: string): void {
-        const secItems = this.listItemRef.nativeElement.querySelectorAll('.fd-list__byline-right');
-        secItems.forEach(function (secItem: any): void {
+        const secItems = this.listItem.nativeElement.querySelectorAll('.fd-list__byline-right');
+        secItems.forEach((secItem: any) => {
             secItem.classList.add(...className.split(' '));
         });
+
     }
-
-
-    /** @hidden */
-    constructor(_changeDetectorRef: ChangeDetectorRef, public itemEl: ElementRef, protected _listConfig: ListConfig) {
-        super(_changeDetectorRef, itemEl, _listConfig);
-    }
-
 }

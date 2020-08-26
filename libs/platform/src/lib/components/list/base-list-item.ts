@@ -1,15 +1,16 @@
 import {
     ElementRef, HostBinding, Input, ChangeDetectorRef, EventEmitter,
-    Output, HostListener, ViewChild, AfterViewChecked, OnInit, Directive, TemplateRef, AfterContentInit, AfterViewInit
+    Output, HostListener, ViewChild, AfterViewChecked, OnInit, Directive, TemplateRef
 } from '@angular/core';
-import { CheckboxComponent, RadioButtonComponent } from '@fundamental-ngx/core';
-import { BaseComponent } from '../base';
+
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
-import { ListConfig } from './list.config';
+import { CheckboxComponent, RadioButtonComponent } from '@fundamental-ngx/core';
 import { ContentDensity } from '../form/form-control';
+import { BaseComponent } from '../base';
+import { ListConfig } from './list.config';
 
 let nextListItemId = 0;
-export type TextType = 'negative' | 'critical' | 'positive' | 'informative';
+export type StatusType = 'negative' | 'critical' | 'positive' | 'informative';
 export type SelectionType = '' | 'multi' | 'single' | 'delete';
 export type ListType = 'inactive' | 'active' | 'detail';
 
@@ -37,74 +38,37 @@ interface SecondaryActionItem {
  * this can be extended to reduce the code duplication across list Item components.
  */
 @Directive()
-export class BaseListItem extends BaseComponent implements AfterViewChecked, OnInit {
+export class BaseListItem extends BaseComponent implements OnInit, AfterViewChecked {
 
-    /** event emitter for selected item*/
-    @Output()
-    itemSelected: EventEmitter<any> = new EventEmitter<any>();
-
-    @ViewChild('listItem')
-    listItemRef: ElementRef;
-
-    /** Event sent when delete, details or any other action buttons are clicked */
-    @Output()
-    buttonClicked: EventEmitter<any> = new EventEmitter();
-
-
-    /** Access child element, for checking link content*/
-    @ViewChild('link', { read: ElementRef })
-    anchor: ElementRef;
-
-
-    /** Whether Navigation mode is included to list component
-    * for all the items
-    */
-    navigated = false;
-
-    /** Whether Navigation mode is included to list component
-     * only a subset of the list items are navigable
-     * you should indicate those by displaying a navigation arrow
-    */
-    navigationIndicator = false;
-
-
-    /** Whether Navigation mode is included to for
-     *  current list item component
-   */
-    // @Input()
-    // partialNavigation?= false;
-
-    /**By default selection mode is '' */
-    selectionMode: SelectionType = '';
-
-
-    /**By default selection mode is '' */
-    listType: ListType;
-
+    /** sets the list item in bold text
+     * which respresents unread data */
     @Input()
-    draggable: boolean;
-    /** Whether By line mode is included to list component, by which
-     *  list item will accomdate the data in 2 column
-     */
-    hasByLine = false;
+    unRead: boolean;
+
+    /** To invert the status of secondary text*/
+    @Input()
+    inverted = false;
+
+    /** Whether there is no data inside list item */
+    @Input()
+    noDataText?: string;
+
+    /** The type of the secondary text.fd-list__byline-right--*
+    *  Can be one of *positive*, *negative*, *informative*, *critical*, *neutral* */
+    @Input()
+    statusType?: StatusType;
 
     /**Description of the title*/
     @Input()
     description: string;
 
-
-    /** @hidden */
-    @ViewChild(CheckboxComponent, { static: false })
-    checkboxComponent: CheckboxComponent;
-
-
-    /** @hidden */
-    @ViewChild(RadioButtonComponent, { static: false })
-    radioButtonComponent: RadioButtonComponent;
-
     /** Tooltip text to show when focused for more than timeout value*/
     @Input()
     title?: string;
+
+    /**radio button value */
+    @Input()
+    value: string;
 
     /**
     * Enabling this flag causes forcing title directive to not wrap text,
@@ -129,7 +93,6 @@ export class BaseListItem extends BaseComponent implements AfterViewChecked, OnI
     @Input()
     avatarSrc?: string;
 
-
     /** attribute to hold avatar title for a11y*/
     @Input()
     avatarTitle: string;
@@ -145,23 +108,50 @@ export class BaseListItem extends BaseComponent implements AfterViewChecked, OnI
     @Input()
     secondaryIcons?: SecondaryActionItem[];
 
-    // /** Whether listitem is selected */
-    @Input()
-    @HostBinding('class.is-selected')
-    selected: boolean;
+    /** event emitter for selected item*/
+    @Output()
+    itemSelected: EventEmitter<any> = new EventEmitter<any>();
 
-    /** Whether there is no data inside list item */
-    @Input()
-    noDataText?: string;
+    /** Event sent when delete, details or any other action buttons are clicked */
+    @Output()
+    buttonClicked: EventEmitter<any> = new EventEmitter();
 
-    /** The type of the secondary text.fd-list__byline-right--*
-    *  Can be one of *positive*, *negative*, *informative*, *critical*, *neutral* */
-    @Input()
-    textType?: TextType;
+    /** Whether Navigation mode is included to list component
+    * for all the items
+    */
+    navigated = false;
 
+    /** Whether Navigation mode is included to list component
+     * only a subset of the list items are navigable
+     * you should indicate those by displaying a navigation arrow
+    */
+    navigationIndicator = false;
+
+    /**By default selection mode is '' */
+    selectionMode: SelectionType = '';
+
+
+    /**By default selection mode is '' */
+    listType: ListType;
+
+    /** Used for placeing navigation Link */
+    link: string;
+
+    noSeperator: boolean;
+
+    /** Whether By line mode is included to list component, by which
+     *  list item will accomdate the data in 2 column
+     */
+    hasByLine = false;
 
     /** @hidden */
     _contentDensity = this._listConfig.contentDensity;
+
+
+    /** Whether listitem is selected */
+    selected: boolean;
+
+    _selectionValue: string;
 
     /**
      * @hidden
@@ -169,20 +159,43 @@ export class BaseListItem extends BaseComponent implements AfterViewChecked, OnI
      */
     isCompact = this._contentDensity === 'compact';
 
-    /** Used for placeing navigation Link */
-    link: string;
+    @ViewChild('listItem')
+    listItemRef: ElementRef;
+
+    @ViewChild('listItem', { read: ElementRef, static: false })
+    listItem: ElementRef;
+
+    /** Access child element, for checking link content*/
+    @ViewChild('link', { read: ElementRef })
+    anchor: ElementRef;
+
+    /** @hidden */
+    @ViewChild(CheckboxComponent)
+    checkboxComponent: CheckboxComponent;
+
+    /** @hidden */
+    @ViewChild(RadioButtonComponent)
+    radioButtonComponent: RadioButtonComponent;
+
+
+    get selectionValue(): string {
+        return this._selectionValue;
+    }
+
+    set selectionValue(value: string) {
+        this.selected = false;
+        this._selectionValue = value;
+        if (this._selectionValue !== undefined &&
+            this._selectionValue !== null) {
+            this.selected = this.value === this._selectionValue;
+        }
+    }
 
     /**
-    * list of values, it can be of type Item or String.
-    */
+       * @hidden
+       * list of values, it can be of type Item or String.
+       */
     private _item: any;
-
-    noSeperator: boolean;
-
-    /** sets the list item in bold text
-     * which respresents unread data */
-    @Input()
-    unRead: boolean;
 
     /** @hidden */
     /** a11y attributes */
@@ -201,7 +214,6 @@ export class BaseListItem extends BaseComponent implements AfterViewChecked, OnI
     /** define position of item for screen reader */
     @HostBinding('attr.aria-posinet')
     ariaPosinet: number;
-
 
     /** setter and getter for _link */
     get routerLink(): string {
@@ -234,15 +246,18 @@ export class BaseListItem extends BaseComponent implements AfterViewChecked, OnI
         this.titleWrap = item.titleWrap ? true : false;
         this.titleIcon = item.titleIcon;
         this.name = item.name ? item.name : '';
+        this.value = item.value;
         this.link = item.link;
         this.counter = item.counter;
-        this.avatarSrc = item.avatarSrc;
-        this.avatarTitle = item.avatarTitle;
-        this.textType = item.textType;
         this.secondary = item.secondary;
         this.description = item.description;
+        this.avatarSrc = item.avatarSrc;
+        this.avatarTitle = item.avatarTitle;
+        this.inverted = item.inverted;
+        this.statusType = item.statusType;
         this.noDataText = item.noDataText;
         this.unRead = item.unRead;
+        this.selectionValue = item.selectionValue;
         if (item.secondaryIcons !== null && item.secondaryIcons !== undefined) {
             this.secondaryIcons = [...item.secondaryIcons];
         }
@@ -251,16 +266,16 @@ export class BaseListItem extends BaseComponent implements AfterViewChecked, OnI
     }
 
     /** @hidden */
-    constructor(protected _changeDetectorRef: ChangeDetectorRef, public itemEl: ElementRef, protected _listConfig: ListConfig) {
+    constructor(protected _changeDetectorRef: ChangeDetectorRef,
+        public itemEl: ElementRef, protected _listConfig: ListConfig) {
         super(_changeDetectorRef);
 
     }
 
     /** @hidden */
-    /**Created focus on list item on mouseclick,
-     * Up,down arrow press */
-    public focus(): void {
-        this.listItemRef.nativeElement.focus();
+    /** Show navigation for single list*/
+    ngOnInit(): void {
+        this.id = `fdp-list-item-${nextListItemId++}`;
     }
 
     /** @hidden */
@@ -275,51 +290,84 @@ export class BaseListItem extends BaseComponent implements AfterViewChecked, OnI
         }
     }
 
-    /**On item click event will be emitted */
+    /** @hidden */
+    /**Created focus on list item on mouseclick,
+     * Up,down arrow press */
+    public focus(): void {
+        this.listItem.nativeElement.focus();
+    }
+
+    /**
+     * @hidden
+     * On item click event will be emitted */
     @HostListener('click')
     onItemClick(): void {
         this.itemSelected.emit(event);
         this._changeDetectorRef.markForCheck();
     }
 
-    // /** @hidden */
+    /** @hidden */
     @HostListener('keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent): void {
         if (event.keyCode === ENTER || event.keyCode === SPACE) {
             this.itemSelected.emit(event);
+            if (this.checkboxComponent || this.radioButtonComponent) { this.onKeyboardClick(event); }
             this._changeDetectorRef.markForCheck();
         }
+
+
+    }
+    /** @hidden */
+    onKeyboardClick(event: KeyboardEvent): void {
+        if (this.checkboxComponent) {
+            this.checkboxComponent.nextValue();
+        }
+        if (this.radioButtonComponent) {
+            this.radioButtonComponent.labelClicked();
+        }
+
+        this.itemSelected.emit(event);
+        this._changeDetectorRef.markForCheck();
     }
 
-    // /** @hidden */
-    // /**on keydown append active styles on actionable item */
+    /** Handler for mouse events */
+    @HostListener('click', ['$event'])
+    onClick(event: MouseEvent): void {
+        if (this.checkboxComponent && !this.anchor) {
+            this.checkboxComponent.nextValue();
+        }
+        if (this.radioButtonComponent && !this.anchor) {
+            this.radioButtonComponent.labelClicked();
+        }
+        this.itemSelected.emit(event);
+        this._changeDetectorRef.markForCheck();
+    }
+
+
+
+    /** @hidden */
+    /**on keydown append active styles on actionable item */
     onKeyDown(event: any): void {
         if (this.anchor !== undefined && (event.keyCode === ENTER || event.keyCode === SPACE)) {
             this.anchor.nativeElement.classList.add('is-active');
         }
     }
 
-    // /** @hidden */
-    // /**on keyup remove active styles from actionable item*/
+    /** @hidden */
+    /**on keyup remove active styles from actionable item*/
     onKeyUp(event: any): void {
         if (this.anchor !== undefined && (event.keyCode === ENTER || event.keyCode === SPACE)) {
             this.anchor.nativeElement.classList.remove('is-active');
         }
     }
 
-    /** @hidden */
-    /** Show navigation for single list*/
-    ngOnInit(): void {
-        this.id = `fdp-list-item-${nextListItemId++}`;
-
-    }
 
     /**
+     *  @hidden
      *  Handles action button click
      */
     public onActionButtonClick($event: any): void {
         this.buttonClicked.emit($event);
     }
-
 
 }
