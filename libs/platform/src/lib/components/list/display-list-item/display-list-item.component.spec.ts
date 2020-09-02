@@ -232,7 +232,7 @@ describe('DisplayListItemComponent Imperative', () => {
         fixture.detectChanges();
     });
 
-    async function wait(componentFixture: ComponentFixture<any>) {
+    async function wait(componentFixture: ComponentFixture<any>): void {
         componentFixture.detectChanges();
         await componentFixture.whenStable();
     }

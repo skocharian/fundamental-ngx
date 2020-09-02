@@ -171,7 +171,7 @@ describe('ActionListItemComponent functions', () => {
 });
 
 
- /**Impertive approach testing*/
+/**Impertive approach testing*/
 @Component({
     selector: 'fdp-test-action-list-item',
     template: `
@@ -211,7 +211,7 @@ describe('ActionListItemComponent Imperative', () => {
         fixture.detectChanges();
     });
 
-    async function wait(componentFixture: ComponentFixture<any>) {
+    async function wait(componentFixture: ComponentFixture<any>): void {
         componentFixture.detectChanges();
         await componentFixture.whenStable();
     }
