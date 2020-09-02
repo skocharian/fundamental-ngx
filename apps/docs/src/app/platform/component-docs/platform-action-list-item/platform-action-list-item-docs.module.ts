@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ApiComponent } from '../../../documentation/core-helpers/api/api.component';
-import { SharedDocumentationModule } from '../../../documentation/shared-documentation.module';
+import { SharedDocumentationPageModule } from '../../../documentation/shared-documentation-page.module';
 import { API_FILES } from '../../api-files';
 import { PlatformActionListItemHeaderComponent } from './platform-action-list-item-header/platform-action-list-item-header.component';
 import { PlatformActionListItemDocsComponent } from './platform-action-list-item-docs.component';
@@ -25,7 +25,7 @@ const routes: Routes = [
 @NgModule({
     imports: [
         RouterModule.forChild(routes),
-        SharedDocumentationModule,
+        SharedDocumentationPageModule,
         PlatformListModule,
         PlatformButtonModule,
         ToolbarModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import * as iliSrc from '!raw-loader!./platform-input-list-item-examples/platform-input-list-item-example.component.html';
 import * as borderLessILISrc from '!raw-loader!./platform-input-list-item-examples/platform-borderless-input-list-item-example.component.html';
 import * as groupHeaderILITs from '!raw-loader!./platform-input-list-item-examples/platform-input-list-item-with-group-header-example.component.ts';
@@ -10,7 +10,7 @@ import { ExampleFile } from '../../../documentation/core-helpers/code-example/ex
     selector: 'app-input-list-item',
     templateUrl: './platform-input-list-item-docs.component.html'
 })
-export class PlatformInputListItemDocsComponent implements OnInit {
+export class PlatformInputListItemDocsComponent {
     simpleILI: ExampleFile[] = [
         {
             language: 'html',
@@ -48,8 +48,5 @@ export class PlatformInputListItemDocsComponent implements OnInit {
             fileName: 'platform-input-list-item-with-group-header-example'
         }
     ];
-
-    ngOnInit() { }
-    constructor() { }
 
 }

@@ -1,6 +1,7 @@
 import { Component, ChangeDetectorRef, ElementRef, ChangeDetectionStrategy, forwardRef } from '@angular/core';
-import { BaseListItem } from '../base-list-item';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
+import { ListConfig } from '../list.config';
+import { BaseListItem } from '../base-list-item';
 
 
 @Component({
@@ -39,8 +40,9 @@ export class ActionListItemComponent extends BaseListItem {
     }
 
     /** @hidden */
-    constructor(_changeDetectorRef: ChangeDetectorRef, public itemEl: ElementRef) {
-        super(_changeDetectorRef, itemEl);
+    constructor(_changeDetectorRef: ChangeDetectorRef, public itemEl: ElementRef,
+        protected _listConfig: ListConfig) {
+        super(_changeDetectorRef, itemEl, _listConfig);
     }
 
 }

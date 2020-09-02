@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import * as dliSrc from '!raw-loader!./platform-display-list-item-examples/platform-display-list-item-example.component.html';
 import * as borderLessDLISrc from '!raw-loader!./platform-display-list-item-examples/platform-borderless-display-list-item-example.component.html';
 import * as borderLessDLITs from '!raw-loader!./platform-display-list-item-examples/platform-display-list-item-border-less-example.component.ts';
@@ -64,8 +64,5 @@ export class PlatformDisplayListItemDocsComponent implements OnInit {
             fileName: 'platform-display-list-item-with-navigation-example',
         }
     ];
-
-    ngOnInit() { }
-    constructor() { }
 
 }

@@ -1,16 +1,16 @@
 <!--  list item navigation with Arrow-->
-<ng-container *ngIf="showNavigationArrow || hasNavigation">
-    <li #listItem fd-list-item [attr.id]="id" tabindex="-1" [selected]="selected" class="fd-list__item--link"
-        (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)">
-        <a #link class="fd-list__link fd-link fdp-link-truncate__txt"
-            [class.fd-list__link--navigation-indicator]="showNavigationArrow" [attr.href]="href" [attr.target]="target">
+<ng-container *ngIf="navigationIndicator || navigated">
+    <li #listItem fd-list-item [attr.id]="id" [selected]="selected" tabIndex="0" [attr.aria-selected]="selected"
+        (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)" class="fd-list__item--link">
+        <a #link fd-list-link [routerLink]="routerLink" [navigationIndicator]="navigationIndicator"
+            [navigated]="navigated">
             <ng-container *ngTemplateOutlet="commonTemplate"></ng-container>
         </a>
     </li>
 </ng-container>
 
 <!--  list item without navigation and used for simple list display-->
-<ng-container *ngIf="!showNavigationArrow && !hasNavigation">
+<ng-container *ngIf="!navigationIndicator && !navigated">
     <li #listItem fd-list-item [attr.id]="id" tabindex="-1" [selected]="selected" (keydown)="onKeyDown($event)"
         (keyup)="onKeyUp($event)">
         <ng-container *ngTemplateOutlet="commonTemplate"></ng-container>

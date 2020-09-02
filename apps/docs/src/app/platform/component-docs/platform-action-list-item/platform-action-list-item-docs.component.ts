@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import * as aliSrc from '!raw-loader!./platform-action-list-item-examples/platform-action-list-item-example.component.html';
 import * as aliSrcTs from '!raw-loader!./platform-action-list-item-examples/platform-action-list-item-example.component.ts';
 import * as borderLessALISrc from '!raw-loader!./platform-action-list-item-examples/platform-borderless-action-list-item-example.component.html';
@@ -37,8 +37,5 @@ export class PlatformActionListItemDocsComponent implements OnInit {
             fileName: 'platform-borderless-action-list-item-example'
         }
     ];
-
-    ngOnInit() { }
-    constructor() { }
 
 }

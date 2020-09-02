@@ -318,17 +318,10 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
         }
 
 
-        // /** @hidden */
-        @HostListener('keydown', ['$event'])
-        handleKeyboardEvent(event: KeyboardEvent) {
-            if (event.keyCode === ENTER || event.keyCode === SPACE) {
-                this.itemSelected.emit(event);
-                this._changeDetectorRef.markForCheck();
-            }
-        }
-        /** @hidden */
-        onKeyboardClick(event: KeyboardEvent): void {
-            if(this.checkboxComponent) {
+    }
+    /** @hidden */
+    onKeyboardClick(event: KeyboardEvent): void {
+        if (this.checkboxComponent) {
             this.checkboxComponent.nextValue();
         }
         if (this.radioButtonComponent) {
@@ -362,8 +355,8 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
         }
     }
 
-    // /** @hidden */
-    // /**on keyup remove active styles from actionable item*/
+    /** @hidden */
+    /**on keyup remove active styles from actionable item*/
     onKeyUp(event: any): void {
         if (this.anchor !== undefined && (event.keyCode === ENTER || event.keyCode === SPACE)) {
             this.anchor.nativeElement.classList.remove('is-active');

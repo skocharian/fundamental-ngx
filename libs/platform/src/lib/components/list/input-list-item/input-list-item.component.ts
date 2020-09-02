@@ -1,5 +1,6 @@
 import { Component, ChangeDetectorRef, ElementRef, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { BaseListItem } from '../base-list-item';
+import { ListConfig } from '../list.config';
 
 @Component({
     selector: 'fdp-input-list-item',
@@ -13,8 +14,9 @@ import { BaseListItem } from '../base-list-item';
 export class InputListItemComponent extends BaseListItem {
 
     /** @hidden */
-    constructor(_changeDetectorRef: ChangeDetectorRef, public itemEl: ElementRef) {
-        super(_changeDetectorRef, itemEl);
+    constructor(_changeDetectorRef: ChangeDetectorRef, public itemEl: ElementRef,
+        protected _listConfig: ListConfig) {
+        super(_changeDetectorRef, itemEl, _listConfig);
     }
 
 }
