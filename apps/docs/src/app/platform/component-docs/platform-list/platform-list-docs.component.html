@@ -15,7 +15,7 @@
     List - Footer
 </fd-docs-section-title>
 <description>Footer of List. <code>&lt;fdp-list-footer&gt;</code> tag will help to set the footer for the list.
-    Below examples show both imperative and declarative
+    Below examples show declarative
     way to use footer.
 </description>
 <component-example>
@@ -29,7 +29,7 @@
 </fd-docs-section-title>
 <description>List with the group header. <code>&lt;fdp-list-group-header&gt;</code> tag will help to set the Header for
     the
-    group of list items.Below examples show both imperative and declarative
+    group of list items.Below examples show declarative
     way to bind the list items and how to bind the group header to them.
 </description>
 <component-example>
@@ -55,7 +55,7 @@
 <description>List with Item Counter.
     Attributes<code> secondary="secondary text"</code> will
     help to insert secondary data.
-    Below examples show both imperative and declarative way to use it.</description>
+    Below examples show declarative way to use it.</description>
 <component-example>
     <fdp-list-with-item-counter-example>
     </fdp-list-with-item-counter-example>
@@ -65,11 +65,11 @@
 <fd-docs-section-title id="list7" componentName="List">
     List - Deletion button
 </fd-docs-section-title>
-<description>For delete option on list item <code>[secondaryIcons]="['icons':decline/delete, 'isButton':'true']"</code>
+<description>For delete option on list item <code>selectionMode="delete"</code>
     will help. Its
     button on click of it
     delete operation can be invoked.
-    Below examples show both imperative and declarative way to use it.
+    Below examples show declarative way to use it.
 </description>
 <component-example>
     <fdp-list-with-delete-button-example></fdp-list-with-delete-button-example>
@@ -83,8 +83,9 @@
 <description>List with Multi Selection Option. <code>selectionMode="multi"</code> will help us to provide checkbox
     along with
     list item.
-    .Below examples show both imperative and declarative way to use it.
-    Note:selection of listitem using keyboard can be performed by *space bar* (as per Fiori3 standards.) </description>
+    .Below examples show imperative way to use it.
+    Note:selection of listitem using keyboard can be performed by *space bar* or by enter button(as per Fiori3
+    standards.) </description>
 <component-example>
     <fdp-list-with-selection-example>
     </fdp-list-with-selection-example>
@@ -99,8 +100,9 @@
     <code>selectionMode="single"</code> will
     help us to provide single select(radiobutton) along with
     list item
-    .Below examples show both imperative and declarative way to use it.
-    Note: selection of listitem using keyboard can be performed by *space bar* (as per Fiori3 standards.) </description>
+    .Below examples show imperative way to use it.
+    Note: selection of listitem using keyboard can be performed by *space bar* or enter button (as per Fiori3
+    standards.) </description>
 <component-example>
     <fdp-list-with-single-selection-example>
     </fdp-list-with-single-selection-example>
@@ -115,8 +117,7 @@
     item,
     <code> [navigationIndicator]="true"</code> will provide <code>">"</code> indicator,
     <code>[link]="path"</code> will help to get into the desired destination on click of navigation.Below examples show
-    both
-    imperative and declarative way to use it.</description>
+    declarative way to use it.</description>
 <component-example>
     <fdp-list-with-navigation-example>
     </fdp-list-with-navigation-example>
@@ -159,7 +160,7 @@
 <description>EditIcon to the list item will be added by <code>listType="detail"</code> and for more image and button
     options property<code>[secondaryIcons]="'['icons':'iconname',
     'isButton':'true/false']'"</code> will help.
-    IsButton setting to false to set an image and true will set a button with sepficed icon.
+    IsButton setting to false to set an image and true will set a button with specified icon.
 </description>
 <component-example>
     <fdp-list-with-buttons-example></fdp-list-with-buttons-example>

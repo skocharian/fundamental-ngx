@@ -1,6 +1,6 @@
 import {
     Component, ChangeDetectionStrategy, ElementRef,
-    ChangeDetectorRef, forwardRef, AfterViewInit
+    ChangeDetectorRef, forwardRef, ViewEncapsulation
 } from '@angular/core';
 import { BaseListItem } from '../base-list-item';
 import { ListConfig } from '../list.config';
@@ -13,10 +13,12 @@ import { ListConfig } from '../list.config';
     providers: [
         { provide: BaseListItem, useExisting: forwardRef(() => StandardListItemComponent) }
     ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None
 
 })
-export class StandardListItemComponent extends BaseListItem implements AfterViewInit {
+export class StandardListItemComponent extends BaseListItem {
+
 
     /** @hidden */
     _contentDensity = this._listConfig.contentDensity;
@@ -33,24 +35,4 @@ export class StandardListItemComponent extends BaseListItem implements AfterView
         super(_changeDetectorRef, itemEl, _listConfig);
     }
 
-    /** @hidden */
-    /** message type styles to secondary text in Byline*/
-    ngAfterViewInit(): void {
-        this._setProperties();
-    }
-
-    /** @hidden */
-    _setProperties(): void {
-        if (this.statusType !== null && this.statusType !== undefined) {
-            this._addClassToElement('fd-list__byline-right--' + this.statusType);
-        }
-    }
-    /** @hidden */
-    _addClassToElement(className: string): void {
-        const secItems = this.listItem.nativeElement.querySelectorAll('.fd-list__byline-right');
-        secItems.forEach((secItem: any) => {
-            secItem.classList.add(...className.split(' '));
-        });
-
-    }
 }

@@ -35,7 +35,9 @@ export class PlatformListWithSingleSelectionExampleComponent {
     selectedItems: any[] = [];
 
     showItemInfo(event: any): void {
-        this.selectedItems = event.selectedItems[0].id;
+        if (event.selectedItems[0] !== undefined) {
+            this.selectedItems = event.selectedItems[0].id;
+        }
     }
 
 }

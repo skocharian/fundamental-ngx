@@ -1,6 +1,6 @@
 <ng-content selector="fd-toolbar"></ng-content>
 <ul fd-list #fdlist [attr.id]="id" [compact]="isCompact" [noBorder]="noBorder" [selection]="selection"
-    [class.fd-list--navigation]="navigated" [navigationIndicator]="navigationIndicator"
+    [class.fd-list--navigation]="navigated" [navigationIndicator]="navigationIndicator" style="outline:none"
     [class.fd-list--navigation]="navigationIndicator" (keydown)="keyManager.onKeydown($event);handleKeyDown($event);"
     (change)="onSelectionChanged($event)">
     <fd-busy-indicator *ngIf="loadMore && loadOnScroll" size="l"
@@ -23,7 +23,6 @@
             </button>
         </li>
     </div>
-
 </ul>
 
 <ng-template #thenBlock>

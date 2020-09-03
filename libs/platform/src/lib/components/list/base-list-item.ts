@@ -310,8 +310,10 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
     @HostListener('keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent): void {
         if (event.keyCode === ENTER || event.keyCode === SPACE) {
+            if (this.checkboxComponent || this.radioButtonComponent) {
+                this.onKeyboardClick(event);
+            }
             this.itemSelected.emit(event);
-            if (this.checkboxComponent || this.radioButtonComponent) { this.onKeyboardClick(event); }
             this._changeDetectorRef.markForCheck();
         }
 
@@ -323,11 +325,10 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
             this.checkboxComponent.nextValue();
         }
         if (this.radioButtonComponent) {
-            this.radioButtonComponent.labelClicked();
+            this.radioButtonComponent.valueChange(event);
         }
-
-        this.itemSelected.emit(event);
         this._changeDetectorRef.markForCheck();
+        this.itemSelected.emit(event);
     }
 
     /** Handler for mouse events */
@@ -337,10 +338,11 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
             this.checkboxComponent.nextValue();
         }
         if (this.radioButtonComponent && !this.anchor) {
-            this.radioButtonComponent.labelClicked();
+            this.radioButtonComponent.valueChange(event);
         }
-        this.itemSelected.emit(event);
         this._changeDetectorRef.markForCheck();
+        this.itemSelected.emit(event);
+
     }
 
 
@@ -369,5 +371,6 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
     public onActionButtonClick($event: any): void {
         this.buttonClicked.emit($event);
     }
+
 
 }

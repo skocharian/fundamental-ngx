@@ -2,7 +2,8 @@
 <ng-container *ngIf="navigationIndicator || navigated && !(noDataText!==null && noDataText!== undefined) ">
     <li #listItem fd-list-item [attr.id]="id" [selected]="selected" tabIndex="0" [attr.aria-selected]="selected"
         (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)" class="fd-list__item--link">
-        <ng-container *ngTemplateOutlet="selectionTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet=" selectionTemplate">
+        </ng-container>
         <a #link fd-list-link [routerLink]="routerLink" [navigationIndicator]="navigationIndicator"
             [navigated]="navigated">
             <ng-container *ngTemplateOutlet="hasByLine ? byLineTemplate: commonTemplate"></ng-container>
@@ -20,7 +21,7 @@
 </ng-container>
 
 <ng-container *ngIf="noDataText!==null && noDataText!== undefined">
-    <li #listItem fd-list-item [attr.id]="id" tabindex="0" class="fd-list__item--no-data">
+    <li #listItem fd-list-item [attr.id]="id" tabindex="0">
         <span fd-list-title [attr.aria-label]="noDataText" [attr.title]="noDataText">{{noDataText}}</span>
     </li>
 </ng-container>
@@ -66,14 +67,14 @@
             <span *ngIf="description" class="fd-list__byline-left" [attr.aria-label]="description"
                 [class.fd-list-title__unread]="unRead" [attr.title]="description"
                 [attr.nowrap]="titleWrap">{{description}}</span>
-            <span #rt class="fd-list__byline-right" *ngIf="secondary && !statusType" [attr.aria-label]="secondary"
+            <span #rt *ngIf="secondary && !inverted" [attr.aria-label]="secondary" class="fd-list__byline-right"
+                [ngClass]="statusType ? 'fd-list__byline-right--' + statusType : ''"
                 [class.fd-list-title__unread]="unRead" [attr.title]="secondary" [attr.nowrap]="secondaryWrap">
                 {{secondary}}
             </span>
-            <span #rt class="fd-list__byline-right" *ngIf="statusType" [attr.aria-label]="secondary"
+            <span #rt1 class="fd-list__byline-right" *ngIf="inverted" [attr.aria-label]="secondary"
                 [attr.title]="secondary" [attr.nowrap]="secondaryWrap">
-                <fdp-object-status [status]="statusType" class="fdp-link-truncate__txt" [inverted]=" inverted"
-                    [class.fd-list-title__unread]="unRead">
+                <fdp-object-status [status]="statusType" [inverted]="inverted" [class.fd-list-title__unread]="unRead">
                     {{secondary}}</fdp-object-status>
             </span>
             <span *ngIf="secondaryIcons!== null && secondaryIcons!== undefined">
@@ -88,11 +89,11 @@
                     </button>
                 </span>
             </span>
-            <button fd-button class="fd-list__byline-right" *ngIf="listType === 'detail'" role="button"
-                [compact]="isCompact" fdType="transparent" glyph="edit" (click)="onActionButtonClick($event)">
+            <button fd-button *ngIf="listType === 'detail'" role="button" [compact]="isCompact" fdType="transparent"
+                glyph="edit" (click)="onActionButtonClick($event)">
             </button>
-            <button fd-button class="fd-list__byline-right" *ngIf="selectionMode === 'delete'" role="button"
-                [compact]="isCompact" fdType="transparent" glyph="delete" (click)="onActionButtonClick($event)">
+            <button fd-button *ngIf="selectionMode === 'delete'" role="button" [compact]="isCompact"
+                fdType="transparent" glyph="decline" (click)="onActionButtonClick($event)">
             </button>
         </div>
     </div>

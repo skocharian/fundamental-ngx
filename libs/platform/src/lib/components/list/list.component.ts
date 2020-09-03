@@ -475,71 +475,128 @@ export class ListComponent extends BaseInput implements OnInit, AfterViewInit, A
     /**  filter to get Selected items from a list**/
     onSelectionChanged(event: any): void {
         if (event.target.checked) {
-            this.selectionModel.select(event.target.parentNode.parentNode);
+            this.selectionModel.select(event.target.parentNode.parentNode.parentNode);
         } else {
-            this.selectionModel.deselect(event.target.parentNode.parentNode);
+            this.selectionModel.deselect(event.target.parentNode.parentNode.parentNode);
         }
     }
-
 
     /** @hidden */
     /**  Update navgiation styles for non navigated items**/
     @HostListener('click', ['$event'])
     updateNavigation(event: any): void {
-        this.handleSingleSelect(event);
         this.ListItems.forEach((item) => {
             if (item.anchor !== undefined) {
                 item.anchor.nativeElement.classList.remove('is-navigated');
             }
-            if (item.checkboxComponent !== undefined) {
-                if (item.checkboxComponent.isChecked) {
-                    this.selectionModel.select(item);
-                } else { this.selectionModel.deselect(item); }
-            }
-            if (item.radioButtonComponent !== undefined) {
-                item.selectionValue = this.selectedvalue;
-
-                if (!item.radioButtonComponent.checked) {
-                    this.selectionModel.deselect(item);
-                }
-
-                if (item.radioButtonComponent.checked) {
-                    this.selectionModel.select(item);
-                }
-            }
-
-
         });
         if (event.target !== null && event.target.tagName.toLowerCase() === 'a') {
             event.target.classList.add('is-navigated');
         }
-
-
-
+        this.handleSingleSelect(event);
+        this.handleMultiSelect(event);
 
     }
     /** @hidden */
     /**List item with radio button styles,check,uncheckupdates */
     handleSingleSelect(event: any): void {
+
         if (event.target !== null && event.target !== undefined && this.selectionMode === 'single') {
+            this.selectionModel.clear();
             if (event.target.tagName.toLowerCase() === 'li' &&
                 event.target.querySelector('fd-radio-button') !== undefined) {
-                this.selectedvalue = event.target.querySelector('fd-radio-button').getAttribute('ng-reflect-value');
+                const radio1 = event.target.querySelector('fd-radio-button');
+                radio1.childNodes[0].checked = true;
+                this.selectedvalue = radio1.getAttribute('ng-reflect-value');
+                this.selectionModel.select(radio1.parentNode.parentNode);
             } else if (event.target.tagName.toLowerCase() === 'span' &&
                 event.target.parentNode.querySelector('fd-radio-button') !== undefined) {
-                this.selectedvalue = event.target.parentNode.querySelector('fd-radio-button').getAttribute('ng-reflect-value');
+                const radio2 = event.target.parentNode.querySelector('fd-radio-button');
+                radio2.checked = true;
+                this.selectedvalue = radio2.getAttribute('ng-reflect-value');
+                this.selectionModel.select(radio2.parentNode.parentNode);
             } else if ((event.target.tagName.toLowerCase() === 'label'
-                || event.target.tagName.toLowerCase() === 'input') && event.target.type === 'radio') {
-                this.selectedvalue = event.target.parentNode.getAttribute('ng-reflect-value');
+                || event.target.tagName.toLowerCase() === 'input') &&
+                event.target.type === 'radio') {
+                const radio3 = event.target.parentNode;
+                radio3.checked = true;
+                this.selectedvalue = radio3.getAttribute('ng-reflect-value');
+                this.selectionModel.select(radio3.parentNode.parentNode);
             } else if (event.target.querySelector('fd-radio-button') !== undefined &&
                 event.target.querySelector('fd-radio-button') !== null) {
-                this.selectedvalue = event.target.getAttribute('ng-reflect-value');
+                const target1 = event.target;
+                target1.checked = true;
+                this.selectedvalue = target1.getAttribute('ng-reflect-value');
+                this.selectionModel.select(target1.parentNode.parentNode);
+            } else if ((event.target.tagName.toLowerCase() === 'div')) {
+                const divPart = event.target.parentNode.parentNode;
+                const radio = divPart.querySelector('input');
+                radio.checked = true;
+                this.selectionModel.select(divPart);
             }
         }
+        this.ListItems.forEach((item) => {
+            if (item.radioButtonComponent !== undefined) {
+                item.selectionValue = this.selectedvalue;
+            }
+        });
     }
 
+    /** @hidden */
+    /**List item with checkbox styles,check,uncheckupdates */
+    handleMultiSelect(event: any): void {
+        if (event.target !== null &&
+            event.target !== undefined &&
+            this.selectionMode === 'multi') {
+            if (event.target.tagName.toLowerCase() === 'li' &&
+                event.target.querySelector('fd-checkbox') !== undefined) {
+                const checkbox1 = event.target.querySelector('fd-checkbox');
+                if (checkbox1.childNodes[0].checked) {
+                    this.selectionModel.select(checkbox1.parentNode.parentNode);
+                } else {
+                    this.selectionModel.deselect(checkbox1.parentNode.parentNode);
+                }
+            } else if (event.target.tagName.toLowerCase() === 'span' &&
+                event.target.parentNode.querySelector('fd-checkbox') !== undefined) {
+                const checkbox2 = event.target.parentNode.querySelector('fd-checkbox');
+                if (checkbox2.childNodes[0].checked) {
+                    this.selectionModel.select(checkbox2.parentNode.parentNode);
+                } else {
+                    this.selectionModel.deselect(checkbox2.parentNode.parentNode);
+                }
+            } else if ((event.target.tagName.toLowerCase() === 'label'
+                || event.target.tagName.toLowerCase() === 'input')
+                && event.target.type === 'checkbox') {
+                const checkbox3 = event.target;
+                if (checkbox3.checked) {
+                    this.selectionModel.select(
+                        checkbox3.parentNode.parentNode.parentNode);
+                } else {
+                    this.selectionModel.deselect(
+                        checkbox3.parentNode.parentNode.parentNode);
+                }
+            } else if ((event.target.tagName.toLowerCase() === 'label'
+                || event.target.tagName.toLowerCase() === 'input') &&
+                event.target.type === 'checkbox') {
+                if (event.target.checked) {
+                    this.selectionModel.select(
+                        event.target.parentNode.parentNode.parentNode);
+                } else {
+                    this.selectionModel.deselect(
+                        event.target.parentNode.parentNode.parentNode);
+                }
+            } else if ((event.target.tagName.toLowerCase() === 'div')) {
+                const divPart = event.target.parentNode.parentNode;
+                const checkbox = divPart.querySelector('input');
+                if (checkbox.checked) {
+                    this.selectionModel.select(divPart);
+                } else {
+                    this.selectionModel.deselect(divPart);
+                }
+            }
+        }
 
-
+    }
 }
 
 @Component({
