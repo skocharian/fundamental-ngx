@@ -12,7 +12,7 @@ import { ExampleFile } from '../../../documentation/core-helpers/code-example/ex
     selector: 'app-standard-list-item',
     templateUrl: './platform-display-list-item-docs.component.html'
 })
-export class PlatformDisplayListItemDocsComponent implements OnInit {
+export class PlatformDisplayListItemDocsComponent {
     simpleDLI: ExampleFile[] = [
         {
             language: 'html',

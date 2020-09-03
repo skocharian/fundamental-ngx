@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PlatformListModule, ActionListItemModule, PlatformButtonModule } from '@fundamental-ngx/platform';
+import { ToolbarModule } from '@fundamental-ngx/core';
 import { ApiComponent } from '../../../documentation/core-helpers/api/api.component';
 import { SharedDocumentationPageModule } from '../../../documentation/shared-documentation-page.module';
 import { API_FILES } from '../../api-files';
@@ -8,8 +10,7 @@ import { PlatformActionListItemDocsComponent } from './platform-action-list-item
 import {
     PlatformActionListItemExampleComponent
 } from './platform-action-list-item-examples/platform-action-list-item-example.component';
-import { PlatformListModule, ActionListItemModule, PlatformButtonModule } from '@fundamental-ngx/platform';
-import { ToolbarModule } from '@fundamental-ngx/core';
+
 import { PlatformActionListItemBorderLessExampleComponent } from './platform-action-list-item-examples/platform-action-list-item-border-less-example.component';
 const routes: Routes = [
     {
@@ -26,9 +27,9 @@ const routes: Routes = [
     imports: [
         RouterModule.forChild(routes),
         SharedDocumentationPageModule,
+        ToolbarModule,
         PlatformListModule,
         PlatformButtonModule,
-        ToolbarModule,
         ActionListItemModule
     ],
     exports: [RouterModule],

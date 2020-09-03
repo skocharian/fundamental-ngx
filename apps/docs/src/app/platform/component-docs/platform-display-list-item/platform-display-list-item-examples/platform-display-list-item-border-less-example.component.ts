@@ -5,9 +5,9 @@ import { Component } from '@angular/core';
 })
 export class PlatformDisplayListItemBorderLessExampleComponent {
     items: any[] = [
-        { 'title': 'Item1', 'secondary': 'Second text', 'partialNavigation': 'true' },
-        { 'title': 'Item2', 'secondary': 'Second text' },
-        { 'title': 'Item3', 'secondary': 'Second text' },
-        { 'title': 'Item4', 'secondary': 'Second text', 'partialNavigation': 'true' }];
+        { title: 'Item1', secondary: 'Second text', navigationIndicator: true },
+        { title: 'Item2', secondary: 'Second text' },
+        { title: 'Item3', secondary: 'Second text' },
+        { title: 'Item4', secondary: 'Second text', navigationIndicator: true }];
 
 }

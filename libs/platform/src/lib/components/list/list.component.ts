@@ -319,8 +319,11 @@ export class ListComponent extends BaseInput implements OnInit, AfterViewInit, A
 
         this.keyManager = new FocusKeyManager<BaseListItem>(this.ListItems).withWrap();
         this.ListItems.forEach((item) => {
-            item.navigated = this._navigated;
-            item.navigationIndicator = this._navigationIndicator;
+            // item.navigated = this._navigated;
+            console.log('item.navigationIndicator', item.navigationIndicator)
+            // if (item.navigationIndicator) {
+            //     item.navigationIndicator = this._navigationIndicator;
+            // }
             item.contentDensity = this.contentDensity;
             item.selectionMode = this.selectionMode;
             item.listType = this.listType;
@@ -342,8 +345,10 @@ export class ListComponent extends BaseInput implements OnInit, AfterViewInit, A
     ngAfterContentInit(): void {
         this._itemsSubscription = this.ListItems.changes.subscribe((items) => {
             items.forEach((item) => {
-                item.navigated = this._navigated;
-                item.navigationIndicator = this._navigationIndicator;
+                // item.navigated = this._navigated;
+                // if (!item.navigationIndicator) {
+                //     item.navigationIndicator = this._navigationIndicator;
+                // }
                 item.contentDensity = this.contentDensity;
                 item.selectionMode = this.selectionMode;
                 item.listType = this.listType;

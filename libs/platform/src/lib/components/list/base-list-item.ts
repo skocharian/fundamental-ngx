@@ -119,12 +119,14 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
     /** Whether Navigation mode is included to list component
     * for all the items
     */
+    @Input()
     navigated = false;
 
     /** Whether Navigation mode is included to list component
      * only a subset of the list items are navigable
      * you should indicate those by displaying a navigation arrow
     */
+    @Input()
     navigationIndicator = false;
 
     /**By default selection mode is '' */
@@ -257,6 +259,7 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
         this.statusType = item.statusType;
         this.noDataText = item.noDataText;
         this.unRead = item.unRead;
+        this.navigationIndicator = item.navigationIndicator ? true : false;
         this.selectionValue = item.selectionValue;
         if (item.secondaryIcons !== null && item.secondaryIcons !== undefined) {
             this.secondaryIcons = [...item.secondaryIcons];

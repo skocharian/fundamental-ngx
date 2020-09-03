@@ -11,7 +11,7 @@
 
 <!--  list item without navigation and used for simple list display-->
 <ng-container *ngIf="!navigationIndicator && !navigated">
-    <li #listItem fd-list-item [attr.id]="id" tabindex="-1" [selected]="selected" (keydown)="onKeyDown($event)"
+    <li #listItem fd-list-item [attr.id]="id" tabindex="0" [selected]="selected" (keydown)="onKeyDown($event)"
         (keyup)="onKeyUp($event)">
         <ng-container *ngTemplateOutlet="commonTemplate"></ng-container>
     </li>
