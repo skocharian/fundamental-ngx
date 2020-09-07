@@ -33,13 +33,6 @@ export class ActionListItemComponent extends BaseListItem {
     }
 
     /** @hidden */
-    /**Created focus on list item on mouseclick,
-     * Up,down arrow press */
-    public focus(): void {
-        this.itemEl.nativeElement.focus();
-    }
-
-    /** @hidden */
     constructor(_changeDetectorRef: ChangeDetectorRef, public itemEl: ElementRef,
         protected _listConfig: ListConfig) {
         super(_changeDetectorRef, itemEl, _listConfig);

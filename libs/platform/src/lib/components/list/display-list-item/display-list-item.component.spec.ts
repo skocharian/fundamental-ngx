@@ -1,47 +1,22 @@
-
-// describe('DisplayListItemComponent', () => {
-//     let component: DisplayListItemComponent;
-//     let fixture: ComponentFixture<DisplayListItemComponent>;
-
-//     beforeEach(async(() => {
-//         TestBed.configureTestingModule({
-//             declarations: [DisplayListItemComponent]
-//         })
-//             .compileComponents();
-//     }));
-
-//     beforeEach(() => {
-//         fixture = TestBed.createComponent(DisplayListItemComponent);
-//         component = fixture.componentInstance;
-//         fixture.detectChanges();
-//     });
-
-//     it('should create', () => {
-//         expect(component).toBeTruthy();
-//     });
-// });
-
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ListComponent } from '../list.component';
 import { PlatformListModule } from '../list.module';
-import { ENTER } from '@angular/cdk/keycodes';
-import { BaseListItem } from '../base-list-item';
 import { DisplayListItemComponent } from './display-list-item.component';
 
 
 @Component({
     selector: 'fdp-test-fdp-display-list-item',
     template: `
-    <fdp-list>
-    <fdp-display-list-item title="title 1" secondary="secondary 1" partialNavigation="true">
+    <fdp-list partialNavigation="true">
+    <fdp-display-list-item title="title 1" secondary="secondary 1" navigationIndicator="true">
     </fdp-display-list-item>
     <fdp-display-list-item title="title 2" secondary="secondary 2">
     </fdp-display-list-item>
     <fdp-display-list-item title="title 3" secondary="secondary 3">
     </fdp-display-list-item>
-    <fdp-display-list-item title="title 4" secondary="secondary 4" partialNavigation="true">
+    <fdp-display-list-item title="title 4" secondary="secondary 4" navigationIndicator="true">
     </fdp-display-list-item>
 </fdp-list>
     `
@@ -162,33 +137,6 @@ describe('DisplayListItemComponent functions', () => {
         fixture.detectChanges();
     });
 
-    // it('should click on item', fakeAsync(() => {
-    //     spyOn(component, 'onItemClick').and.callThrough(); //method attached to the click.
-    //     let item = fixture.debugElement.queryAll(By.css('li'))[0];
-    //     console.log('item===>', item);
-    //     item.triggerEventHandler('click', null);
-    //     // simulates the passage of time until all pending
-    //     //asynchronous activities finish
-    //     tick();
-    //     fixture.detectChanges();
-    //     expect(component.onItemClick).toHaveBeenCalled();
-
-    //     // it('Should make a good dinner', () => {
-    //     //     spyOn(Object.getPrototypeOf(Object.getPrototypeOf(BaseListItem), 'onItemClick');
-    //     //     husband.makeDinner();
-
-    //     //     expect(parent.prototype.buyFood).toHaveBeenCalled();
-    //     // }
-
-    // }));
-
-    // it('should click on item by Enter or SPACE KEY', fakeAsync(() => {
-    //     spyOn(component, 'onKeyDown').and.callThrough(); //method attached to the click.
-    //     let item = fixture.debugElement.queryAll(By.css('fdp-display-list-item'))[0];
-    //     item.triggerEventHandler('keydown.enter', {});
-    //     fixture.detectChanges();
-    //     expect(component.onKeyDown).toHaveBeenCalled();
-    // }));
 });
 
 
@@ -196,17 +144,17 @@ describe('DisplayListItemComponent functions', () => {
 @Component({
     selector: 'fdp-test-display-list-item',
     template: `
-    <fdp-list>
+    <fdp-list partialNavigation="true">
     <fdp-display-list-item *ngFor="let item of items" [item]="item"></fdp-display-list-item>
 </fdp-list>
     `
 })
 class TestComponentContent {
     items: any[] = [
-        { 'title': 'title 1', 'secondary': 'secondary 1', 'partialNavigation': 'true' },
+        { 'title': 'title 1', 'secondary': 'secondary 1', 'navigationIndicator': 'true' },
         { 'title': 'title 2', 'secondary': 'secondary 2' },
         { 'title': 'title 3', 'secondary': 'secondary 3' },
-        { 'title': 'title 4', 'secondary': 'secondary 4', 'partialNavigation': 'true' }];
+        { 'title': 'title 4', 'secondary': 'secondary 4', 'navigationIndicator': 'true' }];
 
     @ViewChild(DisplayListItemComponent)
     displayListItem: DisplayListItemComponent;
@@ -232,7 +180,7 @@ describe('DisplayListItemComponent Imperative', () => {
         fixture.detectChanges();
     });
 
-    async function wait(componentFixture: ComponentFixture<any>): void {
+    async function wait(componentFixture: ComponentFixture<any>): Promise<void> {
         componentFixture.detectChanges();
         await componentFixture.whenStable();
     }
@@ -278,7 +226,6 @@ describe('DisplayListItemComponent Imperative', () => {
 
     it('Should have partial Navigation enabled 2 list item', () => {
         const naviationItemsImp = fixture.debugElement.queryAll(By.css('a'));
-        console.log('naviationItemsImp==>', naviationItemsImp);
         expect(naviationItemsImp.length).toEqual(2);
         fixture.detectChanges();
         expect(naviationItemsImp[0].nativeElement.classList).toContain('fd-list__link fd-link fdp-link-truncate__txt fd-list__link--navigation-indicator');

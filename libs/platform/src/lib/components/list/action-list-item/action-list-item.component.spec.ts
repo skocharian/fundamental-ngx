@@ -1,11 +1,9 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActionListItemComponent } from './action-list-item.component';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ListComponent } from '../list.component';
 import { PlatformListModule } from '../list.module';
-import { ENTER } from '@angular/cdk/keycodes';
-import { BaseListItem } from '../base-list-item';
 
 
 @Component({
@@ -141,33 +139,6 @@ describe('ActionListItemComponent functions', () => {
         fixture.detectChanges();
     });
 
-    // it('should click on item', fakeAsync(() => {
-    //     spyOn(component, 'onItemClick').and.callThrough(); //method attached to the click.
-    //     let item = fixture.debugElement.queryAll(By.css('li'))[0];
-    //     console.log('item===>', item);
-    //     item.triggerEventHandler('click', null);
-    //     // simulates the passage of time until all pending
-    //     //asynchronous activities finish
-    //     tick();
-    //     fixture.detectChanges();
-    //     expect(component.onItemClick).toHaveBeenCalled();
-
-    //     // it('Should make a good dinner', () => {
-    //     //     spyOn(Object.getPrototypeOf(Object.getPrototypeOf(BaseListItem), 'onItemClick');
-    //     //     husband.makeDinner();
-
-    //     //     expect(parent.prototype.buyFood).toHaveBeenCalled();
-    //     // }
-
-    // }));
-
-    // it('should click on item by Enter or SPACE KEY', fakeAsync(() => {
-    //     spyOn(component, 'onKeyDown').and.callThrough(); //method attached to the click.
-    //     let item = fixture.debugElement.queryAll(By.css('fdp-action-list-item'))[0];
-    //     item.triggerEventHandler('keydown.enter', {});
-    //     fixture.detectChanges();
-    //     expect(component.onKeyDown).toHaveBeenCalled();
-    // }));
 });
 
 
@@ -211,7 +182,7 @@ describe('ActionListItemComponent Imperative', () => {
         fixture.detectChanges();
     });
 
-    async function wait(componentFixture: ComponentFixture<any>): void {
+    async function wait(componentFixture: ComponentFixture<any>): Promise<void> {
         componentFixture.detectChanges();
         await componentFixture.whenStable();
     }

@@ -1,6 +1,6 @@
 <!--  list item navigation with Arrow-->
 <ng-container *ngIf="navigationIndicator || navigated && !(noDataText!==null && noDataText!== undefined) ">
-    <li #listItem fd-list-item [attr.id]="id" [selected]="selected" tabIndex="0" [attr.aria-selected]="selected"
+    <li #listItem cdkDrag fd-list-item [attr.id]="id" [selected]="selected" tabIndex="0" [attr.aria-selected]="selected"
         (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)" class="fd-list__item--link">
         <ng-container *ngTemplateOutlet=" selectionTemplate">
         </ng-container>
@@ -13,7 +13,7 @@
 
 <!--  list item without navigation and used for simple list display-->
 <ng-container *ngIf="!navigationIndicator && !navigated && !(noDataText!==null && noDataText!== undefined)">
-    <li #listItem fd-list-item [attr.id]="id" [selected]="selected" (keydown)="onKeyDown($event)" tabIndex="0"
+    <li #listItem cdkDrag fd-list-item [attr.id]="id" [selected]="selected" (keydown)="onKeyDown($event)" tabIndex="0"
         (keyup)="onKeyUp($event)">
         <ng-container *ngTemplateOutlet="selectionTemplate"></ng-container>
         <ng-container *ngTemplateOutlet="hasByLine ? byLineTemplate: commonTemplate"></ng-container>

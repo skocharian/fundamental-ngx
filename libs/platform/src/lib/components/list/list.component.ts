@@ -17,6 +17,7 @@ import { ContentDensity, FormFieldControl } from '../../components/form/form-con
 import { BaseListItem, ListItemDef } from './base-list-item';
 import { ListConfig } from './list.config';
 import { FormField } from '../form/form-field';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 
 export type SelectionType = '' | 'multi' | 'single' | 'delete';
@@ -83,7 +84,18 @@ export class ListComponent extends BaseInput implements OnInit, AfterViewInit, A
     @Input()
     noSeperator: boolean;
 
+    _partialNavigation: boolean;
 
+    /** setter and getter for partialNaviigation for display list item */
+    get partialNavigation(): boolean {
+        return this._navigationIndicator;
+    }
+
+    @Input('partialNavigation')
+    set partialNavigation(value: boolean) {
+        this._partialNavigation = value;
+        if (this._partialNavigation) { this.navigationIndicator = true; }
+    }
     /** The type of the selection. Types include:
     *''| 'multi' | 'single'|'delete'.
     * Leave empty for default ().'
@@ -319,11 +331,11 @@ export class ListComponent extends BaseInput implements OnInit, AfterViewInit, A
 
         this.keyManager = new FocusKeyManager<BaseListItem>(this.ListItems).withWrap();
         this.ListItems.forEach((item) => {
-            // item.navigated = this._navigated;
-            console.log('item.navigationIndicator', item.navigationIndicator)
-            // if (item.navigationIndicator) {
-            //     item.navigationIndicator = this._navigationIndicator;
-            // }
+            if (!this.partialNavigation || this.partialNavigation === undefined) {
+                console.log('this.partialNavigation 1', this.partialNavigation);
+                item.navigated = this._navigated;
+                item.navigationIndicator = this._navigationIndicator;
+            }
             item.contentDensity = this.contentDensity;
             item.selectionMode = this.selectionMode;
             item.listType = this.listType;
@@ -345,10 +357,14 @@ export class ListComponent extends BaseInput implements OnInit, AfterViewInit, A
     ngAfterContentInit(): void {
         this._itemsSubscription = this.ListItems.changes.subscribe((items) => {
             items.forEach((item) => {
-                // item.navigated = this._navigated;
-                // if (!item.navigationIndicator) {
-                //     item.navigationIndicator = this._navigationIndicator;
-                // }
+                if (this.partialNavigation) {
+                    item.navigated = this._navigated;
+                    item.navigationIndicator = this._navigationIndicator;
+                } else {
+                    item.navigated = this._navigated;
+                    item.navigationIndicator = this._navigationIndicator;
+                }
+
                 item.contentDensity = this.contentDensity;
                 item.selectionMode = this.selectionMode;
                 item.listType = this.listType;
@@ -602,6 +618,11 @@ export class ListComponent extends BaseInput implements OnInit, AfterViewInit, A
         }
 
     }
+
+    drop(event: CdkDragDrop<BaseListItem[]>): void {
+        moveItemInArray(this.items, event.previousIndex, event.currentIndex);
+    }
+
 }
 
 @Component({

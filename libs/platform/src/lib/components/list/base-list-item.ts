@@ -129,6 +129,8 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
     @Input()
     navigationIndicator = false;
 
+    partialNavigation: boolean;
+
     /**By default selection mode is '' */
     selectionMode: SelectionType = '';
 
@@ -259,7 +261,11 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
         this.statusType = item.statusType;
         this.noDataText = item.noDataText;
         this.unRead = item.unRead;
-        this.navigationIndicator = item.navigationIndicator ? true : false;
+        this.partialNavigation = item.partialNavigation;
+        if (this.partialNavigation && this.partialNavigation !== undefined) {
+            console.log('inside parital-----', this.partialNavigation);
+            this.navigationIndicator = item.navigationIndicator ? true : false;
+        }
         this.selectionValue = item.selectionValue;
         if (item.secondaryIcons !== null && item.secondaryIcons !== undefined) {
             this.secondaryIcons = [...item.secondaryIcons];
