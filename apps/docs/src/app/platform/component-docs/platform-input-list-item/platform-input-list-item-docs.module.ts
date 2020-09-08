@@ -19,7 +19,7 @@ const routes: Routes = [
         component: PlatformInputListItemHeaderComponent,
         children: [
             { path: '', component: PlatformInputListItemDocsComponent },
-            { path: 'api', component: ApiComponent, data: { content: API_FILES.list } }
+            { path: 'api', component: ApiComponent, data: { content: API_FILES.inputlistitem } }
         ]
     }
 ];

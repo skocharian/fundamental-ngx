@@ -36,14 +36,14 @@ export class PlatformDisplayListItemWithNavigationExampleComponent {
     items: any[] = [
         {
             'title': 'Item1',
-            'secondary': 'Second text'
+            'secondary': 'First text first secondary text item  (Standard text item)'
         },
         {
             'title': 'Item2',
-            'secondary': 'Second text'
+            'secondary': 'Second text second secondary text item  (Standard text item)'
         },
         {
             'title': 'Item3',
-            'secondary': 'Second text'
+            'secondary': 'Third text third seconday text item  (Standard text item)'
         }];
 }

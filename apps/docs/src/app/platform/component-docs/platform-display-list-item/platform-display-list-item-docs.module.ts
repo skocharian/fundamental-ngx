@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RouterModule, Routes } from '@angular/router';
 import { PlatformListModule, DisplayListItemModule, PlatformButtonModule } from '@fundamental-ngx/platform';
-import { ToolbarModule } from '@fundamental-ngx/core';
+import { ToolbarModule, DragAndDropModule } from '@fundamental-ngx/core';
 import { ApiComponent } from '../../../documentation/core-helpers/api/api.component';
 import { SharedDocumentationPageModule } from '../../../documentation/shared-documentation-page.module';
 import { API_FILES } from '../../api-files';
@@ -20,13 +21,15 @@ const routes: Routes = [
         component: PlatformDisplayListItemHeaderComponent,
         children: [
             { path: '', component: PlatformDisplayListItemDocsComponent },
-            { path: 'api', component: ApiComponent, data: { content: API_FILES.list } }
+            { path: 'api', component: ApiComponent, data: { content: API_FILES.displaylistitem } }
         ]
     }
 ];
 
 @NgModule({
     imports: [
+        DragDropModule,
+        DragAndDropModule,
         RouterModule.forChild(routes),
         SharedDocumentationPageModule,
         ToolbarModule,

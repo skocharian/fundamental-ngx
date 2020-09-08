@@ -28,9 +28,10 @@ export const API_FILES = {
     ],
     switch: ['SwitchComponent'],
     stepInput: ['NumberStepInputComponent', 'StepInputComponent', 'StepInputConfig'],
+    actionlistitem: ['ActionListItemComponent', 'ListComponent'],
+    displaylistitem: ['DisplayListItemComponent', 'ListComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
+    inputlistitem: ['InputListItemComponent', 'ListComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
     list: ['ListComponent', 'StandardListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
-    standardlistitem: ['ListComponent', 'StandardListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
-    actionlistitem: ['ListComponent', 'ActionListItemComponent'],
-    displaylistitem: ['ListComponent', 'DisplayListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
-    inputlistitem: ['ListComponent', 'InputListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader'],
+    standardlistitem: ['ListComponent', 'StandardListItemComponent', 'ListFooter', 'ListGroupHeader', 'ListHeader']
+
 };

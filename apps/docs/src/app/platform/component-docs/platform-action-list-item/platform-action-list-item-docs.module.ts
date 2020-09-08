@@ -18,7 +18,7 @@ const routes: Routes = [
         component: PlatformActionListItemHeaderComponent,
         children: [
             { path: '', component: PlatformActionListItemDocsComponent },
-            { path: 'api', component: ApiComponent, data: { content: API_FILES.list } }
+            { path: 'api', component: ApiComponent, data: { content: API_FILES.actionlistitem } }
         ]
     }
 ];

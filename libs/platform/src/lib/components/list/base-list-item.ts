@@ -1,5 +1,5 @@
 import {
-    ElementRef, HostBinding, Input, ChangeDetectorRef, EventEmitter,
+    ElementRef, Input, ChangeDetectorRef, EventEmitter,
     Output, HostListener, ViewChild, AfterViewChecked, OnInit, Directive, TemplateRef
 } from '@angular/core';
 
@@ -11,7 +11,7 @@ import { ListConfig } from './list.config';
 
 let nextListItemId = 0;
 export type StatusType = 'negative' | 'critical' | 'positive' | 'informative';
-export type SelectionType = '' | 'multi' | 'single' | 'delete';
+export type SelectionType = 'none' | 'multi' | 'single' | 'delete';
 export type ListType = 'inactive' | 'active' | 'detail';
 
 /** Base interface for a list variant definition.
@@ -108,34 +108,33 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
     @Input()
     secondaryIcons?: SecondaryActionItem[];
 
-    /** event emitter for selected item*/
-    @Output()
-    itemSelected: EventEmitter<any> = new EventEmitter<any>();
+    /** define label for screen reader */
+    @Input()
+    ariaLabelledBy: string;
 
-    /** Event sent when delete, details or any other action buttons are clicked */
-    @Output()
-    buttonClicked: EventEmitter<any> = new EventEmitter();
+    /** define level of item for screen reader */
+    @Input()
+    ariaLevel: number;
+
+    /** define position of item for screen reader */
+    @Input()
+    ariaPosinet: number;
 
     /** Whether Navigation mode is included to list component
     * for all the items
     */
-    @Input()
     navigated = false;
 
     /** Whether Navigation mode is included to list component
      * only a subset of the list items are navigable
      * you should indicate those by displaying a navigation arrow
     */
-    @Input()
     navigationIndicator = false;
 
-    partialNavigation: boolean;
+    /**By default selection mode is 'none' */
+    selectionMode: SelectionType = 'none';
 
-    /**By default selection mode is '' */
-    selectionMode: SelectionType = '';
-
-
-    /**By default selection mode is '' */
+    /**By default selection mode is 'active' */
     listType: ListType;
 
     /** Used for placeing navigation Link */
@@ -155,13 +154,22 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
     /** Whether listitem is selected */
     selected: boolean;
 
-    _selectionValue: string;
+    public selectionValue: string;
 
     /**
      * @hidden
      * Used to define if contentDensity value is 'compact' or not.
      */
     isCompact = this._contentDensity === 'compact';
+
+
+    /** event emitter for selected item*/
+    @Output()
+    itemSelected: EventEmitter<any> = new EventEmitter<any>();
+
+    /** Event sent when delete, details or any other action buttons are clicked */
+    @Output()
+    buttonClicked: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('listItem')
     listItemRef: ElementRef;
@@ -181,17 +189,17 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
     @ViewChild(RadioButtonComponent)
     radioButtonComponent: RadioButtonComponent;
 
-
-    get selectionValue(): string {
-        return this._selectionValue;
+    @Input('selectionValue')
+    get selectionValueDetails(): string {
+        return this.selectionValue;
     }
 
-    set selectionValue(value: string) {
+    set selectionValueDetails(value: string) {
         this.selected = false;
-        this._selectionValue = value;
-        if (this._selectionValue !== undefined &&
-            this._selectionValue !== null) {
-            this.selected = this.value === this._selectionValue;
+        this.selectionValue = value;
+        if (this.selectionValue !== undefined &&
+            this.selectionValue !== null) {
+            this.selected = this.value === this.selectionValue;
         }
     }
 
@@ -201,30 +209,12 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
        */
     private _item: any;
 
-    /** @hidden */
-    /** a11y attributes */
-    /** role */
-    @HostBinding('attr.role')
-    role = 'listitem';
-
-    /** define label for screen reader */
-    @HostBinding('attr.ariaLabelledBy')
-    ariaLabelledBy: string;
-
-    /** define level of item for screen reader */
-    @HostBinding('attr.aria-level')
-    ariaLevel: number;
-
-    /** define position of item for screen reader */
-    @HostBinding('attr.aria-posinet')
-    ariaPosinet: number;
-
     /** setter and getter for _link */
+    @Input('link')
     get routerLink(): string {
         return this.link;
     }
 
-    @Input('link')
     set routerLink(value: string) {
         this.link = value;
     }
@@ -261,11 +251,8 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
         this.statusType = item.statusType;
         this.noDataText = item.noDataText;
         this.unRead = item.unRead;
-        this.partialNavigation = item.partialNavigation;
-        if (this.partialNavigation && this.partialNavigation !== undefined) {
-            console.log('inside parital-----', this.partialNavigation);
-            this.navigationIndicator = item.navigationIndicator ? true : false;
-        }
+        this.navigationIndicator = item.navigationIndicator;
+        this.navigated = item.navigated;
         this.selectionValue = item.selectionValue;
         if (item.secondaryIcons !== null && item.secondaryIcons !== undefined) {
             this.secondaryIcons = [...item.secondaryIcons];

@@ -1,6 +1,6 @@
 import {
     Component, ChangeDetectionStrategy, ElementRef,
-    ChangeDetectorRef, forwardRef, ViewEncapsulation
+    ChangeDetectorRef, forwardRef
 } from '@angular/core';
 import { BaseListItem } from '../base-list-item';
 import { ListConfig } from '../list.config';
@@ -13,8 +13,7 @@ import { ListConfig } from '../list.config';
     providers: [
         { provide: BaseListItem, useExisting: forwardRef(() => StandardListItemComponent) }
     ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    changeDetection: ChangeDetectionStrategy.OnPush
 
 })
 export class StandardListItemComponent extends BaseListItem {

@@ -1,7 +1,9 @@
 <!--  list item navigation with Arrow-->
 <ng-container *ngIf="navigationIndicator || navigated">
-    <li #listItem fd-list-item [attr.id]="id" [selected]="selected" tabIndex="0" [attr.aria-selected]="selected"
-        (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)" class="fd-list__item--link">
+    <li #listItem fd-list-item fd-dnd-item [attr.id]="id" [selected]="selected" tabIndex="0"
+        [attr.aria-selected]="selected" (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)"
+        class="fd-list__item--link" role="listItem" [attr.ariaLabelledBy]="ariaLabelledBy" [attr.aria-level]="ariaLevel"
+        [attr.aria-posinet]="ariaPosinet">
         <a #link fd-list-link [routerLink]="routerLink" [navigationIndicator]="navigationIndicator"
             [navigated]="navigated">
             <ng-container *ngTemplateOutlet="commonTemplate"></ng-container>
@@ -11,8 +13,9 @@
 
 <!--  list item without navigation and used for simple list display-->
 <ng-container *ngIf="!navigationIndicator && !navigated">
-    <li #listItem fd-list-item [attr.id]="id" tabindex="0" [selected]="selected" (keydown)="onKeyDown($event)"
-        (keyup)="onKeyUp($event)">
+    <li #listItem fd-list-item fd-dnd-list [attr.id]="id" tabindex="0" [selected]="selected"
+        (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)" [attr.ariaLabelledBy]="ariaLabelledBy"
+        [attr.aria-level]="ariaLevel" [attr.aria-posinet]="ariaPosinet">
         <ng-container *ngTemplateOutlet="commonTemplate"></ng-container>
     </li>
 </ng-container>
