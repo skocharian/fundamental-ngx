@@ -224,8 +224,9 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
      */
     @Input()
     set contentDensity(contentDensity: ContentDensity) {
+        console.log('contentDensity=====', contentDensity);
         this._contentDensity = contentDensity;
-        this.isCompact = contentDensity === 'compact';
+        this.isCompact = this._contentDensity === 'compact';
     }
 
     /**Get the list of items */
@@ -251,6 +252,8 @@ export class BaseListItem extends BaseComponent implements OnInit, AfterViewChec
         this.statusType = item.statusType;
         this.noDataText = item.noDataText;
         this.unRead = item.unRead;
+        this._contentDensity = item._contentDensity;
+        console.log('item._contentDensity inisde items', item._contentDensity);
         this.navigationIndicator = item.navigationIndicator;
         this.navigated = item.navigated;
         this.selectionValue = item.selectionValue;

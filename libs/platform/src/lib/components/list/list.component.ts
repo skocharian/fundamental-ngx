@@ -147,14 +147,14 @@ export class ListComponent extends CollectionBaseInput implements OnInit, AfterV
      * Whether Navigation mode is included to list component
      * for all the items
     */
-    navigated: boolean;
+    navigated = false;
 
     /**
      * Whether Navigation mode is included to list component
      * only a subset of the list items are navigable
      * you should indicate those by displaying a navigation arrow
     */
-    navigationIndicator: boolean;
+    navigationIndicator = false;
 
     /**
     * @hidden
@@ -175,11 +175,6 @@ export class ListComponent extends CollectionBaseInput implements OnInit, AfterV
     /**@hidden
      * Whether list component has multiselection */
     multiSelect = false;
-
-    /**
-        * @hidden
-        * Verfies partial navigation enabled by user */
-    partialNavigation = false;
 
     /** @hidden
     * To store */
@@ -235,7 +230,7 @@ export class ListComponent extends CollectionBaseInput implements OnInit, AfterV
     @Input()
     set contentDensity(contentDensity: ContentDensity) {
         this._contentDensity = contentDensity;
-        this.isCompact = contentDensity === 'compact';
+        this.isCompact = this._contentDensity === 'compact';
     }
 
     /** setter and getter for _navigated */
@@ -340,7 +335,8 @@ export class ListComponent extends CollectionBaseInput implements OnInit, AfterV
                 item.navigationIndicator = this.navigationIndicator;
                 item.navigated = this.navigated;
             }
-            item.contentDensity = this.contentDensity;
+            item._contentDensity = this._contentDensity;
+            item.isCompact = this.isCompact;
             item.selectionMode = this.selectionMode;
             item.listType = this.listType;
             item.hasByLine = this.hasByLine;
@@ -375,6 +371,9 @@ export class ListComponent extends CollectionBaseInput implements OnInit, AfterV
                     item.navigated = this.navigated;
                 }
                 item.contentDensity = this.contentDensity;
+
+                console.log('this.contentDensity...', this.contentDensity);
+                console.log('item.contentDensity...', item.contentDensity);
                 item.selectionMode = this.selectionMode;
                 item.listType = this.listType;
                 item.hasByLine = this.hasByLine;

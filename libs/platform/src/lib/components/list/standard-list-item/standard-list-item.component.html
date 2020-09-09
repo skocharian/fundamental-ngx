@@ -1,6 +1,6 @@
 <!--  list item navigation with Arrow-->
 <ng-container *ngIf="navigationIndicator || navigated && !(noDataText!==null && noDataText!== undefined) ">
-    <li #listItem fd-list-item cdkDrag [attr.id]="id" [selected]="selected" tabIndex="0" [attr.aria-selected]="selected"
+    <li #listItem fd-list-item [attr.id]="id" [selected]="selected" tabIndex="0" [attr.aria-selected]="selected"
         (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)" class="fd-list__item--link" role="listitem"
         [class.fd-list__item--inactive]="listType === 'inactive'" [attr.ariaLabelledBy]="ariaLabelledBy"
         [attr.aria-level]="ariaLevel" [attr.aria-posinet]="ariaPosinet">
@@ -15,7 +15,7 @@
 
 <!--  list item without navigation and used for simple list display-->
 <ng-container *ngIf="!navigationIndicator && !navigated && !(noDataText!==null && noDataText!== undefined)">
-    <li #listItem fd-list-item cdkDrag [attr.id]="id" [selected]="selected" (keydown)="onKeyDown($event)" tabIndex="0"
+    <li #listItem fd-list-item [attr.id]="id" [selected]="selected" (keydown)="onKeyDown($event)" tabIndex="0"
         role="listitem" (keyup)="onKeyUp($event)" [attr.ariaLabelledBy]="ariaLabelledBy" [attr.aria-level]="ariaLevel"
         [attr.aria-posinet]="ariaPosinet" [class.fd-list__item--inactive]="listType === 'inactive'">
         <ng-container *ngTemplateOutlet="selectionTemplate"></ng-container>
@@ -93,14 +93,14 @@
                     </button>
                 </span>
             </span>
-            <button fd-button *ngIf="listType === 'detail'" role="button" [compact]="isCompact" fdType="transparent"
-                glyph="edit" (click)="onActionButtonClick($event)" [attr.aria-label]="'detail'">
-            </button>
-            <button fd-button *ngIf="selectionMode === 'delete'" role="button" [compact]="isCompact"
-                [attr.aria-label]="'delete'" fdType="transparent" glyph="decline" (click)="onActionButtonClick($event)">
-            </button>
         </div>
     </div>
+    <button fd-button class="fd-list__icon" *ngIf="listType === 'detail'" role="button" [compact]="isCompact"
+        fdType="transparent" glyph="edit" (click)="onActionButtonClick($event)" [attr.aria-label]="'detail'">
+    </button>
+    <button fd-button class="list__icon" *ngIf="selectionMode === 'delete'" role="button" [compact]="isCompact"
+        [attr.aria-label]="'delete'" fdType="transparent" glyph="decline" (click)="onActionButtonClick($event)">
+    </button>
 </ng-template>
 
 <ng-template #selectionTemplate>
