@@ -5,8 +5,7 @@ import { ListConfig } from '../list.config';
 @Component({
     selector: 'fdp-display-list-item',
     templateUrl: './display-list-item.component.html',
-    styleUrls: ['./display-list-item.component.scss',
-        '../../../../../../core/src/lib/utils/drag-and-drop/drag-and-drop.scss'],
+    styleUrls: ['./display-list-item.component.scss'],
     providers: [
         { provide: BaseListItem, useExisting: forwardRef(() => DisplayListItemComponent) }
     ],
