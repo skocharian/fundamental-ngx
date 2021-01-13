@@ -2,11 +2,17 @@ import { Component } from '@angular/core';
 
 import * as shellbarBasicHTMLSrc from '!raw-loader!./examples/shellbar-basic-example.component.html';
 import * as shellbarBasicTSSrc from '!raw-loader!./examples/shellbar-basic-example.component.ts';
+
 import * as shellbarCollapsibleHTMLSrc from '!raw-loader!./examples/shellbar-collapsible-example.component.html';
 import * as shellbarCollapsibleTSSrc from '!raw-loader!./examples/shellbar-collapsible-example.component.ts';
+
 import * as sideNavShellbarHtml from '!raw-loader!./examples/shellbar-side-nav/shellbar-side-nav-example.component.html';
 import * as sideNavShellbarTs from '!raw-loader!./examples/shellbar-side-nav/shellbar-side-nav-example.component.ts';
 import * as sideNavShellbarScss from '!raw-loader!./examples/shellbar-side-nav/shellbar-side-nav-example.component.scss';
+
+import * as shellbarUserActionsMenuHTMLSrc from '!raw-loader!./examples/shellbar-user-actions-menu-example.component.html';
+import * as shellbarUserActionsMenuTsSrc from '!raw-loader!./examples/shellbar-user-actions-menu-example.component.ts';
+
 import { ExampleFile } from '../../../documentation/core-helpers/code-example/example-file';
 
 @Component({
@@ -61,6 +67,20 @@ export class ShellbarDocsComponent {
             fileName: 'shellbar-side-nav-example',
             component: 'ShellbarSideNavExampleComponent',
             scssFileCode: sideNavShellbarScss
+        }
+    ];
+
+    shellbarUserActionsMenuExample: ExampleFile[] = [
+        {
+            language: 'html',
+            code: shellbarUserActionsMenuHTMLSrc,
+            fileName: 'shellbar-user-actions-menu-example.component'
+        },
+        {
+            language: 'typescript',
+            component: 'ShellbarUserActionsMenuExample',
+            code: shellbarUserActionsMenuTsSrc,
+            fileName: 'shellbar-user-actions-menu-example.component'
         }
     ];
 }

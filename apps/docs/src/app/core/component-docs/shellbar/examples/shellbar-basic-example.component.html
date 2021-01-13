@@ -5,5 +5,14 @@
     <fd-shellbar-title>
         Corporate Portal
     </fd-shellbar-title>
-    <fd-shellbar-actions [user]="user" [userMenu]="userMenu" [closePopoverOnSelect]="true"></fd-shellbar-actions>
+    <fd-shellbar-actions>
+        <fd-user-actions-menu [user]="{ fullName: 'Compact Menu', colorAccent: 1 }" [showName]="false" [maxWidth]="200" [compact]="true">
+            <fd-user-actions-menu-item
+                *ngFor="let item of userMenu"
+                [title]="item.text"
+                [glyph]="item.glyph"
+                (click)="item.callback && item.callback()"
+            ></fd-user-actions-menu-item>
+        </fd-user-actions-menu>
+    </fd-shellbar-actions>
 </fd-shellbar>

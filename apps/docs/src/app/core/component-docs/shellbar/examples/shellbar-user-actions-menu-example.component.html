@@ -1,0 +1,19 @@
+<fd-shellbar>
+    <fd-shellbar-logo>
+        <a href="#" class="fd-shellbar__logo fd-shellbar__logo--image-replaced" aria-label="SAP"></a>
+    </fd-shellbar-logo>
+    <fd-shellbar-actions>
+        <fd-user-actions-menu [user]="user" [showName]="true" [compact]="true">
+            <fd-user-actions-menu-item
+                title="Settings"
+                glyph="action-settings"
+                (click)="settingsCallback()"
+            ></fd-user-actions-menu-item>
+            <fd-user-actions-menu-item
+                title="Sign Out"
+                glyph="log"
+                (click)="signOutCallback()"
+            ></fd-user-actions-menu-item>
+        </fd-user-actions-menu>
+    </fd-shellbar-actions>
+</fd-shellbar>

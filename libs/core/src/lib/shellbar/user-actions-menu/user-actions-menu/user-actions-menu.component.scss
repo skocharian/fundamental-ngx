@@ -1,0 +1,12 @@
+.fd-user-actions-menu {
+    &__body {
+        min-width: 10rem;
+        max-width: 20rem;
+        .fd-user-actions-menu__user-name {
+            padding: 1rem 1rem 0.5rem 1.25rem;
+        }
+        .fd-list {
+            outline: none;
+        }
+    }
+}

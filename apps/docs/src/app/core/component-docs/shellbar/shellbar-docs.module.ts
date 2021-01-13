@@ -8,8 +8,11 @@ import { ShellbarDocsComponent } from './shellbar-docs.component';
 import { ShellbarBasicExampleComponent } from './examples/shellbar-basic-example.component';
 import { ShellbarSideNavExampleComponent } from './examples/shellbar-side-nav/shellbar-side-nav-example.component';
 import { ShellbarCollapsibleExampleComponent } from './examples/shellbar-collapsible-example.component';
+import { ShellbarUserActionsMenuExample } from './examples/shellbar-user-actions-menu-example.component';
 import {
+    BarModule,
     ComboboxModule,
+    DialogModule,
     LayoutPanelModule,
     ProductSwitchModule,
     SegmentedButtonModule,
@@ -39,7 +42,10 @@ const routes: Routes = [
         ProductSwitchModule,
         TileModule,
         LayoutPanelModule,
-        SegmentedButtonModule
+        SegmentedButtonModule,
+        DialogModule,
+        BarModule,
+        RouterModule
     ],
     exports: [RouterModule],
     declarations: [
@@ -47,7 +53,8 @@ const routes: Routes = [
         ShellbarDocsHeaderComponent,
         ShellbarBasicExampleComponent,
         ShellbarSideNavExampleComponent,
-        ShellbarCollapsibleExampleComponent
+        ShellbarCollapsibleExampleComponent,
+        ShellbarUserActionsMenuExample
     ]
 })
 export class ShellbarDocsModule {}

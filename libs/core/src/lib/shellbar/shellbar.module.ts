@@ -20,6 +20,7 @@ import { ProductSwitchModule } from '../product-switch/product-switch.module';
 import { ShellbarSidenavDirective } from './shellbar-sidenav.directive';
 import { ShellbarActionsMobileComponent } from './shellbar-actions/shellbar-actions-mobile.component';
 import { AvatarModule } from '../../lib/avatar/avatar.module'
+import { UserActionsMenuModule } from './user-actions-menu/user-actions-menu.module';
 
 @NgModule({
     declarations: [
@@ -43,6 +44,7 @@ import { AvatarModule } from '../../lib/avatar/avatar.module'
         DragDropModule,
         ProductSwitchModule,
         IconModule,
+        UserActionsMenuModule,
         AvatarModule
     ],
     exports: [
@@ -55,6 +57,7 @@ import { AvatarModule } from '../../lib/avatar/avatar.module'
         ShellbarLogoComponent,
         ShellbarTitleComponent,
         ShellbarUserMenuComponent,
+        UserActionsMenuModule,
         ShellbarSidenavDirective
     ]
 })

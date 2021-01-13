@@ -15,7 +15,7 @@
         <fd-shellbar-subtitle>
             Subtitle
         </fd-shellbar-subtitle>
-        <fd-shellbar-actions [user]="user" [userMenu]="userMenu">
+        <fd-shellbar-actions>
             <fd-shellbar-action
                 *ngFor="let action of actions"
                 [glyph]="action.glyph"
@@ -39,6 +39,64 @@
                 [maxHeight]="'250px'"
             >
             </fd-combobox>
+
+            <fd-user-actions-menu [user]="user">
+                <fd-user-actions-menu-item
+                    *ngFor="let item of userMenu"
+                    [title]="item.text"
+                    [glyph]="item.glyph"
+                    (click)="item.callback && item.callback()"
+                ></fd-user-actions-menu-item>
+
+                <fd-user-actions-menu-item
+                    [title]="'Looonnngg title Looonnngg title Looonnngg title Looonnngg title Looonnngg title Looonnngg title Looonnngg title'"
+                    glyph="border"
+                ></fd-user-actions-menu-item>
+
+                <fd-user-actions-menu-item
+                    title="Router link"
+                    glyph="chain-link"
+                    [routerLink]="['/']"
+                ></fd-user-actions-menu-item>
+
+                <fd-user-actions-menu-item
+                    title="Example click"
+                    glyph="example"
+                    (click)="clickUserAction($event)"
+                ></fd-user-actions-menu-item>
+
+                <fd-user-actions-menu-item
+                    title="About"
+                    glyph="hint"
+                    [dialogContent]="aboutTemplate"
+                ></fd-user-actions-menu-item>
+
+                <fd-user-actions-menu-item
+                    title="Custom glyph image"
+                    glyphSrc="//unpkg.com/fundamental-styles/dist/images/sap-logo.png"
+                    (click)="clickUserAction($event)"
+                ></fd-user-actions-menu-item>
+            </fd-user-actions-menu>
         </fd-shellbar-actions>
     </fd-shellbar>
 </div>
+
+<!-- Example dialog for user actions menu -->
+<ng-template let-dialog let-dialogConfig="dialogConfig" #aboutTemplate>
+    <fd-dialog [dialogConfig]="dialogConfig" [dialogRef]="dialog">
+        <fd-dialog-header>
+            <h1 fd-title>About</h1>
+        </fd-dialog-header>
+
+        <fd-dialog-body>
+            About dialog for user actions menu
+        </fd-dialog-body>
+        <fd-dialog-footer>
+            <fd-button-bar
+                fdType="transparent"
+                label="OK"
+                (click)="dialog.close()">
+            </fd-button-bar>
+        </fd-dialog-footer>
+    </fd-dialog>
+</ng-template>

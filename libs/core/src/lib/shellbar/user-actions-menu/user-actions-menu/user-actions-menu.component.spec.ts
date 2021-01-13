@@ -1,0 +1,26 @@
+import { QueryList } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { UserActionsMenuComponent } from './user-actions-menu.component';
+
+fdescribe('UserActionsMenuComponent', () => {
+  let component: UserActionsMenuComponent;
+  let fixture: ComponentFixture<UserActionsMenuComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ UserActionsMenuComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(UserActionsMenuComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

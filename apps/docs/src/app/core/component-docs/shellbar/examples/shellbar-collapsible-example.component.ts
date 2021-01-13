@@ -48,13 +48,16 @@ export class ShellbarCollapsibleExampleComponent {
     ];
 
     user: ShellbarUser = {
-        initials: 'WW',
+        fullName: 'John Doe',
+        image: 'https://i.pravatar.cc/150?img=2',
         colorAccent: 1
     };
 
-    userMenu: ShellbarUserMenu[] = [
-        { text: 'Settings', callback: this.settingsCallback },
-        { text: 'Sign Out', callback: this.signOutCallback }
+    userMenu = [
+        { text: 'Settings', glyph: 'action-settings', callback: this.settingsCallback },
+        { text: 'Contact', glyph: 'email' },
+        
+        { text: 'Sign Out', glyph: 'log', callback: this.signOutCallback }
     ];
 
     actions = [
@@ -168,5 +171,9 @@ export class ShellbarCollapsibleExampleComponent {
 
     productSwitcherCallback(product): void {
         alert(product + 'Product Clicked');
+    }
+
+    clickUserAction($event: any): void {
+        console.log('Click on: ', $event);
     }
 }
