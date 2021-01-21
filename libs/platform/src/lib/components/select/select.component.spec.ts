@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 
 import { SelectPlatformComponent } from './select.component';
 import { ElementRef, ViewChild, Component } from '@angular/core';
@@ -30,7 +30,7 @@ describe('SelectPlatformComponent', () => {
     let component: SelectPlatformComponent;
     let fixture: ComponentFixture<SelectPlatformComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [SelectPlatformComponent]
         }).compileComponents();

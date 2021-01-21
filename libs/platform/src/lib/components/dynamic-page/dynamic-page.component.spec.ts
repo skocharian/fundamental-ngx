@@ -1,7 +1,7 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { TabsModule, ToolbarModule } from '@fundamental-ngx/core';
@@ -60,7 +60,7 @@ describe('DynamicPageComponent default values', () => {
     let dynamicPageTitleComponent: DynamicPageTitleComponent;
     let dynamicPageContentComponent: DynamicPageContentComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         const scrollableSpy = jasmine.createSpyObj('DynamicPageService', ['expandHeader', 'collapseHeader']);
         TestBed.configureTestingModule({
             imports: [CommonModule, PlatformDynamicPageModule, ToolbarModule, ScrollingModule],
@@ -208,7 +208,7 @@ describe('DynamicPageComponent tabbed values', () => {
     let fixture: ComponentFixture<TestTabbedComponent>;
     let dynamicPageComponent: DynamicPageComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [CommonModule, PlatformDynamicPageModule, TabsModule, ScrollingModule],
             declarations: [TestTabbedComponent],
@@ -259,7 +259,7 @@ describe('DynamicPageComponent with collapsible set to false', () => {
     let fixture: ComponentFixture<TestNonCollapsibleComponent>;
     let dynamicPage: DynamicPageComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [CommonModule, PlatformDynamicPageModule, TabsModule, ScrollingModule],
             declarations: [TestNonCollapsibleComponent],
