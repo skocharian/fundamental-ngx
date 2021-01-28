@@ -7,13 +7,12 @@
         </button>
          <fd-popover
             #menu
-            [options]="bodyOptions"
             [triggers]="triggers"
             [placement]="placement"
             [fillControlMode]="fillControlMode"
             [closeOnEscapeKey]="closeOnEscapeKey"
             [noArrow]="false"
-            [additionalBodyClass]="additionalBodyClass"
+            [additionalBodyClass]="bodyClass"
             [closeOnOutsideClick]="closeOnOutsideClick">
             <ul fd-list [noBorder]="true" [compact]="compact" class="fd-list--navigation">
                 <li fd-list-item *ngIf="showName && user?.fullName">

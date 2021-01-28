@@ -1,26 +1,14 @@
-.fd-list {
-    &:not(.fd-list--compact) {
-        .fd-user-actions-menu-item {
-            .fd-list__link {
-                .fd-list__icon[class*=sap-icon] {
-                    margin-left: 0rem;
-                    margin-right: 0rem;
-                }
-            }
-        }
-    }
-}
 .fd-user-actions-menu-item {
-    &__custom-icon {
+    &__custom-icon.fd-list__icon[class*=sap-icon] {
         position: relative;
 
         img {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: scale-down;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 75%;
+            height: auto;
         }
 
         &::before {

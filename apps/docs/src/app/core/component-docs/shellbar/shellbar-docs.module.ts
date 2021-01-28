@@ -10,7 +10,6 @@ import { ShellbarSideNavExampleComponent } from './examples/shellbar-side-nav/sh
 import { ShellbarCollapsibleExampleComponent } from './examples/shellbar-collapsible-example.component';
 import { ShellbarUserActionsMenuExample } from './examples/shellbar-user-actions-menu-example.component';
 import {
-    BarModule,
     ComboboxModule,
     DialogModule,
     LayoutPanelModule,
@@ -44,7 +43,6 @@ const routes: Routes = [
         LayoutPanelModule,
         SegmentedButtonModule,
         DialogModule,
-        BarModule,
         RouterModule
     ],
     exports: [RouterModule],

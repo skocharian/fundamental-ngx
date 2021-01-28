@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ShellbarUser, ShellbarUserMenu } from '@fundamental-ngx/core';
+import { ShellbarUser } from '@fundamental-ngx/core';
 
 @Component({
     selector: 'fd-shellbar-user-actions-menu-example',

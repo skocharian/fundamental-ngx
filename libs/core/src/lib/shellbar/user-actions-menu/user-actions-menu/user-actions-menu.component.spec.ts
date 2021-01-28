@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserActionsMenuComponent } from './user-actions-menu.component';
 
-fdescribe('UserActionsMenuComponent', () => {
+describe('UserActionsMenuComponent', () => {
   let component: UserActionsMenuComponent;
   let fixture: ComponentFixture<UserActionsMenuComponent>;
 

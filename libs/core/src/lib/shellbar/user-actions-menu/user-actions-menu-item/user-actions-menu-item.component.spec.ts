@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { DialogModule } from '../../../dialog/public_api';
 import { UserActionsMenuItemComponent } from './user-actions-menu-item.component';
 
 describe('UserActionsMenuItemComponent', () => {
@@ -8,7 +9,8 @@ describe('UserActionsMenuItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserActionsMenuItemComponent ]
+      declarations: [ UserActionsMenuItemComponent],
+      imports: [DialogModule]
     })
     .compileComponents();
   });

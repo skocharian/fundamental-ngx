@@ -28,7 +28,8 @@ export const Shellbar = () => ({
             <fd-shellbar-title>
                 {{shellbarTitle}}
             </fd-shellbar-title>
-            <fd-shellbar-actions [user]="{initials: 'WW', colorAccent: 11}" [closePopoverOnSelect]="true">
+            <fd-shellbar-actions>
+                <fd-user-actions-menu [user]="{initials: 'WW', colorAccent: 11}"></fd-user-actions-menu>
             </fd-shellbar-actions>
         </fd-shellbar>
   `,

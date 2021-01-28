@@ -7,9 +7,9 @@ import {
   ViewEncapsulation,
   EventEmitter,
   Host,
-  OnDestroy
+  OnDestroy,
+  Optional
 } from '@angular/core';
-import { take } from 'rxjs/operators';
 
 import { DialogContentType, DialogRef, DialogService } from '../../../dialog/public_api';
 import { UserActionsMenuComponent } from '../user-actions-menu/user-actions-menu.component';
@@ -19,25 +19,25 @@ import { UserActionsMenuComponent } from '../user-actions-menu/user-actions-menu
   templateUrl: './user-actions-menu-item.component.html',
   styleUrls: ['./user-actions-menu-item.component.scss'],
   host: {
-    '[class.fd-user-actions-menu-item]': 'true',
-    '[attr.tabindex]': 'tabIndex'
+    class: 'fd-user-actions-menu-item'
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserActionsMenuItemComponent implements OnDestroy {
+  /** View title for action item. Required property */
   @Input()
   title: string;
 
+  /** Sets icon for user action menu, glyph code from icons */
   @Input()
   glyph: string;
 
+  /** Sets icon src if you want use image. You will have predefined place with dimensions same as glyph `border` */
   @Input()
   glyphSrc: string;
 
-  @Input()
-  routerLink: string | any[];
-
+  /** Opens a dialog component with with provided content. */
   @Input()
   dialogContent: DialogContentType;
 
@@ -46,12 +46,10 @@ export class UserActionsMenuItemComponent implements OnDestroy {
   /** @hidden Active dialog */
   private _activeDialog: DialogRef;
 
+  /** @hidden */
   @HostListener('click')
   handleClick(): void {
     this.parent.menu?.close();
-    if (this.routerLink) {
-      return;
-    }
     if (this.dialogContent) {
       this.callDialogTemplateRef();
       return;
@@ -60,7 +58,7 @@ export class UserActionsMenuItemComponent implements OnDestroy {
 
   constructor(
     private readonly _dialogService: DialogService,
-    @Host() private parent: UserActionsMenuComponent
+    @Optional() @Host() private parent: UserActionsMenuComponent
   ) { }
 
   ngOnDestroy(): void {
@@ -70,15 +68,11 @@ export class UserActionsMenuItemComponent implements OnDestroy {
   /** @hidden */
   private callDialogTemplateRef(): void {
     if (this._activeDialog) {
-      this._dismissDialog();
+      return;
     }
     this.onOpenDialog.emit(this._activeDialog);
     this._activeDialog = this._dialogService.open(this.dialogContent, { responsivePadding: true });
-    this._activeDialog.afterClosed.pipe(
-      take(1)
-    ).subscribe(() => {
-      this._activeDialog = null;
-    });
+    this._activeDialog.afterClosed.subscribe(() => this._activeDialog = null);
   }
   
   /** @hidden */

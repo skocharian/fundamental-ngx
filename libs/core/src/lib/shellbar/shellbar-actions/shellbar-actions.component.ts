@@ -16,6 +16,7 @@ import { ShellbarUser } from '../model/shellbar-user';
 import { ShellbarUserMenuComponent } from '../user-menu/shellbar-user-menu.component';
 import { ComboboxComponent } from '../../combobox/combobox.component';
 import { ProductSwitchComponent } from '../../product-switch/product-switch/product-switch.component';
+import { UserActionsMenuComponent } from '../user-actions-menu/user-actions-menu/user-actions-menu.component';
 
 /**
  * The component that represents shellbar actions.
@@ -51,14 +52,17 @@ import { ProductSwitchComponent } from '../../product-switch/product-switch/prod
 export class ShellbarActionsComponent {
 
     /** The user data. */
+    /** @deprecated */
     @Input()
     user: ShellbarUser;
 
     /** The user menu data. */
+    /** @deprecated */
     @Input()
     userMenu: ShellbarMenuItem[];
 
     /** When set to true, popover list will be closed after selecting the option */
+    /** @deprecated */
     @Input()
     closePopoverOnSelect = false;
 
@@ -71,12 +75,8 @@ export class ShellbarActionsComponent {
     shellbarActions: QueryList<ShellbarActionComponent>;
 
     /** @hidden */
-    @ContentChild(ShellbarUserMenuComponent)
-    userComponent: ShellbarUserMenuComponent;
-
-    /** @hidden */
-    @ViewChild(ShellbarUserMenuComponent)
-    userComponentView: ShellbarUserMenuComponent;
+    @ContentChild(UserActionsMenuComponent)
+    userComponent: UserActionsMenuComponent;
 
     /** @hidden */
     @ContentChild(ComboboxComponent)
@@ -86,18 +86,7 @@ export class ShellbarActionsComponent {
     @ContentChild(ProductSwitchComponent, { static: false })
     productSwitchComponent: ProductSwitchComponent;
 
-    /** @hidden */
-    triggerItems(): void {
-        if (this.closePopoverOnSelect) {
-            if (this.userComponentView) {
-                this.userComponentView.menu.close();
-            }
-            if (this.userComponent) {
-                this.userComponent.menu.close();
-            }
-        }
-    }
-
+    /** @deprecated */
     public get userItem(): ShellbarUser {
         if (this.userComponent) {
             return this.userComponent.user;
