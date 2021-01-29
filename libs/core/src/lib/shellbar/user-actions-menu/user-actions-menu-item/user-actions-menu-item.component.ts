@@ -10,6 +10,7 @@ import {
   OnDestroy,
   Optional
 } from '@angular/core';
+import { finalize } from 'rxjs/operators';
 
 import { DialogContentType, DialogRef, DialogService } from '../../../dialog/public_api';
 import { UserActionsMenuComponent } from '../user-actions-menu/user-actions-menu.component';
@@ -70,9 +71,11 @@ export class UserActionsMenuItemComponent implements OnDestroy {
     if (this._activeDialog) {
       return;
     }
-    this.onOpenDialog.emit(this._activeDialog);
     this._activeDialog = this._dialogService.open(this.dialogContent, { responsivePadding: true });
-    this._activeDialog.afterClosed.subscribe(() => this._activeDialog = null);
+    this.onOpenDialog.emit(this._activeDialog);
+    this._activeDialog.afterClosed.pipe(
+      finalize(() => this._activeDialog = null)
+    ).subscribe();
   }
   
   /** @hidden */
