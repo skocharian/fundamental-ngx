@@ -6,6 +6,10 @@ export function currentPlatformName(): string {
     return browser.capabilities.platformName;
 }
 
+export function getBaseURL(): string {
+    return browser.options.baseUrl;
+}
+
 export function open(path: string = ''): void {
     browser.url(path);
 }
@@ -19,12 +23,7 @@ export function isBrowser(browserName: string): boolean {
 }
 
 export function browserIsIEorSafari(): boolean {
-    if (browserIsSafari()) {
-        return true;
-    } else if (browserIsIE()) {
-        return true;
-    }
-    return false;
+    return browserIsSafari() || browserIsIE() ;
 }
 
 export function browserIsFirefox(): boolean {
@@ -37,6 +36,10 @@ export function browserIsIE(): boolean {
 
 export function browserIsSafari(): boolean {
     return isBrowser('Safari');
+}
+
+export function browserIsSafariorFF(): boolean {
+    return browserIsSafari() || browserIsFirefox();
 }
 
 export function goBack(): void {
@@ -106,6 +109,7 @@ export function getTextArr(selector: string, sliceStart?: number, sliceEnd?: num
 }
 
 export function waitForElDisplayed(selector: string, index: number = 0, waitTime = defaultWaitTime()): boolean {
+    waitForPresent(selector, index);
     return $$(selector)[index].waitForDisplayed({ timeout: waitTime });
 }
 
@@ -172,34 +176,31 @@ export function clearValue(selector: string, index: number = 0, waitTime = defau
     $$(selector)[index].waitForDisplayed({ timeout: waitTime });
     $$(selector)[index].clearValue();
 }
-export function getElementSize(selector: string, index?: number):  WebdriverIO.SizeReturn;
+
+export function getElementSize(selector: string, index?: number): WebdriverIO.SizeReturn;
 export function getElementSize(selector: string, index: number, prop: 'width' | 'height'): number;
 export function getElementSize(selector: string, index: number = 0, prop?: 'width' | 'height'): number | WebdriverIO.SizeReturn {
-    return prop ? $$(selector)[index].getSize() : $$(selector)[index].getSize(prop);
+    return $$(selector)[index].getSize(prop || void 0);
 }
 
-export function executeScript(callback): string {
-    return browser.execute(callback());
-}
-
-export function executeScript2(selector): string {
-    const attrName = browser.capabilities.browserName === 'firefox' ? 'border-left-style' : 'border';
-    return browser.execute(function(selector, attrName) {
+export function executeScriptAfterTagFF(selector: string, index: number = 0): string {
+    const attrName = browserIsFirefox() ? 'border-left-style' : 'border';
+    return browser.execute(function(selector, attrName, index) {
         return window.getComputedStyle(
-            document.querySelector(selector), ':after')[attrName];
-    }, selector, attrName);
+            document.querySelectorAll(selector)[index], ':after')[attrName];
+    }, selector, attrName, index);
 }
 
-export function executeScriptBeforeTagAttr(selector, attrName): string {
-    return browser.execute(function(selector, attrName) {
-        return (window.getComputedStyle(document.querySelector(selector), ':before')[attrName]);
-    }, selector, attrName);
+export function executeScriptBeforeTagAttr(selector: string, attrName: string, index: number = 0): string {
+    return browser.execute(function(selector, attrName, index) {
+        return (window.getComputedStyle(document.querySelectorAll(selector)[index], ':before')[attrName]);
+    }, selector, attrName, index);
 }
 
-export function executeScriptAfterTagAttr(selector, attrName): string {
-    return browser.execute(function(selector, attrName) {
-        return (window.getComputedStyle(document.querySelector(selector), ':after')[attrName]);
-    }, selector, attrName);
+export function executeScriptAfterTagAttr(selector: string, attrName: string, index: number = 0): string {
+    return browser.execute(function(selector, attrName, index) {
+        return (window.getComputedStyle(document.querySelectorAll(selector)[index], ':after')[attrName]);
+    }, selector, attrName, index);
 }
 
 export function getElementArrayLength(selector: string): number {
@@ -218,10 +219,6 @@ export function clickAndHold(selector: string, index: number = 0, waitTime: numb
     $$(selector)[index].waitForDisplayed({ timeout: waitTime });
     $$(selector)[index].moveTo();
     return browser.buttonDown();
-}
-
-export function waitElementToBePresentInDOM(selector: string, index: number = 0, waitTime = defaultWaitTime()): boolean {
-    return $$(selector)[index].waitForExist({ timeout: waitTime });
 }
 
 export function scrollIntoView(selector: string, index: number = 0): void {
@@ -264,6 +261,32 @@ export function mouseButtonUp(button: 0 | 1 | 2 = 0): void {
     browser.buttonUp(button);
 }
 
-export function  clickNextElement(selector: string, index: number = 0): void {
+export function clickNextElement(selector: string, index: number = 0): void {
     $$(selector)[index].nextElement().click();
+}
+
+export function getElementLocation(selector: string, index?: number): WebdriverIO.LocationReturn;
+export function getElementLocation(selector: string, index: number, prop: 'x' | 'y'): number;
+export function getElementLocation(selector: string, index: number = 0, prop?: 'x' | 'y'): WebdriverIO.LocationReturn | number {
+    return $$(selector)[index].getLocation(prop || void 0);
+}
+
+export function getParentElementCSSProperty(selector: string, prop: string, index: number): string {
+    return $$(selector)[index].parentElement().getCSSProperty(prop).value;
+}
+
+export function clickAndDragElement(locationX: number, locationY: number, newLocationX: number, newLocationY: number): void {
+    browser.performActions([{
+        'type': 'pointer',
+        'id': 'pointer1',
+        'parameters': { 'pointerType': 'mouse' },
+        'actions': [
+            { 'type': 'pointerMove', 'duration': 200, 'x': locationX, 'y': locationY },
+            { 'type': 'pointerDown', 'button': 0 },
+            { 'type': 'pointerMove', 'duration': 600, 'x': locationX, 'y': locationY },
+            { 'type': 'pointerMove', 'duration': 1000, 'x': newLocationX, 'y': newLocationY },
+            { 'type': 'pointerUp', 'button': 0 },
+            { 'type': 'pause', 'duration': 500 }
+        ]
+    }]);
 }
