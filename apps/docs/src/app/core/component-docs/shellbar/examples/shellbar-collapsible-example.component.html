@@ -42,13 +42,6 @@
 
             <fd-user-actions-menu [user]="user">
                 <fd-user-actions-menu-item
-                    *ngFor="let item of userMenu"
-                    [title]="item.text"
-                    [glyph]="item.glyph"
-                    (click)="item.callback && item.callback()"
-                ></fd-user-actions-menu-item>
-
-                <fd-user-actions-menu-item
                     [title]="'Looonnngg title Looonnngg title Looonnngg title Looonnngg title Looonnngg title Looonnngg title Looonnngg title'"
                     glyph="border"
                 ></fd-user-actions-menu-item>
@@ -75,6 +68,12 @@
                     title="Custom glyph image"
                     glyphSrc="//unpkg.com/fundamental-styles/dist/images/sap-logo.png"
                     (click)="clickUserAction($event)"
+                ></fd-user-actions-menu-item>
+                <fd-user-actions-menu-item
+                    *ngFor="let item of userMenu"
+                    [title]="item.text"
+                    [glyph]="item.glyph"
+                    (click)="item.callback && item.callback()"
                 ></fd-user-actions-menu-item>
             </fd-user-actions-menu>
         </fd-shellbar-actions>

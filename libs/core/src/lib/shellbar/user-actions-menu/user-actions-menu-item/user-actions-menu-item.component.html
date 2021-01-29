@@ -8,7 +8,7 @@
         <ng-container *ngIf="!glyphSrc && glyph">
             <span fd-list-icon [glyph]="glyph"></span>
         </ng-container>
-        <span fd-list-title>
+        <span fd-list-title [title]="title">
             {{ title }}
         </span>
     </a>
