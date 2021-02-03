@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ShellbarUser, ShellbarUserMenu } from '@fundamental-ngx/core';
+import { ShellbarUser } from '@fundamental-ngx/core';
 
 @Component({
     selector: 'fd-shellbar-basic-example',
@@ -11,7 +11,7 @@ export class ShellbarBasicExampleComponent {
         colorAccent: 11
     };
 
-    userMenu: ShellbarUserMenu[] = [
+    userMenu = [
         { text: 'Settings', callback: this.settingsCallback },
         { text: 'Sign Out', callback: this.signOutCallback }
     ];
