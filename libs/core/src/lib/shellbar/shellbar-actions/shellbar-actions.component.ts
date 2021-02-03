@@ -13,18 +13,14 @@ import {
 import { ShellbarActionComponent } from '../shellbar-action/shellbar-action.component';
 import { ShellbarMenuItem } from '../model/shellbar-menu-item';
 import { ShellbarUser } from '../model/shellbar-user';
-import { ShellbarUserMenuComponent } from '../user-menu/shellbar-user-menu.component';
 import { ComboboxComponent } from '../../combobox/combobox.component';
 import { ProductSwitchComponent } from '../../product-switch/product-switch/product-switch.component';
-import { UserActionsMenuComponent } from '../user-actions-menu/user-actions-menu/user-actions-menu.component';
 
 /**
  * The component that represents shellbar actions.
  * It is a container wrapper for all product actions and links (required element).
  * ```html
- * <fd-shellbar-actions [user]="user"
- *                      [userMenu]="userMenu"
- *                      [productSwitcher]="productSwitcher">
+ * <fd-shellbar-actions [productSwitcher]="productSwitcher">
  *        <button fd-button [fdType]="'standard'">Custom Button</button>
  *
  *        <fd-shellbar-action *ngFor="let action of actions"
@@ -75,10 +71,6 @@ export class ShellbarActionsComponent {
     shellbarActions: QueryList<ShellbarActionComponent>;
 
     /** @hidden */
-    @ContentChild(UserActionsMenuComponent)
-    userComponent: UserActionsMenuComponent;
-
-    /** @hidden */
     @ContentChild(ComboboxComponent)
     comboboxComponent: ComboboxComponent;
 
@@ -86,12 +78,4 @@ export class ShellbarActionsComponent {
     @ContentChild(ProductSwitchComponent, { static: false })
     productSwitchComponent: ProductSwitchComponent;
 
-    /** @deprecated */
-    public get userItem(): ShellbarUser {
-        if (this.userComponent) {
-            return this.userComponent.user;
-        } else {
-            return this.user;
-        }
-    }
 }

@@ -1,5 +1,8 @@
 .fd-user-actions-menu-item {
-    &__custom-icon.fd-list__icon[class^=sap-icon] {
+    .fd-list__title {
+        margin-left: 0.5rem;
+    }
+    &__custom-icon.fd-list__icon[class*=sap-icon] {
         position: relative;
 
         img {

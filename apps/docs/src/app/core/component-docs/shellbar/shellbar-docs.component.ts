@@ -74,13 +74,13 @@ export class ShellbarDocsComponent {
         {
             language: 'html',
             code: shellbarUserActionsMenuHTMLSrc,
-            fileName: 'shellbar-user-actions-menu-example.component'
+            fileName: 'shellbar-user-actions-menu-example'
         },
         {
             language: 'typescript',
             component: 'ShellbarUserActionsMenuExample',
             code: shellbarUserActionsMenuTsSrc,
-            fileName: 'shellbar-user-actions-menu-example.component'
+            fileName: 'shellbar-user-actions-menu-example'
         }
     ];
 }

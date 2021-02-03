@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ContentChildren, EventEmitter, Input, Output, QueryList, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { PopoverComponent, Placement } from '../../../../lib/popover/public_api';
 import { BasePopoverClass } from '../../../popover/base/base-popover.class';
@@ -28,7 +28,7 @@ export class UserActionsMenuComponent extends BasePopoverClass {
   /** The placement of the popover. It can be one of: top, top-start, top-end, bottom,
    *  bottom-start, bottom-end, right, right-start, right-end, left, left-start, left-end. */
   @Input()
-  placement: Placement = 'bottom';
+  placement: Placement = 'bottom-end';
 
   /** Display menu in compact mode */
   @Input()
