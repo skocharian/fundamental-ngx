@@ -1,0 +1,23 @@
+@import '~fundamental-styles/dist/dynamic-page';
+
+.footer-spacer {
+    height: 3rem;
+}
+
+.content-sticker {
+    position: static;
+}
+
+.fd-dynamic-page__header--not-collapsible {
+    .fd-dynamic-page__title-area.is-hover,
+    .fd-dynamic-page__title-area:hover {
+        cursor: default;
+    }
+}
+
+// TODO: remove after migrating 0.15.0 styles
+.fd-dynamic-page {
+	.fd-dynamic-page__content {
+		overflow-y: auto;
+	}
+}
