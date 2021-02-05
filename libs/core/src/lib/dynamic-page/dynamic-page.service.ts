@@ -5,4 +5,8 @@ import { BehaviorSubject } from 'rxjs';
 export class DynamicPageService {
     collapsed = new BehaviorSubject<boolean>(false);
     pinned = new BehaviorSubject<boolean>(false);
+
+    toggleCollapsed(): void {
+        this.collapsed.next(!this.collapsed.value);
+    }
 }

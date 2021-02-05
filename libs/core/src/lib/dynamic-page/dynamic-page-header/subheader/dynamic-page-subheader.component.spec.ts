@@ -3,21 +3,22 @@ import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { DynamicPageService } from '../../dynamic-page.service';
 import { By } from '@angular/platform-browser';
-import { PlatformDynamicPageModule } from '../../dynamic-page.module';
-import { DynamicPageHeaderComponent } from './dynamic-page-header.component';
+import { DynamicPageModule } from '../../dynamic-page.module';
+import { DynamicPageSubheaderComponent } from './dynamic-page-subheader.component';
 
 @Component({
-    template: `<fd-dynamic-page-header
-        [collapsible]="collapsible"
-        [pinnable]="pinnable"
-        [collapsed]="collapsed"
-        [expandLabel]="expandLabel"
-        [collapseLabel]="collapseLabel"
-        [pinAriaLabel]="pinAriaLabel"
-        [unpinAriaLabel]="unpinAriaLabel"
-        [size]="size"
-        [background]="background"
-    ></fd-dynamic-page-header>`
+    template: `
+        <fd-dynamic-page-subheader
+                [collapsible]="collapsible"
+                [pinnable]="pinnable"
+                [collapsed]="collapsed"
+                [expandLabel]="expandLabel"
+                [collapseLabel]="collapseLabel"
+                [pinAriaLabel]="pinAriaLabel"
+                [unpinAriaLabel]="unpinAriaLabel"
+                [size]="size"
+                [background]="background"
+        ></fd-dynamic-page-subheader>`
 })
 class TestComponent {
     collapsible = true;
@@ -30,17 +31,17 @@ class TestComponent {
     size = 'medium';
     background = '';
 
-    @ViewChild(DynamicPageHeaderComponent) dynamicPageTitleComponent: DynamicPageHeaderComponent;
+    @ViewChild(DynamicPageSubheaderComponent) dynamicPageTitleComponent: DynamicPageSubheaderComponent;
 }
 
 describe('DynamicPageHeaderComponent', () => {
     let fixture: ComponentFixture<TestComponent>;
-    let pageHeaderComponent: DynamicPageHeaderComponent;
+    let pageHeaderComponent: DynamicPageSubheaderComponent;
     let component: TestComponent;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [CommonModule, PlatformDynamicPageModule],
+            imports: [CommonModule, DynamicPageModule],
             declarations: [TestComponent],
             providers: [DynamicPageService]
         }).compileComponents();

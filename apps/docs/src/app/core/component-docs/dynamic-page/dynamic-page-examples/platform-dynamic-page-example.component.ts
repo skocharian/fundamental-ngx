@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
-import { DynamicPageCollapseChangeEvent } from '@fundamental-ngx/platform';
 
 @Component({
     selector: 'fd-dynamic-page-example',
@@ -15,7 +14,7 @@ export class PlatformDynamicPageExampleComponent {
 
     pageTitle = 'Balenciaga Tripple S Trainers';
 
-    onCollapseChange(event: DynamicPageCollapseChangeEvent): void {
+    onCollapseChange(): void {
         console.log('collapse changed');
     }
 

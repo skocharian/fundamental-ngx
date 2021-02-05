@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { PlatformConfig } from '../../platform.config';
 
 /**
  * Default options for platform dynamic-page
@@ -26,18 +25,4 @@ export class DynamicPageConfig {
      * aria label for pin button when the Panel should be unpinned
      */
     unpinLabel = 'Unpin Header';
-
-    /**
-     * Create Provider factory function
-     */
-    static createProviderFactory(
-        obj: Partial<DynamicPageConfig>
-    ): (platformConfig: PlatformConfig) => DynamicPageConfig {
-        const useFactory = (platformConfig: PlatformConfig): DynamicPageConfig => {
-            return Object.assign(new DynamicPageConfig(platformConfig), obj);
-        };
-        return useFactory;
-    }
-
-    constructor(platformConfig: PlatformConfig) {}
 }

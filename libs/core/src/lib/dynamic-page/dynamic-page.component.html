@@ -4,13 +4,12 @@
             <div (click)="toggleCollapse()" (keydown.enter)="toggleCollapse()">
                 <ng-content select="fd-dynamic-page-title"></ng-content>
             </div>
-            <ng-content select="fd-dynamic-page-header"></ng-content>
+            <ng-content select="fd-dynamic-page-subheader"></ng-content>
         </div>
     </header>
 
-    <ng-container *ngIf="!isTabbed">
-        <ng-content select="fd-dynamic-page-content"></ng-content>
-    </ng-container>
+    <ng-content select="fd-tab-list"></ng-content>
+    <ng-content select="fd-dynamic-page-content"></ng-content>
     <footer>
         <ng-content select="fd-dynamic-page-footer"></ng-content>
     </footer>

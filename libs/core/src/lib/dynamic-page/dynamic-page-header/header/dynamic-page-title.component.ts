@@ -30,6 +30,9 @@ export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
     @Input()
     subtitle: string;
 
+    @Input()
+    keyInfo: string;
+
     /**
      * sets background for content to `list`, `transparent`, or `solid` background color.
      * Default is `solid`.
@@ -108,7 +111,7 @@ export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
         this._focusMonitor.monitor(this._elementRef).subscribe((origin) =>
             this._ngZone.run(() => {
                 if (origin === 'keyboard') {
-                    this._dynamicPageService.expandHeader();
+                    this._dynamicPageService.collapsed.next(false);
                 }
             })
         );
@@ -140,20 +143,15 @@ export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
      * sets the style classes for background property
      * @param background
      */
-    private _setBackgroundStyles(background: DynamicPageBackgroundType): any {
-        switch (background) {
-            case 'transparent':
-                this._addClassNameToHostElement(CLASS_NAME.dynamicPageTitleAreaTransparentBg);
-                break;
-            case 'list':
-            case 'solid':
-            default:
-                removeClassNameFromElement(
-                    this._renderer,
-                    this._elementRef.nativeElement,
-                    CLASS_NAME.dynamicPageTitleAreaTransparentBg
-                );
-                break;
+    private _setBackgroundStyles(background: DynamicPageBackgroundType): void {
+        if (background === 'transparent') {
+            this._addClassNameToHostElement(CLASS_NAME.dynamicPageTitleAreaTransparentBg);
+        } else {
+            removeClassNameFromElement(
+                this._renderer,
+                this._elementRef.nativeElement,
+                CLASS_NAME.dynamicPageTitleAreaTransparentBg
+            );
         }
     }
 
@@ -162,24 +160,23 @@ export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
      * sets the padding classes
      * @param sizeType
      */
-    private _setSize(sizeType: DynamicPageResponsiveSize): any {
+    private _setSize(sizeType: DynamicPageResponsiveSize): void {
+        this._addClassNameToHostElement(this._getSizeClass(sizeType));
+
+        // if (this.titleRef) {
+        //     this._addClassNameToCustomElement(this.titleRef.nativeElement, CLASS_NAME.dynamicPageTitleMedium);
+        // }
+    }
+
+    /** @hidden */
+    private _getSizeClass(sizeType: DynamicPageResponsiveSize): string {
         switch (sizeType) {
-            case 'small':
-                this._addClassNameToHostElement(CLASS_NAME.dynamicPageTitleAreaSmall);
-                break;
-            case 'medium':
-                this._addClassNameToHostElement(CLASS_NAME.dynamicPageTitleAreaMedium);
-                if (this.titleRef) {
-                    this._addClassNameToCustomElement(this.titleRef.nativeElement, CLASS_NAME.dynamicPageTitleMedium);
-                }
-                break;
-            case 'large':
-                this._addClassNameToHostElement(CLASS_NAME.dynamicPageTitleAreaLarge);
-                break;
+            case 'small': return CLASS_NAME.dynamicPageTitleAreaSmall;
+            case 'medium': return CLASS_NAME.dynamicPageTitleMedium;
+            case 'large': return CLASS_NAME.dynamicPageTitleAreaLarge;
             case 'extra-large':
             default:
-                this._addClassNameToHostElement(CLASS_NAME.dynamicPageTitleAreaExtraLarge);
-                break;
+                return CLASS_NAME.dynamicPageTitleAreaExtraLarge;
         }
     }
 

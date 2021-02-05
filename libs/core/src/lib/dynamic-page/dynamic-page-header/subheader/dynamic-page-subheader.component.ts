@@ -14,21 +14,20 @@ import {
     HostBinding,
     ChangeDetectorRef
 } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 import { DynamicPageBackgroundType, CLASS_NAME, DynamicPageResponsiveSize } from '../../constants';
 import { DynamicPageConfig } from '../../dynamic-page.config';
 import { DynamicPageService } from '../../dynamic-page.service';
 import { addClassNameToElement, removeClassNameFromElement } from '../../utils';
 
-let dynamicPageHeaderId = 0;
+let dynamicPageSubHeaderId = 0;
 @Component({
-    selector: 'fd-dynamic-page-header',
-    templateUrl: './dynamic-page-header.component.html',
+    selector: 'fd-dynamic-page-subheader',
+    templateUrl: './dynamic-page-subheader.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
-export class DynamicPageHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnDestroy {
     /**
      * whether the header can be collapsed. True by default. If set to false, both pin/collapse buttons disappear
      * and the header stays visible
@@ -77,7 +76,7 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit, OnDest
      */
     @Input()
     @HostBinding('attr.id')
-    id = `fd-dynamic-page-header-id-${dynamicPageHeaderId++}`;
+    id = `fd-dynamic-page-header-id-${dynamicPageSubHeaderId++}`;
 
     /**
      * aria label for header
@@ -174,7 +173,7 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit, OnDest
         protected _dynamicPageConfig: DynamicPageConfig,
         private _dynamicPageService: DynamicPageService
     ) {
-        this._dynamicPageService.collapsed.subscribe(collapsed => this.handleCollapsedChange(collapsed));
+        this._dynamicPageService.collapsed.subscribe(collapsed => this._handleCollapsedChange(collapsed));
     }
 
     /** @hidden */
@@ -204,9 +203,7 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit, OnDest
      */
     toggleCollapse(): void {
         this._pinned = false;
-
-        this.collapsed = !this._dynamicPageService.getIsCollapsed();
-        this._expandCollapseActions();
+        this._handleCollapsedChange(!this._collapsed)
     }
 
     /**
@@ -220,14 +217,9 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit, OnDest
      * @hidden
      * click action on pin button
      */
-    _onPinned(): void {
+    togglePinned(): void {
         this._pinned = !this._pinned;
-        if (this._pinned) {
-            this._collapsible = false;
-        } else {
-            this._collapsible = this.collapsible; // reset
-        }
-        this._calculatePinUnpinAriaLabel();
+        this._dynamicPageService.pinned.next(this._pinned);
     }
 
     private _handleCollapsedChange(collapsed: boolean): void {
@@ -235,29 +227,16 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit, OnDest
             return;
         }
 
+        this._collapsed = collapsed;
 
-    }
+        // if (this._isCollapsibleCollapsed()) {
+        //     this._setStyleToHostElement('z-index', 1);
+        // } else {
+        //     this._removeStyleFromHostElement('z-index');
+        // }
 
-    /**
-     * handles actions like style changes and emit methods on expand/collapse
-     */
-    private _expandCollapseActions(): void {
-        if (this._isCollapsibleCollapsed()) {
-            this._setStyleToHostElement('z-index', 1);
-        } else {
-            this._removeStyleFromHostElement('z-index');
-            // reset the styles TODO not working correctly
-            if (this._background) {
-                this._setBackgroundStyles(this._background);
-            }
-            if (this.size) {
-                this._setSize(this.size);
-            }
-        }
-        const event = new DynamicPageCollapseChangeEvent(this, this.collapsed);
-        this.collapseChange.emit(event);
+        this._dynamicPageService.collapsed.next(collapsed);
         this._cd.detectChanges();
-        this._dynamicPageService?.setCollapseValue(this._dynamicPageService.getIsCollapsed());
     }
 
     /**
@@ -265,13 +244,6 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit, OnDest
      */
     private _isCollapsibleCollapsed(): boolean {
         return this.collapsible && this.collapsed && this._collapsible;
-    }
-
-    /**
-     * return whether the pin button is pinned
-     */
-    private _isPinned(): boolean {
-        return !this._collapsible && this._pinned;
     }
 
     /**

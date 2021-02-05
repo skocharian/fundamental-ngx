@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BreadcrumbModule, ToolbarModule, ButtonModule } from '@fundamental-ngx/core';
 import { CLASS_NAME } from '../../constants';
-import { PlatformDynamicPageModule } from '../../dynamic-page.module';
+import { DynamicPageModule } from '../../dynamic-page.module';
 import { DynamicPageService } from '../../dynamic-page.service';
 import { DynamicPageGlobalActionsComponent } from '../actions/global-actions/dynamic-page-global-actions.component';
 import { DynamicPageLayoutActionsComponent } from '../actions/layout-actions/dynamic-page-layout-actions.component';
@@ -44,7 +44,7 @@ describe('DynamicPageTitleComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [CommonModule, PlatformDynamicPageModule, BreadcrumbModule, ToolbarModule, ButtonModule],
+            imports: [CommonModule, DynamicPageModule, BreadcrumbModule, ToolbarModule, ButtonModule],
             declarations: [TestComponent],
             providers: [DynamicPageService]
         }).compileComponents();

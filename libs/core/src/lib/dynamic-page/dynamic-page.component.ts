@@ -5,7 +5,6 @@ import {
     ChangeDetectorRef,
     Component,
     ContentChild,
-    ContentChildren,
     ElementRef,
     HostBinding,
     Input,
@@ -18,15 +17,16 @@ import {
 } from '@angular/core';
 import { TabPanelComponent } from '@fundamental-ngx/core';
 import { fromEvent, Subscription } from 'rxjs';
-import { debounceTime, startWith, throttleTime } from 'rxjs/operators';
+import { debounceTime, throttleTime } from 'rxjs/operators';
 import { CLASS_NAME, DynamicPageBackgroundType, DynamicPageResponsiveSize } from './constants';
 import {
     DynamicPageContentComponent,
 } from './dynamic-page-content/dynamic-page-content.component';
-import { DynamicPageHeaderComponent } from './dynamic-page-header/subheader/dynamic-page-header.component';
+import { DynamicPageSubheaderComponent } from './dynamic-page-header/subheader/dynamic-page-subheader.component';
 import { DynamicPageTitleComponent } from './dynamic-page-header/header/dynamic-page-title.component';
 import { DynamicPageService } from './dynamic-page.service';
 import { addClassNameToElement } from './utils';
+import { TabListComponent } from '../tabs/tab-list.component';
 
 @Component({
     selector: 'fd-dynamic-page',
@@ -67,8 +67,8 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
     offset = 0;
 
     /** reference to header component  */
-    @ContentChild(DynamicPageHeaderComponent)
-    headerComponent: DynamicPageHeaderComponent;
+    @ContentChild(DynamicPageSubheaderComponent)
+    headerComponent: DynamicPageSubheaderComponent;
 
     /** reference to title component  */
     @ContentChild(DynamicPageTitleComponent)
@@ -78,9 +78,8 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
     @ContentChild(DynamicPageContentComponent)
     contentComponent: DynamicPageContentComponent;
 
-    /** reference to content component to filter tabs */
-    @ContentChildren(DynamicPageContentComponent, { descendants: true })
-    tabbedContent: QueryList<DynamicPageContentComponent>;
+    @ContentChild(TabListComponent)
+    tabComponent: TabListComponent
 
     @ViewChildren(TabPanelComponent)
     dynamicPageTabs: QueryList<TabPanelComponent>;
@@ -98,17 +97,6 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
      */
     @ViewChild('contentContainer')
     contentContainer: ElementRef<HTMLElement>;
-
-    /**
-     * tracks whether the header was toggled or not
-     */
-    isHeaderCollapsed = false;
-
-    /**
-     * @hidden
-     * whether tabbed content is present in this page
-     */
-    isTabbed = false;
 
     /**
      * @hidden
@@ -140,7 +128,7 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
         if (this._collapseValSubscription) {
             this._collapseValSubscription.unsubscribe();
         }
-        this._collapseValSubscription = this._dynamicPageService.$collapseValue.subscribe((val) => {
+        this._collapseValSubscription = this._dynamicPageService.collapsed.subscribe((val) => {
             this.setContainerPositions();
         });
     }
@@ -167,9 +155,9 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
         this.setContainerPositions();
 
         this._subscriptions.add(
-            this.tabbedContent.changes.subscribe(() => {
-                this._setTabStyles();
-            })
+            // this.tabbedContent.changes.subscribe(() => {
+            //     this._setTabStyles();
+            // })
         );
         if (this.headerComponent?.collapsible) {
             this._listenOnScroll();
@@ -204,7 +192,7 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
      */
     toggleCollapse(): void {
         if (this.headerCollapsible) {
-            this._dynamicPageService.toggleHeader();
+            this._dynamicPageService.toggleCollapsed();
         }
     }
 
@@ -242,11 +230,8 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
                 fromEvent(contentComponentElement, 'scroll')
                     .pipe(debounceTime(20), throttleTime(20))
                     .subscribe(() => {
-                        if (contentComponentElement.scrollTop > 0) {
-                            this._dynamicPageService.collapseHeader();
-                        } else {
-                            this._dynamicPageService.expandHeader();
-                        }
+                        const collapse = !this._dynamicPageService.pinned.value && contentComponentElement.scrollTop > 0;
+                        this._dynamicPageService.collapsed.next(collapse);
                     })
             );
         }
@@ -271,25 +256,17 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
         if (!this.contentContainer) {
             return;
         }
-        const tabList: HTMLElement = this.contentContainer.nativeElement.querySelector('.fd-tabs');
-        if (!tabList) {
+        if (!this.tabComponent) {
             return;
         }
+        const element = this.tabComponent.contentContainer.nativeElement;
+        const topOffset =  window.pageYOffset + element.getBoundingClientRect().top
+         this._renderer.setStyle(
+             element,
+             'height',
+             'calc(100vh - ' + (topOffset + this.offset) + 'px)'
+         );
 
-        const tabContent = this.tabContents?.toArray();
-        if (tabContent) {
-            tabContent.forEach((contentItem) => {
-                const element: HTMLElement = contentItem
-                    .getElementRef()
-                    .nativeElement.querySelector('.fd-dynamic-page__content');
-                if (element) {
-                    if (this._distanceFromTop === 0) {
-                        this._distanceFromTop = window.pageYOffset + element.getBoundingClientRect().top;
-                    }
-                    element.style.height = this._getCalculatedHeight();
-                }
-            });
-        }
     }
 
     /**

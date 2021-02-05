@@ -80,6 +80,7 @@ import { QuickViewModule } from './quick-view/quick-view.module';
 import { FeedInputModule } from './feed-input/feed-input.module';
 import { ObjectNumberModule } from './object-number/object-number.module';
 import { TitleModule } from './title/title.module';
+import { DynamicPageModule } from './dynamic-page/dynamic-page.module';
 
 @NgModule({
     imports: [CommonModule, FormsModule],
@@ -102,6 +103,7 @@ import { TitleModule } from './title/title.module';
         DatePickerModule,
         DatetimePickerModule,
         DragAndDropModule,
+        DynamicPageModule,
         DynamicSideContentModule,
         FeedListItemModule,
         FeedInputModule,

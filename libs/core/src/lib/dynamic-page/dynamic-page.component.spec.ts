@@ -12,44 +12,45 @@ import {
 } from '@fundamental-ngx/platform';
 
 import { DynamicPageContentComponent } from './dynamic-page-content/dynamic-page-content.component';
-import { DynamicPageHeaderComponent } from './dynamic-page-header/subheader/dynamic-page-header.component';
+import { DynamicPageSubheaderComponent } from './dynamic-page-header/subheader/dynamic-page-subheader.component';
 import { DynamicPageTitleComponent } from './dynamic-page-header/header/dynamic-page-title.component';
 
 @Component({
-    template: `<fd-dynamic-page [size]="size" [background]="background">
-        <fd-dynamic-page-title>
-            <fd-dynamic-page-global-actions>
-                <fd-toolbar fdType="transparent" [clearBorder]="true">
-                    <button
-                        fd-toolbar-item
-                        fd-button
-                        [compact]="true"
-                        fdType="positive"
-                        (click)="$event.stopPropagation()"
-                    >
-                        Accept
-                    </button>
-                </fd-toolbar>
-            </fd-dynamic-page-global-actions>
-            <fd-dynamic-page-layout-actions>
-                <!-- layout actions -->
-                <fd-toolbar fdType="transparent" [clearBorder]="true">
-                    <button fd-button fdType="transparent" aria-label="Resize" (click)="closePage($event)">
-                        <i class="sap-icon--resize"></i>
-                    </button>
-                </fd-toolbar>
-            </fd-dynamic-page-layout-actions>
-        </fd-dynamic-page-title>
-        <fd-dynamic-page-header></fd-dynamic-page-header>
-        <fd-dynamic-page-content>DynamicPage Content Text</fd-dynamic-page-content>
-    </fd-dynamic-page>`
+    template: `
+        <fd-dynamic-page [size]="size" [background]="background">
+            <fd-dynamic-page-title>
+                <fd-dynamic-page-global-actions>
+                    <fd-toolbar fdType="transparent" [clearBorder]="true">
+                        <button
+                                fd-toolbar-item
+                                fd-button
+                                [compact]="true"
+                                fdType="positive"
+                                (click)="$event.stopPropagation()"
+                        >
+                            Accept
+                        </button>
+                    </fd-toolbar>
+                </fd-dynamic-page-global-actions>
+                <fd-dynamic-page-layout-actions>
+                    <!-- layout actions -->
+                    <fd-toolbar fdType="transparent" [clearBorder]="true">
+                        <button fd-button fdType="transparent" aria-label="Resize" (click)="closePage($event)">
+                            <i class="sap-icon--resize"></i>
+                        </button>
+                    </fd-toolbar>
+                </fd-dynamic-page-layout-actions>
+            </fd-dynamic-page-title>
+            <fd-dynamic-page-subheader></fd-dynamic-page-subheader>
+            <fd-dynamic-page-content>DynamicPage Content Text</fd-dynamic-page-content>
+        </fd-dynamic-page>`
 })
 class TestComponent {
     size = 'medium';
     background = '';
     @ViewChild(DynamicPageComponent) dynamicPage: DynamicPageComponent;
     @ViewChild(DynamicPageTitleComponent) dynamicPageTitleComponent: DynamicPageTitleComponent;
-    @ViewChild(DynamicPageHeaderComponent) dynamicPageHeaderComponent: DynamicPageHeaderComponent;
+    @ViewChild(DynamicPageSubheaderComponent) dynamicPageHeaderComponent: DynamicPageSubheaderComponent;
     @ViewChild(DynamicPageContentComponent) dynamicPageContentComponent: DynamicPageContentComponent;
 }
 describe('DynamicPageComponent default values', () => {
@@ -188,16 +189,19 @@ describe('DynamicPageComponent default values', () => {
 });
 
 @Component({
-    template: `<fd-dynamic-page [size]="size" [background]="background">
-        <fd-dynamic-page-title></fd-dynamic-page-title>
-        <fd-dynamic-page-header></fd-dynamic-page-header>
-        <fd-dynamic-page-content id="tab1" [tabLabel]="tabLabel1"
-            >DynamicPage Content Tabbed 1 Text</fd-dynamic-page-content
-        >
-        <fd-dynamic-page-content id="tab2" [tabLabel]="tabLabel2"
-            >DynamicPage Content Tabbed 2 Text</fd-dynamic-page-content
-        >
-    </fd-dynamic-page>`
+    template: `
+        <fd-dynamic-page [size]="size" [background]="background">
+            <fd-dynamic-page-title></fd-dynamic-page-title>
+            <fd-dynamic-page-subheader></fd-dynamic-page-subheader>
+            <fd-dynamic-page-content id="tab1" [tabLabel]="tabLabel1"
+            >DynamicPage Content Tabbed 1 Text
+            </fd-dynamic-page-content
+            >
+            <fd-dynamic-page-content id="tab2" [tabLabel]="tabLabel2"
+            >DynamicPage Content Tabbed 2 Text
+            </fd-dynamic-page-content
+            >
+        </fd-dynamic-page>`
 })
 class TestTabbedComponent {
     size = 'medium';
@@ -251,11 +255,12 @@ describe('DynamicPageComponent tabbed values', () => {
 });
 
 @Component({
-    template: `<fd-dynamic-page [size]="size" [background]="background">
-        <fd-dynamic-page-title></fd-dynamic-page-title>
-        <fd-dynamic-page-header [collapsible]="false" [pinnable]="false"></fd-dynamic-page-header>
-        <fd-dynamic-page-content>DynamicPage Content</fd-dynamic-page-content>
-    </fd-dynamic-page>`
+    template: `
+        <fd-dynamic-page [size]="size" [background]="background">
+            <fd-dynamic-page-title></fd-dynamic-page-title>
+            <fd-dynamic-page-subheader [collapsible]="false" [pinnable]="false"></fd-dynamic-page-subheader>
+            <fd-dynamic-page-content>DynamicPage Content</fd-dynamic-page-content>
+        </fd-dynamic-page>`
 })
 class TestNonCollapsibleComponent {
     size = 'medium';
