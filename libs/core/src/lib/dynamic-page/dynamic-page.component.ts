@@ -4,7 +4,7 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    ContentChild,
+    ContentChild, ContentChildren,
     ElementRef,
     HostBinding,
     Input,
@@ -20,7 +20,7 @@ import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime, throttleTime } from 'rxjs/operators';
 import { CLASS_NAME, DynamicPageBackgroundType, DynamicPageResponsiveSize } from './constants';
 import {
-    DynamicPageContentComponent,
+    DynamicPageContentComponent
 } from './dynamic-page-content/dynamic-page-content.component';
 import { DynamicPageSubheaderComponent } from './dynamic-page-header/subheader/dynamic-page-subheader.component';
 import { DynamicPageTitleComponent } from './dynamic-page-header/header/dynamic-page-title.component';
@@ -78,8 +78,8 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
     @ContentChild(DynamicPageContentComponent)
     contentComponent: DynamicPageContentComponent;
 
-    @ContentChild(TabListComponent)
-    tabComponent: TabListComponent
+    @ContentChildren(TabListComponent, {descendants: true})
+    tabComponent: QueryList<TabListComponent>;
 
     @ViewChildren(TabPanelComponent)
     dynamicPageTabs: QueryList<TabPanelComponent>;
@@ -235,6 +235,18 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
                     })
             );
         }
+        if (this.tabComponent) {
+            const contentComponentElement = this.tabComponent.first.contentContainer.nativeElement;
+
+            this._subscriptions.add(
+                fromEvent(contentComponentElement, 'scroll')
+                    .pipe(debounceTime(20), throttleTime(20))
+                    .subscribe(() => {
+                        const collapse = !this._dynamicPageService.pinned.value && contentComponentElement.scrollTop > 0;
+                        this._dynamicPageService.collapsed.next(collapse);
+                    })
+            );
+        }
     }
 
     /** @hidden Listen for window resize and adjust tab and content positions accordingly */
@@ -248,25 +260,21 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
         );
     }
 
-     /**
+    /**
      * @hidden
      * set position for tabs and tabbed content's position relative to the tabs on scrolling
      */
     private _setTabsPosition(): void {
-        if (!this.contentContainer) {
+        if (!this.tabComponent || this.tabComponent.length === 0) {
             return;
         }
-        if (!this.tabComponent) {
-            return;
-        }
-        const element = this.tabComponent.contentContainer.nativeElement;
-        const topOffset =  window.pageYOffset + element.getBoundingClientRect().top
-         this._renderer.setStyle(
-             element,
-             'height',
-             'calc(100vh - ' + (topOffset + this.offset) + 'px)'
-         );
-
+        const element = this.tabComponent.first.contentContainer.nativeElement;
+        const topOffset = window.pageYOffset + element.getBoundingClientRect().top;
+        this._renderer.setStyle(
+            element,
+            'height',
+            'calc(100vh - ' + (topOffset + this.offset) + 'px)'
+        );
     }
 
     /**
