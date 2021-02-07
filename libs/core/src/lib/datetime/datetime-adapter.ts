@@ -116,6 +116,7 @@ export abstract class DatetimeAdapter<D> {
      * @returns The week number (min 1, max 53).
      */
     abstract getWeekNumber(date: D): number;
+
     /**
      * Gets a list of names for the months.
      * @param style The naming style (e.g. long = 'January', short = 'Jan', narrow = 'J').

@@ -1,0 +1,22 @@
+{
+  "name": "@fundamental-ngx/moment-datetime-adapter",
+  "version": "VERSION_PLACEHOLDER",
+  "license": "Apache-2.0",
+  "homepage": "https://sap.github.io/fundamental-ngx/home",
+  "description": "SAP Fundamentals moment datetime adapter, implemented in Angular",
+  "peerDependencies": {
+    "@angular/core": "ANGULAR_VER_PLACEHOLDER"
+  },
+  "ng-update": {
+    "packageGroup": [
+      "@fundamental-ngx/core"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/fundamental-ngx"
+  },
+  "dependencies": {
+    "@fundamental-ngx/core": "VERSION_PLACEHOLDER"
+  }
+}
