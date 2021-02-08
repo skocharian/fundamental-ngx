@@ -1,0 +1,49 @@
+<fdp-form-group [noLabelLayout]="false">
+    <fdp-form-field id="array-of-strings" label="Select an option"
+                    rank="4">
+        <fdp-select
+            name="array-of-strings"
+            placeholder="select an option"
+            [dataSource]="dataSourceStrings"
+            (selectionChange)="onSelect1($event)"
+        ></fdp-select>
+        <p>Selected Item: {{ selectedItem1 | json }}</p>
+    </fdp-form-field>
+
+    <fdp-form-field id="array-of-objects" label="Select an option"
+                    rank="4">
+        <fdp-select
+            name="array-of-objects"
+            placeholder="select an option"
+            [dataSource]="dataSource"
+            displayKey="name"
+            lookupKey="name"
+            (selectionChange)="onSelect2($event)"
+        ></fdp-select>
+        <p>Selected Item: {{ selectedItem2 | json }}</p>
+    </fdp-form-field>
+
+    <fdp-form-field id="observable" label="Observable" rank="4">
+        <fdp-select
+            name="observable"
+            placeholder="select an option"
+            [dataSource]="dataSourceOf"
+            displayKey="name"
+            lookupKey="name"
+            (selectionChange)="onSelect3($event)"
+        ></fdp-select>
+        <p>Selected Item: {{ selectedItem3 | json }}</p>
+    </fdp-form-field>
+
+    <fdp-form-field id="ds" label="Data Source" rank="4">
+        <fdp-select
+            name="ds"
+            placeholder="Select an option"
+            [dataSource]="ds"
+            displayKey="name"
+            lookupKey="name"
+            (selectionChange)="onSelect4($event)"
+        ></fdp-select>
+        <p>Selected Item: {{ selectedItem4 | json }}</p>
+    </fdp-form-field>
+</fdp-form-group>

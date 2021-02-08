@@ -1,0 +1,15 @@
+<fdp-form-group [noLabelLayout]="false">
+    <fdp-form-field id="columns" label="Two Columns" rank="4">
+        <fdp-select
+            name="columns"
+            placeholder="Select an option"
+            [dataSource]="dataSource"
+            displayKey="name"
+            secondaryKey="type"
+            showSecondaryText="true"
+            secondaryTextAlignment="right"
+            (selectionChange)="onSelect($event)"
+        ></fdp-select>
+        <p>Selected Item: {{ selectedItem | json }}</p>
+    </fdp-form-field>
+</fdp-form-group>

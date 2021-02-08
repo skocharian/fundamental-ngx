@@ -4,24 +4,12 @@ import { ExampleFile } from '../../../../documentation/core-helpers/code-example
 import * as selectModeHtml from '!raw-loader!./platform-select-examples/platform-select-mode-example/platform-select-mode-example.component.html';
 import * as selectModeTs from '!raw-loader!./platform-select-examples/platform-select-mode-example/platform-select-mode-example.component.ts';
 
-import * as selectProgressiveHtml from '!raw-loader!./platform-select-examples/platform-select-programmatic-example/platform-select-programmatic-example.component.html';
-import * as selectProgressiveScss from '!raw-loader!./platform-select-examples/platform-select-programmatic-example/platform-select-programmatic-example.component.scss';
-import * as selectProgressiveTs from '!raw-loader!./platform-select-examples/platform-select-programmatic-example/platform-select-programmatic-example.component.ts';
-
 import * as selectMobileHtml from '!raw-loader!./platform-select-examples/platform-select-mobile-example/platform-select-mobile-example.component.html';
 import * as selectMobileTs from '!raw-loader!./platform-select-examples/platform-select-mobile-example/platform-select-mobile-example.component.ts';
-
-import * as selectNestedHtml from '!raw-loader!./platform-select-examples/platform-select-nested-options/platform-select-nested-options.component.html';
-import * as selectNestedTs from '!raw-loader!./platform-select-examples/platform-select-nested-options/platform-select-nested-options.component.ts';
-import * as selectNestedScss from '!raw-loader!./platform-select-examples/platform-select-nested-options/platform-select-nested-options.component.scss';
 
 import * as customTriggerHtml from '!raw-loader!./platform-select-examples/platform-select-custom-trigger/platform-select-custom-trigger.component.html';
 import * as customTriggerTs from '!raw-loader!./platform-select-examples/platform-select-custom-trigger/platform-select-custom-trigger.component.ts';
 import * as customTriggerScss from '!raw-loader!./platform-select-examples/platform-select-custom-trigger/platform-select-custom-trigger.component.scss';
-
-import * as selectAddingHtml from '!raw-loader!./platform-select-examples/platform-select-adding-example/platform-select-adding-example.component.html';
-import * as selectAddingScss from '!raw-loader!./platform-select-examples/platform-select-adding-example/platform-select-adding-example.component.scss';
-import * as selectAddingTs from '!raw-loader!./platform-select-examples/platform-select-adding-example/platform-select-adding-example.component.ts';
 
 import * as selectFormHtml from '!raw-loader!./platform-select-examples/platform-select-forms/platform-select-forms.component.html';
 import * as selectFormTs from '!raw-loader!./platform-select-examples/platform-select-forms/platform-select-forms.component.ts';
@@ -31,6 +19,17 @@ import * as selectMaxHeightTs from '!raw-loader!./platform-select-examples/platf
 
 import * as selectSemanticStateHtml from '!raw-loader!./platform-select-examples/platform-select-semantic-state-example/platform-select-semantic-state-example.component.html';
 import * as selectSemanticStateTs from '!raw-loader!./platform-select-examples/platform-select-semantic-state-example/platform-select-semantic-state-example.component.ts';
+
+
+import * as selectColumnsHtml from '!raw-loader!./platform-select-examples/platform-select-columns/platform-select-columns-example.component.html';
+import * as selectColumnsTs from '!raw-loader!./platform-select-examples/platform-select-columns/platform-select-columns-example.component';
+
+import * as selectGroupHtml from '!raw-loader!./platform-select-examples/platform-select-group/platform-select-group-example.component.html';
+import * as selectGroupTs from '!raw-loader!./platform-select-examples/platform-select-group/platform-select-group-example.component';
+
+import * as selectDatasourceHtml from '!raw-loader!./platform-select-examples/platform-select-datasource/platform-select-datasource-example.component.html';
+import * as selectDatasourceTs from '!raw-loader!./platform-select-examples/platform-select-datasource/platform-select-datasource-example.component';
+
 
 @Component({
     selector: 'fdp-select-docs',
@@ -48,6 +47,17 @@ export class PlatformSelectDocsComponent {
         }
     ];
 
+    selectColumns: ExampleFile[] = [{
+        language: 'html',
+        fileName: 'platform-select-columns-example',
+        code: selectColumnsHtml
+    }, {
+        language: 'typescript',
+        fileName: 'platform-select-columns-example',
+        code: selectColumnsTs,
+        component: 'PlatformSelectColumnsExampleComponent'
+    }];
+
     selectMobile: ExampleFile[] = [
         {
             language: 'html',
@@ -62,32 +72,16 @@ export class PlatformSelectDocsComponent {
         }
     ];
 
-    selectProgrammatic: ExampleFile[] = [
-        {
-            language: 'html',
-            code: selectProgressiveHtml,
-            fileName: 'platform-select-programmatic-example',
-            scssFileCode: selectProgressiveScss
-
-        },
-        {
-            language: 'typescript',
-            component: 'PlatformSelectProgrammaticExampleComponent',
-            code: selectProgressiveTs,
-            fileName: 'platform-select-programmatic-example'
-        }
-    ];
-
-    selectExtendedOptions: ExampleFile[] = [
-        {
-            language: 'html',
-            code: selectNestedHtml,
-            fileName: 'platform-select-nested-options',
-            typescriptFileCode: selectNestedTs,
-            component: 'PlatformSelectNestedOptionsComponent',
-            scssFileCode: selectNestedScss
-        }
-    ];
+    selectGroupExample: ExampleFile[] = [{
+        language: 'html',
+        fileName: 'platform-select-group-example',
+        code: selectGroupHtml
+    }, {
+        language: 'typescript',
+        fileName: 'platform-select-group-example',
+        code: selectGroupTs,
+        component: 'PlatformSelectGroupExampleComponent'
+    }];
 
     customSelectTemplate: ExampleFile[] = [
         {
@@ -100,20 +94,16 @@ export class PlatformSelectDocsComponent {
         }
     ];
 
-    selectAdding: ExampleFile[] = [
-        {
-            language: 'html',
-            code: selectAddingHtml,
-            fileName: 'platform-select-adding-example',
-            scssFileCode: selectAddingScss
-        },
-        {
-            language: 'typescript',
-            component: 'PlatformSelectAddingExampleComponent',
-            code: selectAddingTs,
-            fileName: 'platform-select-adding-example'
-        }
-    ];
+    selectDatasource: ExampleFile[] = [{
+        language: 'html',
+        fileName: 'platform-select-datasource-example',
+        code: selectDatasourceHtml
+    }, {
+        language: 'typescript',
+        fileName: 'platform-select-datasource-example',
+        code: selectDatasourceTs,
+        component: 'PlatformSelectDatasourceExampleComponent'
+    }];
 
     selectForm: ExampleFile[] = [
         {

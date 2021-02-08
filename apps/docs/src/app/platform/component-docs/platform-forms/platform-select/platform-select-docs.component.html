@@ -1,4 +1,4 @@
-<!-- <fd-docs-section-title [id]="'mode'" [componentName]="'select'">
+<fd-docs-section-title [id]="'mode'" [componentName]="'select'">
     Select Modes
 </fd-docs-section-title>
 <description>
@@ -11,6 +11,33 @@
 
 <separator></separator>
 
+<fd-docs-section-title id="columns" componentName="select">Select with Two Columns</fd-docs-section-title>
+<description>
+    Select with two columns of information.
+    Note that a <code>secondaryKey</code> and <code>ShowSecondaryText</code> is required
+</description>
+<component-example>
+    <fdp-select-columns-example></fdp-select-columns-example>
+</component-example>
+<code-example [exampleFiles]="selectColumns"></code-example>
+
+<separator></separator>
+
+<fd-docs-section-title id="select-group" componentName="select">
+        Select with Groups
+    </fd-docs-section-title>
+    <description>
+        Select with Groups.
+        <code>group</code> and <code>groupKey</code> is required
+    </description>
+    <component-example>
+        <fdp-select-group-example></fdp-select-group-example>
+    </component-example>
+    <code-example [exampleFiles]="selectGroupExample"></code-example>
+    
+    <separator></separator>
+
+<separator></separator>
 <fd-docs-section-title [id]="'semantic'" [componentName]="'select'">
     Select Semantic States
 </fd-docs-section-title>
@@ -22,10 +49,10 @@
 </component-example>
 <code-example [exampleFiles]="selectSemantic"></code-example>
 
-<separator></separator>-->
+<separator></separator>
 
 <fd-docs-section-title [id]="'custom-select-template'" [componentName]="'select'">
-    Custom Control Content
+    Custom Control Content With AutoResize
 </fd-docs-section-title>
 <description>
     The content of the Select control can be customized using a custom template which needs to be referenced in the
@@ -40,20 +67,6 @@
     <fdp-select-custom-trigger></fdp-select-custom-trigger>
 </component-example>
 <code-example [exampleFiles]="customSelectTemplate"></code-example>
-
-<separator></separator>
-<!--
-<fd-docs-section-title [id]="'nested-options'" [componentName]="'select'">
-    Extended Options
-</fd-docs-section-title>
-<description>
-    ListComponent features such as headers, titles and icons are supported inside the OptionComponent.
-    This example also shows how to handle complex option types like <code>Object</code>.
-</description>
-<component-example>
-    <fdp-select-nested-options></fdp-select-nested-options>
-</component-example>
-<code-example [exampleFiles]="selectExtendedOptions"></code-example>
 
 <separator></separator>
 
@@ -80,6 +93,19 @@
 
 <separator></separator>
 
+<fd-docs-section-title id="data-source" componentName="select">DataSource</fd-docs-section-title>
+<description>
+    Input <code>[dataSource]</code> has this type <code>type FdpSelectDataSource&lt;T&gt; = SelectDataSource&lt;T&gt;
+    | Observable&lt;T[]&gt; | T[];</code>
+</description>
+<component-example>
+    <fdp-select-datasource-example></fdp-select-datasource-example>
+</component-example>
+<code-example [exampleFiles]="selectDatasource"></code-example>
+
+<separator></separator>
+
+
 <fd-docs-section-title [id]="'select-max-height'" [componentName]="'select'">
     Select Max Height
 </fd-docs-section-title>
@@ -95,37 +121,7 @@
 <code-example [exampleFiles]="selectMaxHeight"></code-example>
 
 <separator></separator>
--->
-<fd-docs-section-title [id]="'adding-removing-options'" [componentName]="'select'">
-    Adding and Removing Options
-</fd-docs-section-title>
-<description>
-    Adding and removing options dynamically is supported seamlessly with very little extra work required from the
-    developer. By design, if the user removes the option that is currently selected, the value will become undefined.
-    This was implemented to prevent a user from keeping the active value of a previously removed option. This behavior
-    can be automatically prevented by setting <code>[unselectMissingOption]="false"</code>.
-</description>
-<component-example>
-    <fdp-select-adding-example></fdp-select-adding-example>
-</component-example>
-<code-example [exampleFiles]="selectAdding"></code-example>
 
-<separator></separator>
-<!--
-<fd-docs-section-title [id]="'programmatic-control'" [componentName]="'select'">
-    Programmatic Control
-</fd-docs-section-title>
-<description>
-    Controlling Select through programmatic methods is possible by calling the Select component instance directly.
-    Note that this can be done through ViewChild as well.
-</description>
-<component-example>
-    <fdp-select-programmatic-example></fdp-select-programmatic-example>
-</component-example>
-<code-example [exampleFiles]="selectProgrammatic"></code-example>
-
-<separator></separator>
--->
 <fd-docs-section-title [id]="'reactive-form'" [componentName]="'select'">
     Select In A Reactive Form
 </fd-docs-section-title>

@@ -1,0 +1,27 @@
+<fdp-form-group [noLabelLayout]="false">
+    <fdp-form-field id="group" label="Group with Key" rank="4">
+        <fdp-select
+            name="group"
+            placeholder="Select an option"
+            [dataSource]="dataSource"
+            displayKey="name"
+            group="true"
+            groupKey="type"
+            (selectionChange)="onSelect($event)"
+        ></fdp-select>
+        <p>Selected: {{ selectedItem | json }}</p>
+    </fdp-form-field>
+
+    <fdp-form-field id="group-without-key" label="Group without Key"
+                    rank="4">
+        <fdp-select
+            name="group-without-key"
+            placeholder="Select an option"
+            [dataSource]="dataSource"
+            displayKey="name"
+            group="true"
+            (selectionChange)="onSelect1($event)"
+        ></fdp-select>
+        <p>Selected: {{ selectedItem1 | json }}</p>
+    </fdp-form-field>
+</fdp-form-group>

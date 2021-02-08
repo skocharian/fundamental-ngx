@@ -22,10 +22,12 @@ import {
     Attribute,
     SimpleChanges,
     OnChanges,
-    Self
+    Self,
+    ContentChild
 } from '@angular/core';
 import { ControlValueAccessor, NgControl} from '@angular/forms';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
 import { Subject, Subscription, merge, Observable, defer } from 'rxjs';
 import { startWith, takeUntil, switchMap } from 'rxjs/operators';
@@ -33,6 +35,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 
 import { PopoverFillMode } from '../popover/popover-position/popover-position';
 import { DynamicComponentService } from '../utils/dynamic-component/dynamic-component.service';
+import { DialogConfig } from '../dialog/utils/dialog-config.class';
 import { MobileModeConfig } from '../utils/interfaces/mobile-mode-config';
 import { SELECT_COMPONENT, SelectInterface } from './select.interface';
 import { SelectKeyManagerService } from './select-key-manager.service';
@@ -166,6 +169,14 @@ export class SelectComponent implements
     @Input()
     appendTo: ElementRef;
 
+    /** The resize the popover based on content */
+    @Input()
+    autoResize = true;
+
+    /** Max width allowed for content*/
+    @Input()
+    maxWidth: number;
+
     /**
      * If the option should be unselected and value changed to undefined, when the current value is
      * not presented in option array. Switching it off can be handy, when there is some delay between providing
@@ -227,6 +238,10 @@ export class SelectComponent implements
      */
     @ViewChild('optionPanel', { read: ElementRef })
     _optionPanel: ElementRef;
+
+    /** @hidden */
+    @ContentChild('listTemplate')
+    _listTemplate: TemplateRef<any>;
 
     /** Whether popover is opened
      * @hidden
@@ -555,7 +570,6 @@ export class SelectComponent implements
             }
     }
 
-
     /** @hidden */
     _cleanupCommonBehavior(): void {
         this._destroy.next();
@@ -603,7 +617,7 @@ export class SelectComponent implements
     /** @hidden */
     _getItemHeight(): number {
         // also include border with default value 1.
-        return this._controlElemFontSize * SELECT_ITEM_HEIGHT_EM + 1;
+        return this._controlElemFontSize * SELECT_ITEM_HEIGHT_EM + 3.5;
     }
 
     /** @hidden */

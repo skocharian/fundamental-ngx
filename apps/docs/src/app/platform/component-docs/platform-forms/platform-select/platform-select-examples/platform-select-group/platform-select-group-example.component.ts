@@ -1,17 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { MobileModeConfig } from '@fundamental-ngx/core';
 import { FdpSelectionChangeEvent, DATA_PROVIDERS } from '@fundamental-ngx/platform';
 
 @Component({
-    selector: 'fdp-select-mobile-example',
-    templateUrl: './platform-select-mobile-example.component.html',
+    selector: 'fdp-select-group-example',
+    templateUrl: './platform-select-group-example.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [{ provide: DATA_PROVIDERS, useValue: new Map() }]
 })
-export class PlatformSelectMobileExampleComponent {
-
-       dataSource = [
+export class PlatformSelectGroupExampleComponent {
+    dataSource = [
         { name: 'Apple', type: 'Fruits' },
         { name: 'Banana', type: 'Fruits' },
         { name: 'Pineapple', type: 'Fruits' },
@@ -23,17 +21,13 @@ export class PlatformSelectMobileExampleComponent {
     ];
 
     selectedItem = null;
-
-    mobileConfig: MobileModeConfig = {
-        title: 'Title',
-        hasCloseButton: true,
-        dialogConfig: { 
-            width: '360px',
-            height: '640px' 
-            } 
-    };
+    selectedItem1 = null;
 
     onSelect(item: FdpSelectionChangeEvent): void {
-        this.selectedItem = item.payload.label;
+        this.selectedItem = item.payload;
     }
- }
+
+    onSelect1(item: FdpSelectionChangeEvent): void {
+        this.selectedItem1 = item.payload;
+    }
+}

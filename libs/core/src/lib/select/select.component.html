@@ -41,16 +41,18 @@
     </div>
 </ng-template>
 
-<ng-template #selectOptionsListTemplate>
+<ng-template #selectOptionsListTemplate> 
     <ul #optionPanel fd-list class="fd-select-options" role="listbox" tabindex="-1" [compact]="compact"
         [dropdownMode]="true" [hasMessage]="!!stateMessage" [attr.id]="controlId + '-list-box'"
-        [style.max-height]="maxHeight || calculatedMaxHeight + 'px'">
+        [style.max-height]="maxHeight || calculatedMaxHeight + 'px'"
+        [style.max-width]="autoResize && maxWidth + 'px'">
         <li *ngIf="stateMessage" fd-list-message tabindex="-1" role="presentation" [type]="state">
             {{stateMessage}}
         </li>
-
         <ng-content></ng-content>
-    </ul>
+        <ng-content select="listTemplate"></ng-content>
+   </ul>
+    
 </ng-template>
 
 <ng-template #mobileTemplate>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { KeyUtil } from '../utils/functions';
-import { UP_ARROW, DOWN_ARROW, ENTER, SPACE, HOME, END, hasModifierKey } from '@angular/cdk/keycodes';
+import { UP_ARROW, DOWN_ARROW, ENTER, SPACE, HOME, END, hasModifierKey, TAB } from '@angular/cdk/keycodes';
 
 import { SelectInterface } from './select.interface';
 import { OptionsInterface } from './options.interface';
@@ -26,8 +26,8 @@ export class SelectKeyManagerService {
             .withAllowedModifierKeys(['shiftKey']);
 
         this._keyManager.tabOut.pipe(takeUntil(this._component._destroy)).subscribe(() => {
-            this._component.focus();
-            this._component.close();
+           this._component.focus();
+           this._component.close();
         });
 
         this._keyManager.change.pipe(takeUntil(this._component._destroy)).subscribe(() => {
@@ -42,7 +42,6 @@ export class SelectKeyManagerService {
     /** @hidden */
     _scrollActiveOptionIntoView(): void {
         const activeOptionIndex = this._keyManager.activeItemIndex || 0;
-
         this._component._optionPanel.nativeElement.scrollTop = this._component._getOptionScrollPosition(
             activeOptionIndex,
             this._component._getItemHeight(),

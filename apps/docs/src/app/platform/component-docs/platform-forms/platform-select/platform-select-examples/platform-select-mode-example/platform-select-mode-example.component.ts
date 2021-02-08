@@ -1,59 +1,56 @@
-import { Component } from '@angular/core';
-import { SelectItem } from '@fundamental-ngx/platform';
-
-export class Fruit {
-    id: string;
-    name: string;
-    age: number;
-
-    constructor(id: string, name: string, age: number) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-    }
-}
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { FdpSelectionChangeEvent } from '@fundamental-ngx/platform';
 
 @Component({
     selector: 'fdp-select-mode-example',
-    templateUrl: './platform-select-mode-example.component.html'
+    templateUrl: './platform-select-mode-example.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlatformSelectModeExampleComponent {
 
-   // options: string[] = ['Apple', 'Pineapple', 'Tomato', 'Strawberry'];
-    selectedValue1: string;
-    selectedValue2: string;
-    selectedValue3: string;
-    selectedValue4: string;
-    selectedValue5 = 'Apple';
-
-    // addedOptions = 1;
-
-    // addOption(): void {
-    //     this.userList.push(new Fruit(`${this.addedOptions++}`, `New option ${this.addedOptions++}`, this.addedOptions++));
-    //   // this.userList.push(`New option ${this.addedOptions++}`);
-    // }
-
-    // removeOption(): void {
-    //     if (this.userList.length > 1) {
-    //         this.userList.pop();
-    //     }
-    // }
-
-
-    userList = [
-        new Fruit('A', 'Apple', 10),
-        new Fruit('B', 'orange', 70),
-        new Fruit('C', 'Plums', 10),
-        new Fruit('D', 'pineapple', 11),
-        new Fruit('E', 'watermelon', 10)
+dataSource = [
+        'Apple',
+        'Banana',
+        'Pineapple',
+        'Strawberry',
+        'Broccoli',
+        'Carrot',
+        'Jalapeño',
+        'Spinach'
     ];
-    option = this.userList.map<SelectItem>((item) => {
-        return {
-            label: item.name + item.id,
-            value: item,
-            triggerValue: '( ' + item.id + ' )',
-            disabled: item.id === 'B' ? true : false,
-            icon: ''
-        };
-    });
+
+    dataSourceAutoResize = [
+        'The maximum width is the part of the screen furthest to the right.',
+        'Apple',
+        'Banana',
+        'Pineapple',
+        'Strawberry',
+        'Broccoli',
+        'Carrot',
+        'Jalapeño',
+        'Spinach'
+    ];
+
+    selectedValue1 = null;
+    selectedValue2 = null;
+    selectedValue3 = this.dataSource[4];
+    selectedValue4 = this.dataSource[3];
+
+    onSelect1(item: FdpSelectionChangeEvent): void {
+       this.selectedValue1 = item.payload.label;
+    }
+
+    onSelect2(item: FdpSelectionChangeEvent): void {
+        this.selectedValue2 = item.payload.label;
+    }
+
+    onSelect3(item: FdpSelectionChangeEvent): void {
+        this.selectedValue3 = item.payload.label;
+    }
+
+    onSelect4(item: FdpSelectionChangeEvent): void {
+        this.selectedValue4 = item.payload.label;
+    }
 }
+
+
