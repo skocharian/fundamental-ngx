@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 import { ExampleFile } from '../../../documentation/core-helpers/code-example/example-file';
 
-import * as dynamicPageBasicExample from '!raw-loader!./dynamic-page-examples/platform-dynamic-page-example.component.html';
-import * as dynamicPageBasicExampleScss from '!raw-loader!./dynamic-page-examples/platform-dynamic-page-example.component.scss';
-import * as dynamicPageBasicExampleTsCode from '!raw-loader!./dynamic-page-examples/platform-dynamic-page-example.component.ts';
+import * as dynamicPageBasicExample from '!raw-loader!./dynamic-page-examples/dynamic-page-example.component.html';
+import * as dynamicPageBasicExampleScss from '!raw-loader!./dynamic-page-examples/dynamic-page-example.component.scss';
+import * as dynamicPageBasicExampleTsCode from '!raw-loader!./dynamic-page-examples/dynamic-page-example.component.js';
 
 
 @Component({

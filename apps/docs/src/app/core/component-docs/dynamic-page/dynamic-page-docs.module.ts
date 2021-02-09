@@ -7,8 +7,10 @@ import { ApiComponent } from '../../../documentation/core-helpers/api/api.compon
 import { SharedDocumentationPageModule } from '../../../documentation/shared-documentation-page.module';
 import { API_FILES } from '../../api-files';
 import { DynamicPageDocsComponent } from './dynamic-page-docs.component';
-import { PlatformDynamicPageExampleComponent } from './dynamic-page-examples/platform-dynamic-page-example.component';
+import { DynamicPageExampleComponent } from './dynamic-page-examples/dynamic-page-example.component';
 import { DynamicPageDocsHeaderComponent } from './dynamic-page-header/dynamic-page-docs-header.component';
+import { DynamicPageTabsExampleComponent } from './dynamic-page-examples/dynamic-page-tabs-example/dynamic-page-tabs-example.component';
+import { DynamicPageColumnLayoutExampleComponent } from './dynamic-page-examples/dynamic-page-column-layout-example/dynamic-page-column-layout-example.component';
 
 const routes: Routes = [
     {
@@ -35,7 +37,9 @@ const routes: Routes = [
     declarations: [
         DynamicPageDocsComponent,
         DynamicPageDocsHeaderComponent,
-        PlatformDynamicPageExampleComponent,
+        DynamicPageExampleComponent,
+        DynamicPageTabsExampleComponent,
+        DynamicPageColumnLayoutExampleComponent,
     ]
 })
 export class DynamicPageDocsModule { }

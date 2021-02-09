@@ -3,7 +3,7 @@ export * from './dynamic-page.component';
 export * from './dynamic-page-header/actions/global-actions/dynamic-page-global-actions.component';
 export * from './dynamic-page-header/actions/layout-actions/dynamic-page-layout-actions.component';
 export * from './dynamic-page-header/subheader/dynamic-page-subheader.component';
-export * from './dynamic-page-header/header/dynamic-page-title.component';
+export * from './dynamic-page-header/header/dynamic-page-header.component';
 export * from './dynamic-page-content/dynamic-page-content.component';
 export * from './dynamic-page-footer/dynamic-page-footer.component';
 export * from './dynamic-page.config';

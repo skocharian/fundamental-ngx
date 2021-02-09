@@ -9,28 +9,29 @@ import { DynamicPageService } from '../../dynamic-page.service';
 import { DynamicPageGlobalActionsComponent } from '../actions/global-actions/dynamic-page-global-actions.component';
 import { DynamicPageLayoutActionsComponent } from '../actions/layout-actions/dynamic-page-layout-actions.component';
 import { DynamicPageKeyInfoComponent } from '../key-info/dynamic-page-key-info.component';
-import { DynamicPageTitleComponent } from './dynamic-page-title.component';
+import { DynamicPageHeaderComponent } from './dynamic-page-header.component';
 
 @Component({
-    template: ` <fd-dynamic-page-title [title]="title" [subtitle]="subtitle" [size]="size" [background]="background">
-        <fd-breadcrumb>
-            <fd-breadcrumb-item>
-                <a fd-breadcrumb-link [attr.href]="'#'">Men</a>
-            </fd-breadcrumb-item>
-            <fd-breadcrumb-item>
-                <a fd-breadcrumb-link [attr.href]="'#'">Shoes</a>
-            </fd-breadcrumb-item>
-        </fd-breadcrumb>
+    template: `
+        <fd-dynamic-page-header [title]="title" [subtitle]="subtitle" [size]="size" [background]="background">
+            <fd-breadcrumb>
+                <fd-breadcrumb-item>
+                    <a fd-breadcrumb-link [attr.href]="'#'">Men</a>
+                </fd-breadcrumb-item>
+                <fd-breadcrumb-item>
+                    <a fd-breadcrumb-link [attr.href]="'#'">Shoes</a>
+                </fd-breadcrumb-item>
+            </fd-breadcrumb>
 
-        <fd-dynamic-page-key-info> </fd-dynamic-page-key-info>
-    </fd-dynamic-page-title>`
+            <fd-dynamic-page-key-info></fd-dynamic-page-key-info>
+        </fd-dynamic-page-header>`
 })
 class TestComponent {
     title = 'Some title ';
     subtitle: string;
     size = 'medium';
     background = '';
-    @ViewChild(DynamicPageTitleComponent) dynamicPageTitleComponent: DynamicPageTitleComponent;
+    @ViewChild(DynamicPageHeaderComponent) dynamicPageTitleComponent: DynamicPageHeaderComponent;
     @ViewChild(DynamicPageKeyInfoComponent) dynamicPageKeyInfoComponent: DynamicPageKeyInfoComponent;
     @ViewChild(DynamicPageGlobalActionsComponent) dynamicPageGlobalActionsComponent: DynamicPageGlobalActionsComponent;
     @ViewChild(DynamicPageLayoutActionsComponent) dynamicPageLayoutActionsComponent: DynamicPageLayoutActionsComponent;
@@ -38,7 +39,7 @@ class TestComponent {
 
 describe('DynamicPageTitleComponent', () => {
     let fixture: ComponentFixture<TestComponent>;
-    let pageTitleComponent: DynamicPageTitleComponent;
+    let pageTitleComponent: DynamicPageHeaderComponent;
     let pageTitleKeyInfoComponent: DynamicPageKeyInfoComponent;
     let component: TestComponent;
 

@@ -6,14 +6,14 @@ import { DynamicPageFooterComponent } from './dynamic-page-footer/dynamic-page-f
 import { DynamicPageGlobalActionsComponent } from './dynamic-page-header/actions/global-actions/dynamic-page-global-actions.component';
 import { DynamicPageLayoutActionsComponent } from './dynamic-page-header/actions/layout-actions/dynamic-page-layout-actions.component';
 import { DynamicPageSubheaderComponent } from './dynamic-page-header/subheader/dynamic-page-subheader.component';
-import { DynamicPageTitleComponent } from './dynamic-page-header/header/dynamic-page-title.component';
+import { DynamicPageHeaderComponent } from './dynamic-page-header/header/dynamic-page-header.component';
 import { DynamicPageComponent } from './dynamic-page.component';
 import { ButtonModule } from '../button/button.module';
 
 @NgModule({
     declarations: [
         DynamicPageComponent,
-        DynamicPageTitleComponent,
+        DynamicPageHeaderComponent,
         DynamicPageGlobalActionsComponent,
         DynamicPageLayoutActionsComponent,
         DynamicPageSubheaderComponent,
@@ -23,7 +23,7 @@ import { ButtonModule } from '../button/button.module';
     imports: [CommonModule, ButtonModule],
     exports: [
         DynamicPageComponent,
-        DynamicPageTitleComponent,
+        DynamicPageHeaderComponent,
         DynamicPageGlobalActionsComponent,
         DynamicPageLayoutActionsComponent,
         DynamicPageSubheaderComponent,

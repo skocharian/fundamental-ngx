@@ -19,6 +19,7 @@ import { DynamicPageBackgroundType, CLASS_NAME, DynamicPageResponsiveSize } from
 import { DynamicPageConfig } from '../../dynamic-page.config';
 import { DynamicPageService } from '../../dynamic-page.service';
 import { addClassNameToElement, removeClassNameFromElement } from '../../utils';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 let dynamicPageSubHeaderId = 0;
 @Component({
@@ -136,6 +137,10 @@ export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnD
     @ViewChild('headerContent')
     headerContent: ElementRef<HTMLElement>;
 
+    /** Reference to page header content */
+    @ViewChild('pincollapseContainer')
+    pinCollapseContainer: ElementRef<HTMLElement>;
+
     /**
      * tracking if pin button is pinned
      */
@@ -173,14 +178,16 @@ export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnD
         protected _dynamicPageConfig: DynamicPageConfig,
         private _dynamicPageService: DynamicPageService
     ) {
-        this._dynamicPageService.collapsed.subscribe(collapsed => this._handleCollapsedChange(collapsed));
+        this._dynamicPageService.collapsed
+            .pipe(distinctUntilChanged())
+            .subscribe(collapsed => this._handleCollapsedChange(collapsed));
     }
 
     /** @hidden */
     ngOnInit(): void {
-        if (this._isCollapsibleCollapsed()) {
-            this._setStyleToHostElement('z-index', 1);
-        }
+        // if (this._isCollapsibleCollapsed()) {
+        //     this._setStyleToHostElement('z-index', 1);
+        // }
     }
 
     /** @hidden */
@@ -237,6 +244,7 @@ export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnD
 
         this._dynamicPageService.collapsed.next(collapsed);
         this._cd.detectChanges();
+        this._dynamicPageService.subheaderVisibilityChange.next();
     }
 
     /**
@@ -293,16 +301,6 @@ export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnD
                 return CLASS_NAME.dynamicPageCollapsibleHeaderExtraLarge;
 
         }
-    }
-
-    /**@hidden */
-    private _setStyleToHostElement(attribute: string, value: any): void {
-        this._renderer.setStyle(this._elementRef.nativeElement, attribute, value);
-    }
-
-    /**@hidden */
-    private _removeStyleFromHostElement(styleName: string): void {
-        this._renderer.removeStyle(this._elementRef.nativeElement, styleName);
     }
 
     /**@hidden */

@@ -13,12 +13,12 @@ import {
 
 import { DynamicPageContentComponent } from './dynamic-page-content/dynamic-page-content.component';
 import { DynamicPageSubheaderComponent } from './dynamic-page-header/subheader/dynamic-page-subheader.component';
-import { DynamicPageTitleComponent } from './dynamic-page-header/header/dynamic-page-title.component';
+import { DynamicPageHeaderComponent } from './dynamic-page-header/header/dynamic-page-header.component';
 
 @Component({
     template: `
         <fd-dynamic-page [size]="size" [background]="background">
-            <fd-dynamic-page-title>
+            <fd-dynamic-page-header>
                 <fd-dynamic-page-global-actions>
                     <fd-toolbar fdType="transparent" [clearBorder]="true">
                         <button
@@ -40,7 +40,7 @@ import { DynamicPageTitleComponent } from './dynamic-page-header/header/dynamic-
                         </button>
                     </fd-toolbar>
                 </fd-dynamic-page-layout-actions>
-            </fd-dynamic-page-title>
+            </fd-dynamic-page-header>
             <fd-dynamic-page-subheader></fd-dynamic-page-subheader>
             <fd-dynamic-page-content>DynamicPage Content Text</fd-dynamic-page-content>
         </fd-dynamic-page>`
@@ -49,7 +49,7 @@ class TestComponent {
     size = 'medium';
     background = '';
     @ViewChild(DynamicPageComponent) dynamicPage: DynamicPageComponent;
-    @ViewChild(DynamicPageTitleComponent) dynamicPageTitleComponent: DynamicPageTitleComponent;
+    @ViewChild(DynamicPageHeaderComponent) dynamicPageTitleComponent: DynamicPageHeaderComponent;
     @ViewChild(DynamicPageSubheaderComponent) dynamicPageHeaderComponent: DynamicPageSubheaderComponent;
     @ViewChild(DynamicPageContentComponent) dynamicPageContentComponent: DynamicPageContentComponent;
 }
@@ -57,7 +57,7 @@ describe('DynamicPageComponent default values', () => {
     let component: TestComponent;
     let fixture: ComponentFixture<TestComponent>;
     let dynamicPageComponent: DynamicPageComponent;
-    let dynamicPageTitleComponent: DynamicPageTitleComponent;
+    let dynamicPageTitleComponent: DynamicPageHeaderComponent;
     let dynamicPageContentComponent: DynamicPageContentComponent;
 
     beforeEach(async(() => {
@@ -191,7 +191,7 @@ describe('DynamicPageComponent default values', () => {
 @Component({
     template: `
         <fd-dynamic-page [size]="size" [background]="background">
-            <fd-dynamic-page-title></fd-dynamic-page-title>
+            <fd-dynamic-page-header></fd-dynamic-page-header>
             <fd-dynamic-page-subheader></fd-dynamic-page-subheader>
             <fd-dynamic-page-content id="tab1" [tabLabel]="tabLabel1"
             >DynamicPage Content Tabbed 1 Text
@@ -257,7 +257,7 @@ describe('DynamicPageComponent tabbed values', () => {
 @Component({
     template: `
         <fd-dynamic-page [size]="size" [background]="background">
-            <fd-dynamic-page-title></fd-dynamic-page-title>
+            <fd-dynamic-page-header></fd-dynamic-page-header>
             <fd-dynamic-page-subheader [collapsible]="false" [pinnable]="false"></fd-dynamic-page-subheader>
             <fd-dynamic-page-content>DynamicPage Content</fd-dynamic-page-content>
         </fd-dynamic-page>`

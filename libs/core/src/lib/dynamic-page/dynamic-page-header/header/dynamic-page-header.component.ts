@@ -3,27 +3,30 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
-    Component,
+    Component, ContentChild,
     ElementRef,
     Input,
     NgZone,
     OnInit,
     Renderer2,
-    ViewChild,
     ViewEncapsulation
 } from '@angular/core';
 
 import { DynamicPageBackgroundType, CLASS_NAME, DynamicPageResponsiveSize } from '../../constants';
 import { DynamicPageService } from '../../dynamic-page.service';
 import { addClassNameToElement, removeClassNameFromElement } from '../../utils';
+import { BreadcrumbComponent } from '../../../breadcrumb/breadcrumb.component';
 
 @Component({
-    selector: 'fd-dynamic-page-title',
-    templateUrl: './dynamic-page-title.component.html',
+    selector: 'fd-dynamic-page-header',
+    templateUrl: './dynamic-page-header.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        '[attr.tabindex]': '0'
+    }
 })
-export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
+export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
     @Input()
     title: string;
 
@@ -65,19 +68,9 @@ export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
         return this._size;
     }
 
-    /**
-     * @hidden
-     * the reference to breadcrumb title container
-     */
-    @ViewChild('breadcrumbTitleContainer')
-    breadcrumbTitleContainer: ElementRef<HTMLElement>;
-
-    /**
-     * @hidden
-     * the reference to the title element
-     */
-    @ViewChild('titleRef')
-    titleRef: ElementRef<any>;
+    /** @hidden */
+    @ContentChild(BreadcrumbComponent)
+    _breadcrumbComponent: BreadcrumbComponent
 
     /**
      * @hidden
@@ -103,32 +96,13 @@ export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
     /** @hidden */
     ngOnInit(): void {
         this._addClassNameToHostElement(CLASS_NAME.dynamicPageTitleArea);
-        this._setAttributeToHostElement('tabindex', 0);
+        this._listenForFocusInToExpand();
     }
 
     /** @hidden */
     ngAfterViewInit(): void {
-        this._focusMonitor.monitor(this._elementRef).subscribe((origin) =>
-            this._ngZone.run(() => {
-                if (origin === 'keyboard') {
-                    this._dynamicPageService.collapsed.next(false);
-                }
-            })
-        );
-
-        const breadcrumb = this._elementRef.nativeElement.querySelector('fd-breadcrumb');
-        if (breadcrumb) {
-            this._addClassNameToCustomElement(breadcrumb, CLASS_NAME.dynamicPageBreadcrumb);
-            this.breadcrumbTitleContainer.nativeElement.style.overflow = 'hidden';
-        }
-
-        if (this.background) {
-            this._setBackgroundStyles(this.background);
-        }
-
-        if (this.size) {
-            this._setSize(this.size);
-        }
+        this._addCustomClassToBreadcrumb();
+        this._applyEntryProperties();
     }
 
     /**
@@ -155,6 +129,17 @@ export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
         }
     }
 
+    /** @hidden */
+    private _listenForFocusInToExpand(): void {
+        this._focusMonitor.monitor(this._elementRef).subscribe((origin) =>
+            this._ngZone.run(() => {
+                if (origin === 'keyboard') {
+                    this._dynamicPageService.collapsed.next(false);
+                }
+            })
+        );
+    }
+
     /**
      * @hidden
      * sets the padding classes
@@ -162,10 +147,6 @@ export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
      */
     private _setSize(sizeType: DynamicPageResponsiveSize): void {
         this._addClassNameToHostElement(this._getSizeClass(sizeType));
-
-        // if (this.titleRef) {
-        //     this._addClassNameToCustomElement(this.titleRef.nativeElement, CLASS_NAME.dynamicPageTitleMedium);
-        // }
     }
 
     /** @hidden */
@@ -180,9 +161,14 @@ export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
         }
     }
 
-    /**@hidden */
-    private _setAttributeToHostElement(attribute: string, value: any): void {
-        this._renderer.setAttribute(this._elementRef.nativeElement, attribute, value);
+    private _applyEntryProperties(): void {
+        if (this.background) {
+            this._setBackgroundStyles(this.background);
+        }
+
+        if (this.size) {
+            this._setSize(this.size);
+        }
     }
 
     /**@hidden */
@@ -193,5 +179,15 @@ export class DynamicPageTitleComponent implements OnInit, AfterViewInit {
     /**@hidden */
     private _addClassNameToCustomElement(element: Element, className: string): void {
         addClassNameToElement(this._renderer, element, className);
+    }
+
+    /** @hidden */
+    private _addCustomClassToBreadcrumb(): void {
+        if (this._breadcrumbComponent) {
+            this._addClassNameToCustomElement(
+                this._breadcrumbComponent.elementRef.nativeElement,
+                CLASS_NAME.dynamicPageBreadcrumb
+            );
+        }
     }
 }

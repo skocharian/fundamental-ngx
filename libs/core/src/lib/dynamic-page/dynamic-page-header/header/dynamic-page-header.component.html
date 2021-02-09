@@ -1,8 +1,11 @@
 <div class="fd-dynamic-page__main-container">
-    <div class="fd-dynamic-page__breadcrumb-title-container" #breadcrumbTitleContainer>
+    <div class="fd-dynamic-page__breadcrumb-title-container">
         <nav aria-label="Breadcrumbs"><ng-content select="fd-breadcrumb"></ng-content></nav>
         <div class="fd-dynamic-page__title-container">
-            <span class="fd-dynamic-page__title" #titleRef>{{ title }}</span>
+            <span class="fd-dynamic-page__title"
+                  [class.fd-dynamic-page__title--md]="size === 'medium'">
+                {{ title }}
+            </span>
             <span class="fd-dynamic-page__title-content" *ngIf="keyInfo">{{keyInfo}}</span>
         </div>
     </div>

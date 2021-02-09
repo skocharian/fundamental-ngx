@@ -3,7 +3,7 @@
     <ng-container *ngIf="fullscreen">
         <div class="overlay-content">
             <fd-dynamic-page size="large" ariaLabel="Example Dynamic Page">
-                <fd-dynamic-page-title
+                <fd-dynamic-page-header
                     keyInfo="Key Info"
                     subtitle="Oversized multimaterial sneakers with quilted effect"
                     [title]="pageTitle"
@@ -80,7 +80,7 @@
                             </button>
                         </fd-toolbar>
                     </fd-dynamic-page-layout-actions>
-                </fd-dynamic-page-title>
+                </fd-dynamic-page-header>
                 <fd-dynamic-page-subheader
                     [collapsible]="true"
                     [pinnable]="true"
@@ -94,18 +94,14 @@
                         impedit repellendus esse, facere autem optio consequatur nobis?</span
                     >
                 </fd-dynamic-page-subheader>
-                <fd-tab-list [stackContent]="true" maxContentHeight="auto">
-                    <fd-tab *ngFor="let tab of ['aasdasd', 'sdasfdfsdfd', 'fdsfdsfsdfdsf']" [title]="tab">
-                        <fd-dynamic-page-content [id]="tab">
-                            <div style="height: 20vh; width: 100%; background: yellow"></div>
-                            <div style="height: 20vh; width: 100%; background: red"></div>
-                            <div style="height: 20vh; width: 100%; background: blue"></div>
-                            <div style="height: 20vh; width: 100%; background: yellow"></div>
-                            <div style="height: 20vh; width: 100%; background: red"></div>
-                            <div style="height: 20vh; width: 100%; background: blue"></div>
-                        </fd-dynamic-page-content>
-                    </fd-tab>
-                </fd-tab-list>
+                <fd-dynamic-page-content>
+                    <div style="height: 20vh; width: 100%; background: yellow"></div>
+                    <div style="height: 20vh; width: 100%; background: red"></div>
+                    <div style="height: 20vh; width: 100%; background: blue"></div>
+                    <div style="height: 20vh; width: 100%; background: yellow"></div>
+                    <div style="height: 20vh; width: 100%; background: red"></div>
+                    <div style="height: 20vh; width: 100%; background: blue"></div>
+                </fd-dynamic-page-content>
                 <fd-dynamic-page-footer>
                     <!-- page footer content goes here -->
                     <div fd-bar barDesign="floating-footer">

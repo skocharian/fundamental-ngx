@@ -16,14 +16,14 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import { TabPanelComponent } from '@fundamental-ngx/core';
-import { fromEvent, Subscription } from 'rxjs';
-import { debounceTime, throttleTime } from 'rxjs/operators';
+import { fromEvent, Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil, throttleTime } from 'rxjs/operators';
 import { CLASS_NAME, DynamicPageBackgroundType, DynamicPageResponsiveSize } from './constants';
 import {
     DynamicPageContentComponent
 } from './dynamic-page-content/dynamic-page-content.component';
 import { DynamicPageSubheaderComponent } from './dynamic-page-header/subheader/dynamic-page-subheader.component';
-import { DynamicPageTitleComponent } from './dynamic-page-header/header/dynamic-page-title.component';
+import { DynamicPageHeaderComponent } from './dynamic-page-header/header/dynamic-page-header.component';
 import { DynamicPageService } from './dynamic-page.service';
 import { addClassNameToElement } from './utils';
 import { TabListComponent } from '../tabs/tab-list.component';
@@ -68,18 +68,18 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
 
     /** reference to header component  */
     @ContentChild(DynamicPageSubheaderComponent)
-    headerComponent: DynamicPageSubheaderComponent;
+    pageSubheaderComponent: DynamicPageSubheaderComponent;
 
     /** reference to title component  */
-    @ContentChild(DynamicPageTitleComponent)
-    titleComponent: DynamicPageTitleComponent;
+    @ContentChild(DynamicPageHeaderComponent)
+    titleComponent: DynamicPageHeaderComponent;
 
     /** reference to content component  */
     @ContentChild(DynamicPageContentComponent)
     contentComponent: DynamicPageContentComponent;
 
-    @ContentChildren(TabListComponent, {descendants: true})
-    tabComponent: QueryList<TabListComponent>;
+    @ContentChild(TabListComponent)
+    tabComponent: TabListComponent;
 
     @ViewChildren(TabPanelComponent)
     dynamicPageTabs: QueryList<TabPanelComponent>;
@@ -115,6 +115,10 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
      */
     private _collapseValSubscription: Subscription = new Subscription();
 
+    /** @hidden **/
+    private readonly _onDestroy$: Subject<void> = new Subject<void>();
+
+
     /** @hidden */
     public headerCollapsible = true;
 
@@ -125,45 +129,28 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
         private _renderer: Renderer2,
         private _dynamicPageService: DynamicPageService
     ) {
-        if (this._collapseValSubscription) {
-            this._collapseValSubscription.unsubscribe();
-        }
-        this._collapseValSubscription = this._dynamicPageService.collapsed.subscribe((val) => {
-            this.setContainerPositions();
-        });
+        this._listenOnCollapse();
     }
 
     /** @hidden */
     ngAfterContentInit(): void {
-        if (this.background) {
-            this.titleComponent.background = this.background;
-            this.headerComponent.background = this.background;
-            this.contentComponent.background = this.background;
-        }
-        if (this.size) {
-            this.titleComponent.size = this.size;
-            this.headerComponent.size = this.size;
-            this.contentComponent.size = this.size;
-        }
-        this.headerCollapsible = this.headerComponent.collapsible;
+        this._propagatePropertiesToChildren();
     }
 
     /**@hidden */
     ngAfterViewInit(): void {
-        this._setTabStyles();
-        this._setToolbarStyles();
+        // this._setToolbarStyles();
         this.setContainerPositions();
-
+        this._setTabStyles();
         this._subscriptions.add(
             // this.tabbedContent.changes.subscribe(() => {
             //     this._setTabStyles();
             // })
         );
-        if (this.headerComponent?.collapsible) {
-            this._listenOnScroll();
+        if (this.pageSubheaderComponent?.collapsible) {
+            this._addScrollListeners();
             this._listenOnResize();
         }
-        this._cd.detectChanges();
     }
 
     /**@hidden */
@@ -176,15 +163,9 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
      * Set the positions of the tabs and content with respect to the window
      */
     setContainerPositions(): void {
+        console.log('changed collapsed');
         this._setTabsPosition();
         this._setContainerPosition();
-    }
-
-    /**
-     * Snap the header to expand or collapse based on scrolling. Uses CDKScrollable.
-     */
-    snapOnScroll(): void {
-        this._listenOnScroll();
     }
 
     /**
@@ -203,6 +184,78 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
         return this._elementRef;
     }
 
+    /** TODO */
+    refreshSize(): void {
+        this.setContainerPositions();
+    }
+
+    /** @hidden */
+    private _propagatePropertiesToChildren(): void {
+        if (this.background) {
+            this.titleComponent.background = this.background;
+            this.pageSubheaderComponent.background = this.background;
+            this.contentComponent.background = this.background;
+        }
+        if (this.size) {
+            this.titleComponent.size = this.size;
+            this.pageSubheaderComponent.size = this.size;
+            this.contentComponent.size = this.size;
+        }
+        this.headerCollapsible = this.pageSubheaderComponent.collapsible;
+    }
+
+    private _listenOnCollapse(): void {
+        this._dynamicPageService.subheaderVisibilityChange
+            .pipe(
+                takeUntil(this._onDestroy$)
+            )
+            .subscribe(_ => this.setContainerPositions())
+        ;
+    }
+
+    /**@hidden */
+    private _getCalculatedFullHeight(element: HTMLElement): string {
+        if (!element) {
+            return null;
+        }
+        const distanceFromTop = element.getBoundingClientRect().top;
+        return 'calc(100vh - ' + (distanceFromTop + this.offset) + 'px)';
+    }
+
+    /** @hidden */
+    private _addScrollListeners(): void {
+        const contentElement = this.contentComponent?.getElementRef()?.nativeElement;
+        if (contentElement) {
+            this._listenOnScroll(contentElement);
+        }
+
+        const tabElement = this.tabComponent?.contentContainer?.nativeElement
+        if (tabElement) {
+            this._listenOnScroll(tabElement);
+        }
+    }
+
+    /** @hidden */
+    private _listenOnScroll(element: HTMLElement): void {
+        fromEvent(element, 'scroll')
+            .pipe(debounceTime(10), takeUntil(this._onDestroy$))
+            .subscribe(_ => {
+                const collapse = !this._dynamicPageService.pinned.value && element.scrollTop > 0;
+                this._dynamicPageService.collapsed.next(collapse);
+            })
+        ;
+    }
+
+
+    /** @hidden Listen for window resize and adjust tab and content positions accordingly */
+    private _listenOnResize(): void {
+        this._subscriptions.add(
+            fromEvent(window, 'resize')
+                .pipe(debounceTime(60))
+                .subscribe(_ => this.setContainerPositions())
+        );
+    }
+
     /**
      * @hidden
      * set top position of normal content on scrolling
@@ -210,54 +263,12 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
     private _setContainerPosition(): void {
         if (this.contentComponent) {
             const contentComponentElement = this.contentComponent.getElementRef().nativeElement;
-            this._distanceFromTop = window.pageYOffset + contentComponentElement.getBoundingClientRect().top;
-            contentComponentElement.style.height = this._getCalculatedHeight();
-            this._addClassNameToCustomElement(contentComponentElement, 'content-sticker');
-        }
-    }
-
-    /**@hidden */
-    private _getCalculatedHeight(): string {
-        return 'calc(100vh - ' + (this._distanceFromTop + this.offset) + 'px)';
-    }
-
-    /** @hidden */
-    private _listenOnScroll(): void {
-        if (this.contentComponent) {
-            const contentComponentElement = this.contentComponent.getElementRef().nativeElement;
-
-            this._subscriptions.add(
-                fromEvent(contentComponentElement, 'scroll')
-                    .pipe(debounceTime(20), throttleTime(20))
-                    .subscribe(() => {
-                        const collapse = !this._dynamicPageService.pinned.value && contentComponentElement.scrollTop > 0;
-                        this._dynamicPageService.collapsed.next(collapse);
-                    })
+            this._renderer.setStyle(
+                contentComponentElement,
+                'height',
+                this._getCalculatedFullHeight(contentComponentElement)
             );
         }
-        if (this.tabComponent) {
-            const contentComponentElement = this.tabComponent.first.contentContainer.nativeElement;
-
-            this._subscriptions.add(
-                fromEvent(contentComponentElement, 'scroll')
-                    .pipe(debounceTime(20), throttleTime(20))
-                    .subscribe(() => {
-                        const collapse = !this._dynamicPageService.pinned.value && contentComponentElement.scrollTop > 0;
-                        this._dynamicPageService.collapsed.next(collapse);
-                    })
-            );
-        }
-    }
-
-    /** @hidden Listen for window resize and adjust tab and content positions accordingly */
-    private _listenOnResize(): void {
-        this._subscriptions.add(
-            fromEvent(window, 'resize')
-                .pipe(debounceTime(60))
-                .subscribe(() => {
-                    this.setContainerPositions();
-                })
-        );
     }
 
     /**
@@ -265,15 +276,14 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
      * set position for tabs and tabbed content's position relative to the tabs on scrolling
      */
     private _setTabsPosition(): void {
-        if (!this.tabComponent || this.tabComponent.length === 0) {
+        if (!this.tabComponent || !this.tabComponent.contentContainer) {
             return;
         }
-        const element = this.tabComponent.first.contentContainer.nativeElement;
-        const topOffset = window.pageYOffset + element.getBoundingClientRect().top;
+        const element = this.tabComponent.contentContainer.nativeElement;
         this._renderer.setStyle(
             element,
             'height',
-            'calc(100vh - ' + (topOffset + this.offset) + 'px)'
+            this._getCalculatedFullHeight(element)
         );
     }
 
@@ -282,37 +292,25 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
      * set styles for tab labels
      */
     private _setTabStyles(): void {
-        if (!this.contentContainer) {
+        if (!this.tabComponent) {
             return;
         }
-        const tabList: HTMLElement = this.contentContainer.nativeElement.querySelector('.fd-tabs');
-        if (!tabList) {
-            return;
-        }
-
-        this._addClassNameToCustomElement(tabList, CLASS_NAME.dynamicPageTabs);
-        this._addClassNameToCustomElement(tabList, CLASS_NAME.dynamicPageTabsAddShadow);
-        this._renderer.setStyle(tabList, 'z-index', 1);
-
-        if (this.header) {
-            this._renderer.setStyle(this.header.nativeElement, 'z-index', 2);
-        }
-
+        this._removeShadowWhenTabComponent();
         if (this.size) {
-            this._setTabsSize(this.size, tabList);
+            this._setTabsSize(this.size, this.tabComponent.headerContainer.nativeElement);
         }
+    }
 
-        if (!this.headerComponent?.collapsible) {
+    private _removeShadowWhenTabComponent(): void {
+        if (!this.pageSubheaderComponent?.collapsible) {
             return;
         }
 
-        const pinCollapseShadowElement = this._elementRef.nativeElement.querySelector(
-            '.fd-dynamic-page__collapsible-header-visibility-container'
-        );
+        const pinCollapseShadowElement = this.pageSubheaderComponent?.pinCollapseContainer;
 
         if (pinCollapseShadowElement) {
             this._addClassNameToCustomElement(
-                pinCollapseShadowElement,
+                pinCollapseShadowElement.nativeElement,
                 CLASS_NAME.dynamicPageCollapsibleHeaderPinCollapseNoShadow
             );
         }

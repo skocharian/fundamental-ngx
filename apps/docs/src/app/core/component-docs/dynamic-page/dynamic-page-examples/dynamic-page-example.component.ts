@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angu
 
 @Component({
     selector: 'fd-dynamic-page-example',
-    templateUrl: './platform-dynamic-page-example.component.html',
-    styleUrls: ['./platform-dynamic-page-example.component.scss'],
+    templateUrl: './dynamic-page-example.component.html',
+    styleUrls: ['./dynamic-page-example.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlatformDynamicPageExampleComponent {
+export class DynamicPageExampleComponent {
     @ViewChild('overlay')
     overlay: ElementRef<HTMLElement>;
 
