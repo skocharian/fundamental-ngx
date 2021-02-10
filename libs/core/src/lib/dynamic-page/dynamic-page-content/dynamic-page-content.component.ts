@@ -9,7 +9,15 @@ import {
 } from '@angular/core';
 
 import { DynamicPageBackgroundType, CLASS_NAME, DynamicPageResponsiveSize } from '../constants';
-import { addClassNameToElement } from '../utils';
+import { addClassNameToElement, removeClassNameFromElement } from '../utils';
+
+const sizeClasses = [
+    CLASS_NAME.dynamicPageContentAreaSmall,
+    CLASS_NAME.dynamicPageContentAreaMedium,
+    CLASS_NAME.dynamicPageContentAreaLarge,
+    CLASS_NAME.dynamicPageContentAreaExtraLarge
+];
+
 
 @Component({
     selector: 'fd-dynamic-page-content',
@@ -123,6 +131,13 @@ export class DynamicPageContentComponent implements OnInit {
      * @param sizeType
      */
     private _setSize(sizeType: DynamicPageResponsiveSize): void {
+        sizeClasses.forEach(_class =>
+            removeClassNameFromElement(
+                this._renderer,
+                this._elementRef.nativeElement,
+                _class
+            )
+        );
         switch (sizeType) {
             case 'small':
                 this._addClassNameToHostElement(CLASS_NAME.dynamicPageContentAreaSmall);

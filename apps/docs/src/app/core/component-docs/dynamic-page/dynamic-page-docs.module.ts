@@ -1,7 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { BarModule, BreadcrumbModule, DynamicPageModule, FlexibleColumnLayoutModule, ToolbarModule } from '@fundamental-ngx/core';
+import {
+    BarModule,
+    BreadcrumbModule,
+    DynamicPageModule,
+    FlexibleColumnLayoutModule,
+    ToolbarModule,
+    SegmentedButtonModule
+} from '@fundamental-ngx/core';
 
 import { ApiComponent } from '../../../documentation/core-helpers/api/api.component';
 import { SharedDocumentationPageModule } from '../../../documentation/shared-documentation-page.module';
@@ -11,6 +18,7 @@ import { DynamicPageExampleComponent } from './dynamic-page-examples/dynamic-pag
 import { DynamicPageDocsHeaderComponent } from './dynamic-page-header/dynamic-page-docs-header.component';
 import { DynamicPageTabsExampleComponent } from './dynamic-page-examples/dynamic-page-tabs-example/dynamic-page-tabs-example.component';
 import { DynamicPageColumnLayoutExampleComponent } from './dynamic-page-examples/dynamic-page-column-layout-example/dynamic-page-column-layout-example.component';
+import { DynamicPageResponsiveExampleComponent } from './dynamic-page-examples/dynamic-page-responsive-example/dynamic-page-responsive-example.component';
 
 const routes: Routes = [
     {
@@ -31,7 +39,8 @@ const routes: Routes = [
         ToolbarModule,
         BarModule,
         FlexibleColumnLayoutModule,
-        DynamicPageModule
+        DynamicPageModule,
+        SegmentedButtonModule
     ],
     exports: [RouterModule],
     declarations: [
@@ -40,6 +49,7 @@ const routes: Routes = [
         DynamicPageExampleComponent,
         DynamicPageTabsExampleComponent,
         DynamicPageColumnLayoutExampleComponent,
+        DynamicPageResponsiveExampleComponent,
     ]
 })
 export class DynamicPageDocsModule { }

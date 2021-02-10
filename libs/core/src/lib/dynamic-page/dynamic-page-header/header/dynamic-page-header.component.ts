@@ -17,6 +17,13 @@ import { DynamicPageService } from '../../dynamic-page.service';
 import { addClassNameToElement, removeClassNameFromElement } from '../../utils';
 import { BreadcrumbComponent } from '../../../breadcrumb/breadcrumb.component';
 
+const sizeClasses = [
+    CLASS_NAME.dynamicPageTitleAreaSmall,
+    CLASS_NAME.dynamicPageTitleMedium,
+    CLASS_NAME.dynamicPageTitleAreaLarge,
+    CLASS_NAME.dynamicPageTitleAreaExtraLarge
+]
+
 @Component({
     selector: 'fd-dynamic-page-header',
     templateUrl: './dynamic-page-header.component.html',
@@ -112,6 +119,10 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
         return this._elementRef;
     }
 
+    stopPropagation(event: MouseEvent): void {
+        event.stopPropagation();
+    }
+
     /**
      * @hidden
      * sets the style classes for background property
@@ -146,6 +157,13 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
      * @param sizeType
      */
     private _setSize(sizeType: DynamicPageResponsiveSize): void {
+        sizeClasses.forEach(_class =>
+            removeClassNameFromElement(
+                this._renderer,
+                this._elementRef.nativeElement,
+                _class
+            )
+        );
         this._addClassNameToHostElement(this._getSizeClass(sizeType));
     }
 

@@ -58,7 +58,16 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
      * size can be `small`, `medium`, `large`, or `extra-large`.
      */
     @Input()
-    size: DynamicPageResponsiveSize = 'extra-large';
+    set size(size: DynamicPageResponsiveSize) {
+        this._size = size;
+        this._propagateSizeToChildren();
+    }
+
+    get size(): DynamicPageResponsiveSize {
+       return this._size;
+    }
+
+    _size: DynamicPageResponsiveSize = 'extra-large';
 
     /**
      * user provided offset in px
@@ -98,15 +107,6 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
     @ViewChild('contentContainer')
     contentContainer: ElementRef<HTMLElement>;
 
-    /**
-     * @hidden
-     * holds the tab content
-     */
-    tabs: DynamicPageContentComponent[] = [];
-
-    /** @hidden */
-    private _distanceFromTop = 0;
-
     /** @hidden */
     private _subscriptions: Subscription = new Subscription();
 
@@ -117,7 +117,6 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
 
     /** @hidden **/
     private readonly _onDestroy$: Subject<void> = new Subject<void>();
-
 
     /** @hidden */
     public headerCollapsible = true;
@@ -192,16 +191,32 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
     /** @hidden */
     private _propagatePropertiesToChildren(): void {
         if (this.background) {
-            this.titleComponent.background = this.background;
-            this.pageSubheaderComponent.background = this.background;
-            this.contentComponent.background = this.background;
+            this._propagateBackgroundToChildren();
         }
         if (this.size) {
-            this.titleComponent.size = this.size;
-            this.pageSubheaderComponent.size = this.size;
-            this.contentComponent.size = this.size;
+            this._propagateSizeToChildren();
         }
         this.headerCollapsible = this.pageSubheaderComponent.collapsible;
+    }
+
+    /** @hidden */
+    private _propagateBackgroundToChildren(): void {
+        this.titleComponent.background = this.background;
+        this.pageSubheaderComponent.background = this.background;
+        this.contentComponent.background = this.background;
+    }
+
+    /** @hidden */
+    private _propagateSizeToChildren(): void {
+        if (this.titleComponent) {
+            this.titleComponent.size = this.size;
+        }
+        if (this.pageSubheaderComponent) {
+            this.pageSubheaderComponent.size = this.size;
+        }
+        if (this.contentComponent) {
+            this.contentComponent.size = this.size;
+        }
     }
 
     private _listenOnCollapse(): void {
@@ -296,9 +311,6 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
             return;
         }
         this._removeShadowWhenTabComponent();
-        if (this.size) {
-            this._setTabsSize(this.size, this.tabComponent.headerContainer.nativeElement);
-        }
     }
 
     private _removeShadowWhenTabComponent(): void {
@@ -313,31 +325,6 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
                 pinCollapseShadowElement.nativeElement,
                 CLASS_NAME.dynamicPageCollapsibleHeaderPinCollapseNoShadow
             );
-        }
-    }
-
-    /**
-     * @hidden
-     * add size classes to tabs
-     * @param sizeType
-     * @param element
-     */
-    _setTabsSize(sizeType: DynamicPageResponsiveSize, element: Element): void {
-        switch (sizeType) {
-            case 'small':
-                this._addClassNameToCustomElement(element, CLASS_NAME.dynamicPageTabsSmall);
-                break;
-            case 'medium':
-                this._addClassNameToCustomElement(element, CLASS_NAME.dynamicPageTabsMedium);
-
-                break;
-            case 'large':
-                this._addClassNameToCustomElement(element, CLASS_NAME.dynamicPageTabsLarge);
-                break;
-            case 'extra-large':
-            default:
-                this._addClassNameToCustomElement(element, CLASS_NAME.dynamicPageTabsExtraLarge);
-                break;
         }
     }
 

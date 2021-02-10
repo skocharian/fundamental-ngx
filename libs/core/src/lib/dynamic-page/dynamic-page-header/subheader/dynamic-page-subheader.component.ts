@@ -21,6 +21,13 @@ import { DynamicPageService } from '../../dynamic-page.service';
 import { addClassNameToElement, removeClassNameFromElement } from '../../utils';
 import { distinctUntilChanged } from 'rxjs/operators';
 
+const sizeClasses = [
+    CLASS_NAME.dynamicPageCollapsibleHeaderSmall,
+    CLASS_NAME.dynamicPageCollapsibleHeaderMedium,
+    CLASS_NAME.dynamicPageCollapsibleHeaderLarge,
+    CLASS_NAME.dynamicPageCollapsibleHeaderExtraLarge
+];
+
 let dynamicPageSubHeaderId = 0;
 @Component({
     selector: 'fd-dynamic-page-subheader',
@@ -283,6 +290,13 @@ export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnD
      */
     private _setSize(sizeType: DynamicPageResponsiveSize): any {
         if (this.headerContent) {
+            sizeClasses.forEach(_class =>
+                removeClassNameFromElement(
+                    this._renderer,
+                    this._elementRef.nativeElement,
+                    _class
+                )
+            );
             this._addClassNameToCustomElement(
                 this.headerContent.nativeElement,
                 this._getSizeClass(sizeType)
