@@ -6,7 +6,8 @@ export default {
         'Compact Input Field',
         'ReadOnly Input Field',
         'Disabled Input Field',
-        'Inline Help Input Field'
+        'Inline Help Input Field',
+        'Password Input Field'
     ],
     favoriteColor: 'My',
     placeholdersArray: [
@@ -17,7 +18,8 @@ export default {
         'Field placeholder text',
         'Field placeholder text',
         'Field placeholder text',
-        'Field placeholder text',
+		'Field placeholder text',
+		'Field placeholder text',
         'Enter the sport name'
     ],
     errorText: 'Pellentesque metus lacus commodo eget justo ut rutrum varius nunc',
