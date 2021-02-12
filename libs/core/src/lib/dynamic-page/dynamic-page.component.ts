@@ -4,7 +4,7 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    ContentChild, ContentChildren,
+    ContentChild,
     ElementRef,
     HostBinding,
     Input,
@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 import { TabPanelComponent } from '@fundamental-ngx/core';
 import { fromEvent, Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil, throttleTime } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { CLASS_NAME, DynamicPageBackgroundType, DynamicPageResponsiveSize } from './constants';
 import {
     DynamicPageContentComponent
@@ -25,7 +25,7 @@ import {
 import { DynamicPageSubheaderComponent } from './dynamic-page-header/subheader/dynamic-page-subheader.component';
 import { DynamicPageHeaderComponent } from './dynamic-page-header/header/dynamic-page-header.component';
 import { DynamicPageService } from './dynamic-page.service';
-import { addClassNameToElement } from './utils';
+import { addClassNameToElement, dynamicPageWidthToSize } from './utils';
 import { TabListComponent } from '../tabs/tab-list.component';
 
 @Component({
@@ -52,6 +52,15 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
      */
     @Input()
     background: DynamicPageBackgroundType = 'solid';
+
+    /** Whether DynamicPage should have responsive sides spacing changing with Page window width.
+     * max-width: 599px                         - small
+     * min-width: 600px and max-width: 1023px   - medium
+     * min-width: 1024px and max-width: 1439px  - large
+     * min-width: 1440px                        - extra large
+     */
+    @Input()
+    autoResponsive = false;
 
     /**
      * sets size which in turn adds corresponding padding for the size type.
@@ -138,14 +147,9 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
 
     /**@hidden */
     ngAfterViewInit(): void {
-        // this._setToolbarStyles();
         this.setContainerPositions();
+        this._sizeChangeHandle();
         this._setTabStyles();
-        this._subscriptions.add(
-            // this.tabbedContent.changes.subscribe(() => {
-            //     this._setTabStyles();
-            // })
-        );
         if (this.pageSubheaderComponent?.collapsible) {
             this._addScrollListeners();
             this._listenOnResize();
@@ -162,7 +166,6 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
      * Set the positions of the tabs and content with respect to the window
      */
     setContainerPositions(): void {
-        console.log('changed collapsed');
         this._setTabsPosition();
         this._setContainerPosition();
     }
@@ -217,6 +220,7 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
         if (this.contentComponent) {
             this.contentComponent.size = this.size;
         }
+        this.setContainerPositions();
     }
 
     private _listenOnCollapse(): void {
@@ -235,6 +239,18 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
         }
         const distanceFromTop = element.getBoundingClientRect().top;
         return 'calc(100vh - ' + (distanceFromTop + this.offset) + 'px)';
+    }
+
+    private _sizeChangeHandle(): void {
+        if (!this._elementRef || !this.autoResponsive) {
+            return;
+        }
+        const dynamicPageWidth = this._elementRef.nativeElement.getBoundingClientRect().width;
+        const size = dynamicPageWidthToSize(dynamicPageWidth);
+
+        if (size !== this.size) {
+            this.size = size;
+        }
     }
 
     /** @hidden */
@@ -267,7 +283,10 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
         this._subscriptions.add(
             fromEvent(window, 'resize')
                 .pipe(debounceTime(60))
-                .subscribe(_ => this.setContainerPositions())
+                .subscribe(_ => {
+                    this.setContainerPositions();
+                    this._sizeChangeHandle();
+                })
         );
     }
 
@@ -325,81 +344,6 @@ export class DynamicPageComponent implements AfterContentInit, AfterViewInit, On
                 pinCollapseShadowElement.nativeElement,
                 CLASS_NAME.dynamicPageCollapsibleHeaderPinCollapseNoShadow
             );
-        }
-    }
-
-    /**
-     * @hidden
-     * add classes to projected toolbars
-     */
-    private _setToolbarStyles(): void {
-        // adds global actions classes to its toolbar
-        const globalToolbarEl = this._elementRef.nativeElement.querySelector(
-            'fd-dynamic-page-global-actions .fd-toolbar'
-        );
-        if (globalToolbarEl) {
-            addClassNameToElement(this._renderer, globalToolbarEl, CLASS_NAME.dynamicPageGlobalActions);
-        }
-
-        const layoutToolbarEl = this._elementRef.nativeElement.querySelector(
-            'fd-dynamic-page-layout-actions .fd-toolbar'
-        );
-        if (layoutToolbarEl) {
-            addClassNameToElement(this._renderer, layoutToolbarEl, CLASS_NAME.dynamicPageLayoutActions);
-        }
-
-        const actionsContainerEl = this._elementRef.nativeElement.querySelector(
-            '.' + CLASS_NAME.dynamicPageActionsContainer
-        );
-        // set toolbar sizes
-        this._setToolbarsSize(this.size, actionsContainerEl, globalToolbarEl, layoutToolbarEl);
-    }
-
-    /**
-     * @hidden
-     * add size classes to toolbars
-     * @param sizeType
-     * @param element
-     */
-    _setToolbarsSize(
-        sizeType: DynamicPageResponsiveSize,
-        actionsContainer: Element,
-        globalActions: Element,
-        layoutActions: Element
-    ): void {
-        switch (sizeType) {
-            case 'small':
-                if (globalActions) {
-                    this._addClassNameToCustomElement(globalActions, CLASS_NAME.dynamicPageGlobalActionsToolbarSmall);
-                }
-                break;
-            case 'medium':
-                if (actionsContainer) {
-                    this._addClassNameToCustomElement(actionsContainer, CLASS_NAME.dynamicPageActionsContainerMedium);
-                    const globalActionsEl: HTMLElement = actionsContainer.querySelector(
-                        'fd-dynamic-page-global-actions'
-                    );
-                    const layoutActionsEl: HTMLElement = actionsContainer.querySelector(
-                        'fd-dynamic-page-layout-actions'
-                    );
-                    if (globalActionsEl) {
-                        globalActionsEl.style.order = '2';
-                    }
-                    if (layoutActionsEl) {
-                        layoutActionsEl.style.order = '1';
-                    }
-                }
-                if (globalActions) {
-                    this._addClassNameToCustomElement(globalActions, CLASS_NAME.dynamicPageGlobalActionsToolbarMedium);
-                }
-                if (layoutActions) {
-                    this._addClassNameToCustomElement(layoutActions, CLASS_NAME.dynamicPageLayoutActionsToolbarMedium);
-                }
-                break;
-            case 'large':
-            case 'extra-large':
-            default:
-                break;
         }
     }
 

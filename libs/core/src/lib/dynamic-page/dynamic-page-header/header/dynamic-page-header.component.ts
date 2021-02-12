@@ -2,7 +2,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 
 import {
     AfterViewInit,
-    ChangeDetectionStrategy,
+    ChangeDetectionStrategy, ChangeDetectorRef,
     Component, ContentChild,
     ElementRef,
     Input,
@@ -16,6 +16,8 @@ import { DynamicPageBackgroundType, CLASS_NAME, DynamicPageResponsiveSize } from
 import { DynamicPageService } from '../../dynamic-page.service';
 import { addClassNameToElement, removeClassNameFromElement } from '../../utils';
 import { BreadcrumbComponent } from '../../../breadcrumb/breadcrumb.component';
+import { DynamicPageLayoutActionsComponent } from '../../public_api';
+import { DynamicPageGlobalActionsComponent } from '../../public_api';
 
 const sizeClasses = [
     CLASS_NAME.dynamicPageTitleAreaSmall,
@@ -27,6 +29,7 @@ const sizeClasses = [
 @Component({
     selector: 'fd-dynamic-page-header',
     templateUrl: './dynamic-page-header.component.html',
+    styleUrls: ['./dynamic-page-header.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     host: {
@@ -34,6 +37,8 @@ const sizeClasses = [
     }
 })
 export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
+
+    /**  */
     @Input()
     title: string;
 
@@ -77,7 +82,15 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
 
     /** @hidden */
     @ContentChild(BreadcrumbComponent)
-    _breadcrumbComponent: BreadcrumbComponent
+    _breadcrumbComponent: BreadcrumbComponent;
+
+    /** @hidden */
+    @ContentChild(DynamicPageGlobalActionsComponent)
+    _globalActions: DynamicPageGlobalActionsComponent;
+
+    /** @hidden */
+    @ContentChild(DynamicPageLayoutActionsComponent)
+    _layoutActions: DynamicPageLayoutActionsComponent;
 
     /**
      * @hidden
@@ -97,7 +110,8 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
         private _renderer: Renderer2,
         private _focusMonitor: FocusMonitor,
         private _dynamicPageService: DynamicPageService,
-        private _ngZone: NgZone
+        private _ngZone: NgZone,
+        private _changeDetRef: ChangeDetectorRef
     ) {}
 
     /** @hidden */
@@ -119,6 +133,7 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
         return this._elementRef;
     }
 
+    /** @hidden */
     stopPropagation(event: MouseEvent): void {
         event.stopPropagation();
     }
@@ -165,6 +180,9 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
             )
         );
         this._addClassNameToHostElement(this._getSizeClass(sizeType));
+        this._setToolbarsSize(sizeType);
+        this._breadcrumbComponent.onResize();
+        this._changeDetRef.detectChanges();
     }
 
     /** @hidden */
@@ -179,6 +197,7 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
         }
     }
 
+    /** @hidden */
     private _applyEntryProperties(): void {
         if (this.background) {
             this._setBackgroundStyles(this.background);
@@ -186,6 +205,7 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
 
         if (this.size) {
             this._setSize(this.size);
+            this._setToolbarsSize(this.size);
         }
     }
 
@@ -206,6 +226,22 @@ export class DynamicPageHeaderComponent implements OnInit, AfterViewInit {
                 this._breadcrumbComponent.elementRef.nativeElement,
                 CLASS_NAME.dynamicPageBreadcrumb
             );
+        }
+    }
+
+    /**
+     * @hidden
+     * add size classes to toolbars
+     * @param sizeType
+     */
+    _setToolbarsSize(
+        sizeType: DynamicPageResponsiveSize
+    ): void {
+        if (this._globalActions) {
+            this._globalActions.setSize(sizeType);
+        }
+        if (this._layoutActions) {
+            this._layoutActions.setSize(sizeType)
         }
     }
 }

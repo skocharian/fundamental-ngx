@@ -1,0 +1,17 @@
+.fd-dynamic-page__actions-container--md,
+.fd-dynamic-page__actions-container--sm {
+	.fd-dynamic-page__toolbar-container {
+		display: flex;
+		flex-direction: column-reverse;
+	}
+}
+
+.fd-dynamic-page__breadcrumb-title-container {
+	justify-content: center;
+	display: flex;
+	flex-flow: column;
+}
+
+.fd-dynamic-page__title--md {
+	padding: 1rem 2rem;
+}

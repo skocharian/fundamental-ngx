@@ -6,7 +6,6 @@ import {
     EventEmitter,
     Input,
     OnDestroy,
-    OnInit,
     Output,
     Renderer2,
     ViewChild,
@@ -35,7 +34,7 @@ let dynamicPageSubHeaderId = 0;
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
-export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DynamicPageSubheaderComponent implements AfterViewInit {
     /**
      * whether the header can be collapsed. True by default. If set to false, both pin/collapse buttons disappear
      * and the header stays visible
@@ -109,16 +108,7 @@ export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnD
      * Default is `solid`.
      */
     @Input()
-    set background(backgroundType: DynamicPageBackgroundType) {
-        if (backgroundType) {
-            this._background = backgroundType;
-            this._setBackgroundStyles(backgroundType);
-        }
-    }
-
-    get background(): DynamicPageBackgroundType {
-        return this._background;
-    }
+    background: DynamicPageBackgroundType = 'solid';
 
     /**
      * sets size which in turn adds corresponding padding for the size type.
@@ -161,18 +151,6 @@ export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnD
 
     /**
      * @hidden
-     * tracking collapsible for pinning
-     */
-    private _collapsible = this.collapsible;
-
-    /**
-     * @hidden
-     * tracking the background value
-     */
-    private _background: DynamicPageBackgroundType;
-
-    /**
-     * @hidden
      * tracks the size for responsive padding
      */
     private _size: DynamicPageResponsiveSize;
@@ -191,24 +169,10 @@ export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnD
     }
 
     /** @hidden */
-    ngOnInit(): void {
-        // if (this._isCollapsibleCollapsed()) {
-        //     this._setStyleToHostElement('z-index', 1);
-        // }
-    }
-
-    /** @hidden */
     ngAfterViewInit(): void {
-        if (this._background) {
-            this._setBackgroundStyles(this._background);
-        }
         if (this.size) {
             this._setSize(this.size);
         }
-    }
-
-    /**@hidden */
-    ngOnDestroy(): void {
     }
 
     /**
@@ -242,45 +206,9 @@ export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnD
         }
 
         this._collapsed = collapsed;
-
-        // if (this._isCollapsibleCollapsed()) {
-        //     this._setStyleToHostElement('z-index', 1);
-        // } else {
-        //     this._removeStyleFromHostElement('z-index');
-        // }
-
         this._dynamicPageService.collapsed.next(collapsed);
         this._cd.detectChanges();
         this._dynamicPageService.subheaderVisibilityChange.next();
-    }
-
-    /**
-     * return whether this collapse/expand button is collapsed
-     */
-    private _isCollapsibleCollapsed(): boolean {
-        return this.collapsible && this.collapsed && this._collapsible;
-    }
-
-    /**
-     * @hidden
-     * sets the style classes for background property
-     * @param background
-     */
-    private _setBackgroundStyles(background: DynamicPageBackgroundType): any {
-        if (this.headerContent) {
-            if (background === 'transparent') {
-                this._addClassNameToCustomElement(
-                    this.headerContent.nativeElement,
-                    CLASS_NAME.dynamicPageCollapsibleHeaderTransparentBg
-                );
-            } else {
-                removeClassNameFromElement(
-                    this._renderer,
-                    this.headerContent.nativeElement,
-                    CLASS_NAME.dynamicPageCollapsibleHeaderTransparentBg
-                );
-            }
-        }
     }
 
     /**
@@ -293,7 +221,7 @@ export class DynamicPageSubheaderComponent implements OnInit, AfterViewInit, OnD
             sizeClasses.forEach(_class =>
                 removeClassNameFromElement(
                     this._renderer,
-                    this._elementRef.nativeElement,
+                    this.headerContent.nativeElement,
                     _class
                 )
             );

@@ -23,37 +23,12 @@ import { DynamicPageResponsiveSize } from '@fundamental-ngx/core';
             .overlay-content {
                 width: 100%;
             }
-            
-            .small {
-                max-width: 320px;
-            }
-            
-            .medium {
-                max-width: 720px;
-            }
-            
-            .large {
-                max-width: 1024px;
-            }
-            
-            .extra-large {
-                max-width: 100%
-            }
         `
     ]
 })
 export class DynamicPageResponsiveExampleComponent {
     @ViewChild('overlay')
     overlay: ElementRef<HTMLElement>;
-
-    currentSize: DynamicPageResponsiveSize = 'medium';
-
-    sizes: DynamicPageResponsiveSize[] = [
-        'small',
-        'medium',
-        'large',
-        'extra-large'
-    ];
 
     fullscreen = false;
 

@@ -6,8 +6,8 @@ import { BreadcrumbModule, ToolbarModule, ButtonModule } from '@fundamental-ngx/
 import { CLASS_NAME } from '../../constants';
 import { DynamicPageModule } from '../../dynamic-page.module';
 import { DynamicPageService } from '../../dynamic-page.service';
-import { DynamicPageGlobalActionsComponent } from '../actions/global-actions/dynamic-page-global-actions.component';
-import { DynamicPageLayoutActionsComponent } from '../actions/layout-actions/dynamic-page-layout-actions.component';
+import { DynamicPageGlobalActionsComponent } from '../actions/dynamic-page-global-actions.component';
+import { DynamicPageLayoutActionsComponent } from '../actions/dynamic-page-layout-actions.component';
 import { DynamicPageKeyInfoComponent } from '../key-info/dynamic-page-key-info.component';
 import { DynamicPageHeaderComponent } from './dynamic-page-header.component';
 

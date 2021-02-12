@@ -1,8 +1,8 @@
 <button fd-button (click)="openPage()">Click to open full screen</button>
 <div class="overlay" #overlay>
     <ng-container *ngIf="fullscreen">
-        <div class="overlay-content" [ngClass]="currentSize">
-            <fd-dynamic-page ariaLabel="Example Dynamic Page" [size]="currentSize">
+        <div class="overlay-content">
+            <fd-dynamic-page ariaLabel="Example Dynamic Page" [autoResponsive]="true">
                 <fd-dynamic-page-header
                         keyInfo="Key Info"
                         subtitle="Oversized multimaterial sneakers with quilted effect"
@@ -95,17 +95,6 @@
                     >
                 </fd-dynamic-page-subheader>
                 <fd-dynamic-page-content>
-                    <div style="padding: 5rem 0;">
-                        <fd-segmented-button style="margin-right: 10px; margin-left: 10px;">
-                            <button fd-button
-                                    *ngFor="let size of sizes"
-                                    (click)="currentSize = size;"
-                                    [class.is-selected]="currentSize === size"
-                                    [label]="size">
-                            </button>
-                        </fd-segmented-button>
-                    </div>
-
                     <div style="height: 20vh; width: 100%; background: yellow"></div>
                     <div style="height: 20vh; width: 100%; background: red"></div>
                     <div style="height: 20vh; width: 100%; background: blue"></div>
@@ -113,7 +102,7 @@
                     <div style="height: 20vh; width: 100%; background: red"></div>
                     <div style="height: 20vh; width: 100%; background: blue"></div>
                 </fd-dynamic-page-content>
-                <fd-dynamic-page-footer [ngClass]="currentSize">
+                <fd-dynamic-page-footer>
                     <!-- page footer content goes here -->
                     <div fd-bar barDesign="floating-footer">
                         <div fd-bar-right>
