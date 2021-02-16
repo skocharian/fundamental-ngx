@@ -11,8 +11,7 @@ import {
     waitForPresent
 } from '../../driver/wdio';
 import {
-    conditionInclusions, inputIDs, tableInclusions, tableExclusions, conditionExclusions, customInclusionLabels,
-    customExclusionLabels, exclusionLabel, inclusionLabel, basicSearchId, mobileAttr
+    conditionsValues, inputIDs, customLabels, basicSearchId, mobileAttr
 } from '../fixtures/appData/value-help-dialog-contents';
 import { valueZero, valueOne, searchValues } from '../fixtures/testData/value-help-dialog';
 
@@ -24,8 +23,8 @@ describe('Value help dialog test suite', function() {
         productCodeColumn, productCityColumn, productZipcodeColumn, productAddressColumn, productNicknameColumn,
         conditionSelectors, conditionsInputField, dropdownOptions, selectedItemID, miniOpenDialogBtn,
         menuDialogBtn, menuCheckboxes, inputToken, menuItemNames, advSearchLabels, tableColumn,
-        sectionLabels, disableCheckboxes, currentDisplayedPage, nextPageBtn, previousPageBtn, advSearchOptions,
-        advSearchToggle, tableCheckboxesFF, mobileExampleDialog, xBtn
+        currentDisplayedPage, nextPageBtn, previousPageBtn, advSearchOptions,
+        advSearchToggle, tableCheckboxesFF, mobileExampleDialog, xBtn, showAllBtn
     } = valueHelpDialogPage;
 
     beforeAll(() => {
@@ -56,6 +55,7 @@ describe('Value help dialog test suite', function() {
 
         it('should check advanced search results', () => {
             click(openDialogBtn);
+            click(showAllBtn);
             const advSearchFieldCount = 6;
             const searchResultsColumnsArr = [productNameColumn, productCodeColumn, productCityColumn, productZipcodeColumn,
                 productAddressColumn, productNicknameColumn];
@@ -77,23 +77,13 @@ describe('Value help dialog test suite', function() {
             expect(getText(selectedTokens)).toEqual(selectedItem);
         });
 
-        it('should check define conditions inclusions', () => {
-            click(openDialogBtn);
-            click(formTabs, 1);
-            click(addBtn);
-            click(conditionsInputField, 1);
-            sendKeys(valueZero);
-            click(conditionSelectors);
-            checkConditionalTokens(tableInclusions);
-        });
-
         it('should check the inclusion conditional statements', () => {
             click(openDialogBtn);
             click(formTabs, 1);
-            click(addBtn);
+            // click(addBtn);
             click(conditionsInputField, 1);
             sendKeys(valueZero);
-            click(conditionSelectors, 1);
+            click(conditionSelectors);
 
             const optionsCount = getElementArrayLength(dropdownOptions);
             for (let i = 0; optionsCount > i; i++) {
@@ -101,35 +91,14 @@ describe('Value help dialog test suite', function() {
                     click(dropdownOptions, i);
                     click(conditionsInputField, 2);
                     sendKeys(valueOne);
-                    expect(getText(selectedTokens)).toEqual(conditionInclusions[i]);
-                    click(conditionSelectors, 1);
+                    expect(getText(selectedTokens)).toEqual(conditionsValues[i]);
+                    click(conditionSelectors);
                     continue;
                 }
                 click(dropdownOptions, i);
-                expect(getText(selectedTokens)).toEqual(conditionInclusions[i]);
-                click(conditionSelectors, 1);
+                expect(getText(selectedTokens)).toEqual(conditionsValues[i]);
+                click(conditionSelectors);
             }
-        });
-
-        it('should check define conditions exclusions', () => {
-            click(openDialogBtn);
-            click(formTabs, 1);
-            click(addBtn, 1);
-            click(conditionsInputField, 1);
-            sendKeys(valueZero);
-            click(conditionSelectors);
-            checkConditionalTokens(tableExclusions);
-        });
-
-        it('should check the exclusion conditional statements', () => {
-            click(openDialogBtn);
-            click(formTabs, 1);
-            click(addBtn, 1);
-            click(conditionsInputField, 1);
-            sendKeys(valueZero);
-            click(conditionSelectors, 1);
-            checkConditionalTokens(conditionExclusions, 1);
-
         });
 
         it('should check the cancel button', () => {
@@ -151,6 +120,7 @@ describe('Value help dialog test suite', function() {
         xit('should check advanced search options appear for each table column', () => {
             // Skip due to: https://github.com/SAP/fundamental-ngx/issues/4588
             click(openDialogBtn);
+            click(showAllBtn);
             const columnCount = getElementArrayLength(tableColumn);
 
             for (let i = 0; columnCount > i; i++) {
@@ -170,54 +140,37 @@ describe('Value help dialog test suite', function() {
         it('should check the remove conditions btn', () => {
             click(openDialogBtn);
             click(formTabs, 1);
+            expect(getElementArrayLength(conditionSelectors)).toBe(1);
             click(addBtn);
-            expect(doesItExist(conditionSelectors)).toBe(true);
+            expect(getElementArrayLength(conditionSelectors)).toBe(2);
             click(xBtn);
-            expect(doesItExist(conditionSelectors)).toBe(false);
+            expect(getElementArrayLength(conditionSelectors)).toBe(1);
         });
     });
 
     describe('custom strategy labels examples', function() {
-        it('should check define conditions custom inclusions', () => {
+        it('should check define conditions custom labels', () => {
             scrollIntoView(openDialogBtn, 1);
             click(openDialogBtn, 1);
-            click(addBtn);
             click(conditionsInputField, 1);
             sendKeys(valueZero);
-            click(conditionSelectors, 1);
+            click(conditionSelectors);
 
             const optionsCount = getElementArrayLength(dropdownOptions);
             for (let i = 0; optionsCount > i; i++) {
                 if (i === 2) {
-                    expect(getText(dropdownOptions, i)).toEqual(customInclusionLabels[i]);
+                    expect(getText(dropdownOptions, i)).toEqual(customLabels[i]);
                     click(dropdownOptions, i);
                     click(conditionsInputField, 2);
                     sendKeys(valueOne);
-                    expect(getText(selectedTokens)).toEqual(conditionInclusions[i]);
-                    click(conditionSelectors, 1);
+                    expect(getText(selectedTokens)).toEqual(conditionsValues[i]);
+                    click(conditionSelectors);
                     continue;
                 }
-                expect(getText(dropdownOptions, i)).toEqual(customInclusionLabels[i]);
+                expect(getText(dropdownOptions, i)).toEqual(customLabels[i]);
                 click(dropdownOptions, i);
-                expect(getText(selectedTokens)).toEqual(conditionInclusions[i]);
-                click(conditionSelectors, 1);
-            }
-        });
-
-        it('should check define conditions custom exclusions', () => {
-            scrollIntoView(openDialogBtn, 1);
-            click(openDialogBtn, 1);
-            click(addBtn, 1);
-            click(conditionsInputField, 1);
-            sendKeys(valueZero);
-            click(conditionSelectors, 1);
-
-            const optionsCount = getElementArrayLength(dropdownOptions);
-            for (let i = 0; optionsCount > i; i++) {
-                expect(getText(dropdownOptions, i)).toEqual(customExclusionLabels[i]);
-                click(dropdownOptions, i);
-                expect(getText(selectedTokens)).toEqual(conditionExclusions[i]);
-                click(conditionSelectors, 1);
+                expect(getText(selectedTokens)).toEqual(conditionsValues[i]);
+                click(conditionSelectors);
             }
         });
     });
@@ -230,35 +183,6 @@ describe('Value help dialog test suite', function() {
             const selectedItem = getText(selectedItemName);
             const selectedItemId = getText(selectedItemID);
             expect(getText(selectedTokens)).toEqual(selectedItem + ` (Id: ${selectedItemId})`);
-        });
-    });
-
-    describe('filters combinations examples', function() {
-        it('should check inclusion and exclusions disabled', () => {
-            scrollIntoView(openDialogBtn, 3);
-            click(openDialogBtn, 3);
-            expect(doesItExist(formTabs)).toBe(false);
-        });
-
-        xit('should check inclusions disabled, exclusions enabled', () => {
-            // skip due to https://github.com/SAP/fundamental-ngx/issues/4574
-            scrollIntoView(openDialogBtn, 3);
-            click(disableCheckboxes, 1);
-            click(openDialogBtn, 3);
-            expect(doesItExist(formTabs)).toBe(true);
-            click(formTabs, 1);
-            expect(getText(sectionLabels)).toEqual(exclusionLabel);
-
-        });
-
-        xit('should check exclusions disabled, inclusions enabled', () => {
-            // skip due to https://github.com/SAP/fundamental-ngx/issues/4574
-            scrollIntoView(openDialogBtn, 3);
-            click(disableCheckboxes);
-            click(openDialogBtn, 3);
-            expect(doesItExist(formTabs)).toBe(true);
-            click(formTabs, 1);
-            expect(getText(sectionLabels)).toEqual(inclusionLabel);
         });
     });
 
@@ -307,12 +231,13 @@ describe('Value help dialog test suite', function() {
         });
 
         it('should check selection from main dialog', () => {
-            scrollIntoView(openDialogBtn, 4);
-            click(openDialogBtn, 4);
+            scrollIntoView(openDialogBtn, 3);
+            click(openDialogBtn, 3);
             clickTableCheckbox(1);
             const selectedItem = getText(selectedItemName);
             expect(getText(selectedTokens)).toEqual(selectedItem);
-            click(footerBtns, 2);
+            click(footerBtns, 1);
+            waitForPresent(inputToken);
             expect(getText(inputToken)).toEqual(selectedItem.toUpperCase());
         });
     });
@@ -335,15 +260,6 @@ describe('Value help dialog test suite', function() {
         for (let i = 1; resultsCount > i; i++) {
             scrollIntoView(selector, i);
             expect(getText(selector, i).toLowerCase()).toContain(expectation);
-        }
-    }
-
-    function checkConditionalTokens(expectation: string[], selectorIndex: number = 0): void {
-        const optionsCount = getElementArrayLength(dropdownOptions);
-        for (let i = 0; optionsCount > i; i++) {
-            click(dropdownOptions, i);
-            expect(getText(selectedTokens)).toEqual(expectation[i]);
-            click(conditionSelectors, selectorIndex);
         }
     }
 
